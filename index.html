@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandlenkosi Vundla - Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --dark-bg: #0f172a;
+            --sidebar-bg: #1e293b;
+            --primary: #6366f1;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #334155;
+        }
+        
+        .sidebar-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        
+        .sidebar-header span {
+            color: var(--primary);
+        }
+        
+        .sidebar-nav {
+            flex-grow: 1;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 2rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .social-links a {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: white;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        /* Page Transitions */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Profile Image Upload */
+        .profile-image-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1rem;
+        }
+        
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+        }
+        
+        .upload-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .profile-image-container:hover .upload-label {
+            opacity: 1;
+        }
+        
+        /* Certification Page Styles */
+        .cert-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .cert-card {
+            height: 100%;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .cert-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cert-placeholder {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+        
+        .cert-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Project Page Styles */
+        .project-card {
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+            
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            MV<span>.</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-link active" data-page="home">Home</a>
+            <a href="#" class="nav-link" data-page="about">About</a>
+            <a href="#" class="nav-link" data-page="resume">Resume</a>
+            <a href="#" class="nav-link" data-page="projects">Projects</a>
+            <a href="#" class="nav-link" data-page="certifications">Certifications</a>
+            <a href="#" class="nav-link" data-page="contact">Contact</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="social-links">
+                <a href="https://x.com/Mandlenkos47988" target="_blank"><i class="bi bi-twitter-x"></i></a>
+                <a href="https://github.com/Vundla" target="_blank"><i class="bi bi-github"></i></a>
+                <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank"><i class="bi bi-linkedin"></i></a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="container">
+                <div class="row align-items-center" style="min-height: 80vh;">
+                    <div class="col-lg-6">
+                        <h1 class="display-4 fw-bold mb-3">Mandlenkosi Vundla</h1>
+                        <h2 class="text-primary mb-4">Software Developer</h2>
+                        <p class="lead mb-4">
+                            My passion for coding has evolved into a deep interest in backend development, where I thrive on building smart, scalable systems. Recently, I've fully integrated AI into my workflow, blending logic and intelligence to build more dynamic and powerful applications.
+                        </p>
+                        <div class="d-flex gap-3">
+                            <a href="#" class="btn btn-primary" data-page="projects">View My Work</a>
+                            <a href="#" class="btn btn-outline-light" data-page="contact">Get In Touch</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center">
+                        <div class="profile-image-container">
+                            <img src="https://placehold.co/350x450/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="profileImage">
+                            <label for="imageUpload" class="upload-label">Click to upload</label>
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="about" class="page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <div class="card bg-dark border-primary h-100">
+                            <div class="card-body text-center">
+                                <div class="profile-image-container mb-3">
+                                    <img src="https://placehold.co/150x150/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="aboutProfileImage">
+                                    <label for="aboutImageUpload" class="upload-label">Upload</label>
+                                    <input type="file" id="aboutImageUpload" accept="image/*" style="display: none;">
+                                </div>
+                                <h3>Mandlenkosi Vundla</h3>
+                                <p class="text-muted">Software Development Trainee</p>
+                                <ul class="list-unstyled text-start mt-4">
+                                    <li class="mb-2"><i class="bi bi-envelope me-2"></i>mandlenkosi.vundla@capaciti.org.za</li>
+                                    <li class="mb-2"><i class="bi bi-phone me-2"></i>+27 69 309 9649</li>
+                                    <li><i class="bi bi-geo-alt me-2"></i>Johannesburg, South Africa</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <a href="#" class="btn btn-primary mb-4" data-page="contact">Get to Know Me</a>
+                        <h1 class="mb-4">Passionate About Creating Digital Experiences</h1>
+                        <p class="mb-4">
+                            Hey there, I'm Mandlenkosi Vundla — a Software Development Trainee with a passion for innovation, growth, and building digital experiences that actually mean something. I believe that tech should empower, uplift, and connect people — not just dazzle them.
+                        </p>
+                        <p>
+                            My path wasn't linear — and that's my edge. Through grit, late nights, self-taught lessons, and eventually formal training through CapaCiTi's Tech Career Accelerator, I've developed real-world skills in Python, JavaScript, Flask, Node.js, React, and C#, with solid experience in full-stack web development, database design, and cloud integration.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resume Page -->
+        <div id="resume" class="page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <div class="card bg-dark border-primary h-100">
+                            <div class="card-body">
+                                <div class="text-center mb-4">
+                                    <img src="https://placehold.co/300x300/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="rounded-circle" width="150">
+                                </div>
+                                <h2 class="text-center">Mandlenkosi Vundla</h2>
+                                <p class="text-center text-muted mb-4">Software Development Trainee</p>
+                                
+                                <h4>PROFESSIONAL SUMMARY</h4>
+                                <p class="small">
+                                    Aspiring Software Engineer specializing in backend development, with hands-on experience in building secure, scalable systems. Currently advancing my skills through the CapaCiTi Tech Career Accelerator.
+                                </p>
+                                
+                                <h4 class="mt-4">CONTACT</h4>
+                                <ul class="list-unstyled small">
+                                    <li class="mb-2"><a href="mailto:vundlamandlenkosi0@gmail.com" class="text-white">vundlamandlenkosi0@gmail.com</a></li>
+                                    <li class="mb-2"><a href="tel:+27693099649" class="text-white">069 309 9649</a></li>
+                                    <li class="mb-2"><a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" class="text-white">LinkedIn Profile</a></li>
+                                    <li><a href="https://github.com/Vundla" target="_blank" class="text-white">GitHub Profile</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card bg-dark border-primary h-100">
+                            <div class="card-body">
+                                <h4>SKILLS</h4>
+                                <ul class="mb-4">
+                                    <li>Backend development (Python, Flask)</li>
+                                    <li>Backend development (Ruby on Rails and Node.js, Express.js)</li>
+                                    <li>Frontend development (React and Vite)</li>
+                                    <li>Frontend development (HTML, CSS, Javascript)</li>
+                                    <li>API design and integration (RESTful APIs)</li>
+                                    <li>Database management (MySQL, SQLite)</li>
+                                    <li>Authentication and authorisation systems</li>
+                                    <li>Version control (Git, GitHub)</li>
+                                </ul>
+                                
+                                <h4>WORK EXPERIENCE</h4>
+                                <div class="mb-4">
+                                    <h5>Software Development Trainee</h5>
+                                    <p class="text-muted">CapaCiTi | April 2025 - Present</p>
+                                    <ul>
+                                        <li>Design, develop, and maintain backend systems and APIs.</li>
+                                        <li>Work with databases to store, retrieve, and manage data securely.</li>
+                                        <li>Collaborate with team members to deliver project requirements.</li>
+                                    </ul>
+                                </div>
+                                
+                                <h4>EDUCATION</h4>
+                                <div class="mb-2">
+                                    <h5>Certificate In Software Engineering Backend</h5>
+                                    <p class="text-muted">ALX AFRICA | 2023 - 2024</p>
+                                </div>
+                                <div>
+                                    <h5>AI & Professional Development Certifications</h5>
+                                    <p class="text-muted">Coursera</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Page -->
+        <div id="projects" class="page">
+            <div class="container">
+                <h1 class="mb-4">My Projects</h1>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <!-- Project cards will be added here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications Page -->
+        <div id="certifications" class="page">
+            <div class="container">
+                <h1 class="mb-4">My Certifications</h1>
+                <div class="mb-4">
+                    <button class="btn btn-primary" id="addCertBtn">Add New Certification</button>
+                    <input type="file" id="certUpload" accept="image/*,.pdf" style="display: none;">
+                </div>
+                
+                <div class="cert-section">
+                    <h2 class="section-title">AI Bootcamp Certification</h2>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="aiBootcampCerts">
+                        <!-- Certifications will be added here by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="cert-section">
+                    <h2 class="section-title">Professional Development</h2>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="professionalDevCerts">
+                        <!-- Certifications will be added here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card bg-dark border-primary h-100">
+                            <div class="card-body">
+                                <h3 class="mb-4">Contact Information</h3>
+                                <ul class="list-unstyled">
+                                    <li class="mb-3"><i class="bi bi-envelope me-2"></i>mandlenkosi.vundla@capaciti.org.za</li>
+                                    <li class="mb-3"><i class="bi bi-phone me-2"></i>+27 69 309 9649</li>
+                                    <li><i class="bi bi-geo-alt me-2"></i>Johannesburg, South Africa</li>
+                                </ul>
+                                
+                                <h5 class="mt-4 mb-3">Follow Me</h5>
+                                <div class="d-flex gap-3">
+                                    <a href="https://x.com/Mandlenkos47988" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-twitter-x"></i></a>
+                                    <a href="https://github.com/Vundla" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-github"></i></a>
+                                    <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-dark border-primary h-100">
+                            <div class="card-body">
+                                <h3 class="mb-4">Send Me a Message</h3>
+                                <form id="contactForm">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Your Name</label>
+                                        <input type="text" class="form-control bg-dark text-white border-secondary" id="name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control bg-dark text-white border-secondary" id="email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="message" class="form-label">Message</label>
+                                        <textarea class="form-control bg-dark text-white border-secondary" id="message" rows="5" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Page Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show selected page
+                const pageId = this.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+            });
+        });
+        
+        // Profile Image Upload
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('profileImage').src = event.target.result;
+                    localStorage.setItem('profileImage', event.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // About Page Image Upload
+        document.getElementById('aboutImageUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('aboutProfileImage').src = event.target.result;
+                    localStorage.setItem('aboutProfileImage', event.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Load saved profile images
+        if (localStorage.getItem('profileImage')) {
+            document.getElementById('profileImage').src = localStorage.getItem('profileImage');
+        }
+        
+        if (localStorage.getItem('aboutProfileImage')) {
+            document.getElementById('aboutProfileImage').src = localStorage.getItem('aboutProfileImage');
+        }
+        
+        // Projects Data
+        const projects = [
+            {
+                title: "AI Sentiment Analyzer",
+                description: "An application that analyzes sentiment in text using AI algorithms.",
+                github: "https://github.com/vundla/ai-sentiment-analyzer",
+                live: "https://vundla.github.io/ai-sentiment-analyzer/",
+                tags: ["AI", "NLP", "React"]
+            },
+            {
+                title: "Azanian AI Agent",
+                description: "Interactive AI agent for customer support and information retrieval.",
+                github: "https://github.com/yourusername/azanian-ai-agent2",
+                live: "https://landbot.online/v3/H-2934706-7M0LMF0MKRD9B5FG/index.html",
+                tags: ["Chatbot", "AI", "Landbot"]
+            },
+            {
+                title: "AI Resume Builder",
+                description: "Tool that helps create professional resumes using AI suggestions.",
+                github: "https://github.com/vundla/ai-resume-builder",
+                live: "https://vundla.github.io/ai-resume-builder/",
+                tags: ["AI", "Resume", "Productivity"]
+            },
+            {
+                title: "Generative AI Agent",
+                description: "Creative AI agent that generates text, images, and ideas.",
+                github: "https://github.com/vundla/My_Generative_AI_Project",
+                live: "https://vundla.github.io/My_Generative_AI_Project/",
+                tags: ["Generative AI", "Creative", "ML"]
+            },
+            {
+                title: "AI Study Assistant",
+                description: "Smart learning companion that helps with studying and research.",
+                github: "https://github.com/yourusername/ai-study-assistance",
+                live: "https://smart-learning-assistant-henna.vercel.app/",
+                tags: ["Education", "AI", "Learning"]
+            }
+        ];
+        
+        // Render Projects
+        const projectsContainer = document.querySelector('#projects .row');
+        projects.forEach(project => {
+            const projectCol = document.createElement('div');
+            projectCol.className = 'col';
+            
+            projectCol.innerHTML = `
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">${project.title}</h5>
+                        <p class="card-text">${project.description}</p>
+                        <div class="d-flex flex-wrap gap-1 mb-3">
+                            ${project.tags.map(tag => `<span class="badge bg-secondary">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <div class="d-flex gap-2">
+                            <a href="${project.github}" target="_blank" class="btn btn-sm btn-outline-light flex-grow-1">
+                                <i class="bi bi-github"></i> Code
+                            </a>
+                            <a href="${project.live}" target="_blank" class="btn btn-sm btn-primary flex-grow-1">
+                                <i class="bi bi-box-arrow-up-right"></i> Live
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            projectsContainer.appendChild(projectCol);
+        });
+        
+        // Certifications Data and Upload
+        let certifications = {
+            aiBootcamp: [],
+            professionalDev: []
+        };
+        
+        // Load saved certifications
+        if (localStorage.getItem('certifications')) {
+            certifications = JSON.parse(localStorage.getItem('certifications'));
+            renderCertifications();
+        }
+        
+        document.getElementById('addCertBtn').addEventListener('click', function() {
+            document.getElementById('certUpload').click();
+        });
+        
+        document.getElementById('certUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const certData = {
+                        id: Date.now(),
+                        name: file.name,
+                        type: file.type,
+                        data: event.target.result,
+                        date: new Date().toLocaleDateString(),
+                        category: document.querySelector('.section-title').textContent.includes('AI') ? 'aiBootcamp' : 'professionalDev'
+                    };
+                    
+                    certifications[certData.category].push(certData);
+                    localStorage.setItem('certifications', JSON.stringify(certifications));
+                    renderCertifications();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        function renderCertifications() {
+            const aiContainer = document.getElementById('aiBootcampCerts');
+            const proContainer = document.getElementById('professionalDevCerts');
+            
+            aiContainer.innerHTML = '';
+            proContainer.innerHTML = '';
+            
+            // Add empty slots if less than 3
+            while (certifications.aiBootcamp.length < 3) {
+                aiContainer.appendChild(createCertPlaceholder('aiBootcamp'));
+            }
+            
+            while (certifications.professionalDev.length < 3) {
+                proContainer.appendChild(createCertPlaceholder('professionalDev'));
+            }
+            
+            // Render AI Bootcamp certs
+            certifications.aiBootcamp.forEach(cert => {
+                aiContainer.appendChild(createCertCard(cert));
+            });
+            
+            // Render Professional Dev certs
+            certifications.professionalDev.forEach(cert => {
+                proContainer.appendChild(createCertCard(cert));
+            });
+        }
+        
+        function createCertPlaceholder(category) {
+            const col = document.createElement('div');
+            col.className = 'col';
+            
+            col.innerHTML = `
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body text-center">
+                        <div class="cert-placeholder">
+                            <i class="bi bi-file-earmark-plus display-4 text-muted"></i>
+                            <p class="mt-2 text-muted">Empty Slot</p>
+                        </div>
+                        <input type="text" class="form-control bg-dark text-white border-secondary mt-2" placeholder="Certificate Title">
+                    </div>
+                </div>
+            `;
+            
+            return col;
+        }
+        
+        function createCertCard(cert) {
+            const col = document.createElement('div');
+            col.className = 'col';
+            
+            col.innerHTML = `
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body d-flex flex-column">
+                        <div class="text-center mb-3">
+                            ${cert.type.includes('image') ? 
+                                `<img src="${cert.data}" alt="${cert.name}" class="img-fluid rounded" style="max-height: 150px;">` : 
+                                `<i class="bi bi-file-earmark-pdf display-4 text-danger"></i>`
+                            }
+                        </div>
+                        <h5 class="card-title text-center">${cert.name}</h5>
+                        <p class="text-center text-muted small">Uploaded: ${cert.date}</p>
+                        <div class="mt-auto d-flex gap-2 justify-content-center">
+                            <a href="${cert.data}" target="_blank" class="btn btn-sm btn-outline-light">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+                            <a href="${cert.data}" download="${cert.name}" class="btn btn-sm btn-primary">
+                                <i class="bi bi-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return col;
+        }
+        
+        // Contact Form
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // In a real app, you would send this data to a server
+            console.log('Form submitted:', { name, email, message });
+            
+            // Show success message
+            alert('Thank you for your message! I will get back to you soon.');
+            
+            // Reset form
+            this.reset();
+        });
+    </script>
+</body>
+</html>
