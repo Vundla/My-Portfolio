@@ -4,753 +4,870 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mandlenkosi Vundla - Portfolio</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --dark-color: #343a40;
-            --light-color: #f8f9fa;
+            --dark-bg: #0f172a;
+            --sidebar-bg: #1e293b;
+            --primary: #6366f1;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --leopard-primary: #ff7043;
+            --waterfall-primary: #29b6f6;
+            --sun-primary: #ffca28;
+            --hacker-primary: #66bb6a;
+            --sky-primary: #42a5f5;
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: white;
-            color: #333;
-        }
-        
-        .app-layout {
-            display: flex;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
+            display: flex;
+            line-height: 1.6;
         }
         
+        /* Sidebar Styles */
         .sidebar {
-            width: 250px;
-            background-color: white;
-            border-right: 1px solid #e0e0e0;
-            padding: 20px;
-            position: fixed;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #334155;
+            position: sticky;
+            top: 0;
             height: 100vh;
+            overflow-y: auto;
         }
         
         .sidebar-header {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: #333;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: white;
         }
         
         .sidebar-header span {
-            color: var(--primary-color);
+            color: var(--primary);
         }
         
         .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            flex-grow: 1;
         }
         
         .nav-link {
-            padding: 10px 15px;
-            border-radius: 5px;
-            color: #555;
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
             text-decoration: none;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
             transition: all 0.3s ease;
         }
         
-        .nav-link:hover {
-            background-color: #f0f0f0;
-            color: #333;
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
         }
         
         .nav-link.active {
-            background-color: var(--primary-color);
+            color: var(--primary);
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 2rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .social-links a {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
             color: white;
         }
         
+        /* Main Content Styles */
         .main-content {
-            margin-left: 250px;
-            flex: 1;
-            padding: 30px;
-            background-color: white;
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
         }
         
-        .page-container {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* Page Transitions */
+        .page {
+            display: none;
         }
         
-        /* Home Page Styles */
-        .hero-section {
-            display: flex;
-            align-items: center;
-            gap: 50px;
-            padding: 50px 0;
-        }
-        
-        .hero-text h1 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-        
-        .hero-text h1 span {
+        .page.active {
             display: block;
-            font-size: 24px;
-            font-weight: 400;
-            color: #666;
+            animation: fadeIn 0.5s ease;
         }
         
-        .hero-text p {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            color: #555;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .hero-buttons {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-secondary {
-            background-color: white;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-        }
-        
-        .btn-secondary:hover {
-            background-color: #f0f8ff;
-        }
-        
-        .hero-image-container {
+        /* Profile Image Upload */
+        .profile-image-container {
             position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1rem;
+            cursor: pointer;
         }
         
-        .hero-image {
-            width: 350px;
-            height: 450px;
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
             object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 4px solid var(--primary);
+            transition: all 0.3s ease;
         }
         
         .upload-label {
             position: absolute;
-            bottom: 20px;
+            bottom: 0;
             left: 0;
             right: 0;
-            background-color: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 10px;
             text-align: center;
-            border-radius: 0 0 10px 10px;
+            padding: 0.5rem;
+            font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-bottom-left-radius: 75px;
+            border-bottom-right-radius: 75px;
         }
         
-        .upload-label:hover {
-            background-color: rgba(0, 0, 0, 0.9);
+        .profile-image-container:hover .upload-label {
+            opacity: 1;
         }
         
-        #imageUpload {
-            display: none;
+        .profile-image-container:hover .profile-image {
+            transform: scale(1.05);
         }
         
-        /* About Page Styles */
-        .about-layout {
-            display: flex;
-            gap: 40px;
+        /* Resume Page Enhancements */
+        .resume-card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
-        .about-left-column {
-            flex: 1;
+        .resume-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         
-        .about-right-column {
-            flex: 2;
+        .resume-card h4 {
+            color: var(--primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 1rem;
         }
         
-        .about-info-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            text-align: center;
+        .resume-card ul {
+            padding-left: 1.5rem;
         }
         
-        .about-profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border: 5px solid #f0f0f0;
+        .resume-card li {
+            margin-bottom: 0.5rem;
         }
         
-        .about-info-card h3 {
-            font-size: 24px;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        
-        .about-card-subtitle {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-        
-        .about-card-contact {
-            list-style: none;
-            padding: 0;
-            text-align: left;
-        }
-        
-        .about-card-contact li {
-            margin-bottom: 10px;
-            color: #555;
-        }
-        
-        .about-main-title {
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        
-        .about-right-column p {
-            line-height: 1.8;
-            margin-bottom: 20px;
-            color: #555;
-        }
-        
-        .get-to-know-btn {
-            display: inline-block;
-            margin-bottom: 30px;
-        }
-        
-        /* Resume/Contact Page Styles */
-        .resume-layout-pro {
-            display: flex;
-            gap: 40px;
-        }
-        
-        .resume-sidebar-pro {
-            flex: 1;
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .resume-main-pro {
-            flex: 2;
-        }
-        
-        .resume-profile-pic {
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .resume-name {
-            font-size: 28px;
-            text-align: center;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        
-        .resume-title {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 18px;
-        }
-        
-        .resume-section-pro {
-            margin-bottom: 30px;
-        }
-        
-        .resume-section-pro h3 {
-            font-size: 20px;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #eee;
-        }
-        
-        .sidebar-section h3 {
-            color: var(--primary-color);
-        }
-        
-        .resume-section-pro p {
-            line-height: 1.6;
-            color: #555;
-        }
-        
-        .contact-list-pro {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .contact-list-pro li {
-            margin-bottom: 10px;
-        }
-        
-        .contact-list-pro a {
-            color: #555;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .contact-list-pro a:hover {
-            color: var(--primary-color);
-        }
-        
-        .skills-list-pro {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .skills-list-pro li {
-            background-color: #f0f8ff;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            color: #333;
-        }
-        
-        .experience-item-pro, .education-item-pro {
-            margin-bottom: 25px;
-        }
-        
-        .experience-item-pro h4, .education-item-pro h4 {
-            font-size: 18px;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        
-        .company-info, .institution-info {
-            color: #666;
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-        
-        .experience-item-pro ul {
-            padding-left: 20px;
-        }
-        
-        .experience-item-pro li {
-            margin-bottom: 8px;
-            color: #555;
-        }
-        
-        /* Certifications Page Styles */
-        .certifications-container {
-            padding: 20px;
-        }
-        
-        .page-title {
-            font-size: 36px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .page-subtitle {
-            color: #666;
-            margin-bottom: 30px;
-        }
-        
+        /* Certification Page Styles */
         .cert-section {
-            margin-bottom: 40px;
+            margin-bottom: 3rem;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .leopard-theme .section-title {
+            color: var(--leopard-primary);
+            border-bottom-color: var(--leopard-primary);
+        }
+        
+        .waterfall-theme .section-title {
+            color: var(--waterfall-primary);
+            border-bottom-color: var(--waterfall-primary);
+        }
+        
+        .sun-theme .section-title {
+            color: var(--sun-primary);
+            border-bottom-color: var(--sun-primary);
+        }
+        
+        .hacker-theme .section-title {
+            color: var(--hacker-primary);
+            border-bottom-color: var(--hacker-primary);
+        }
+        
+        .sky-theme .section-title {
+            color: var(--sky-primary);
+            border-bottom-color: var(--sky-primary);
         }
         
         .section-title {
-            font-size: 24px;
-            color: #333;
-            background-color: #f8f9fa;
-            border-radius: 5px;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
         }
         
         .cert-card {
-            border: 1px solid #ddd;
-            transition: transform 0.3s ease;
+            height: 100%;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .cert-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .cert-content {
-            min-height: 200px;
-        }
-        
-        .certificate-preview-container {
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .certificate-preview img {
-            max-height: 150px;
-            max-width: 100%;
-            border: 1px solid #eee;
-        }
-        
-        .document-icon {
-            text-align: center;
-            color: #666;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         
         .cert-placeholder {
             text-align: center;
-            color: #999;
+            padding: 2rem;
+            color: var(--text-muted);
         }
         
-        .button-group {
-            margin-top: auto;
+        .cert-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .certificate-preview-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .certificate-preview {
+            max-width: 100%;
+            max-height: 200px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 0.25rem;
+        }
+        
+        .certificate-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+        }
+        
+        .document-icon {
+            text-align: center;
+            padding: 1rem;
         }
         
         .fade-out {
-            animation: fadeOut 3s forwards;
+            animation: fadeOut 3s ease forwards;
             animation-delay: 2s;
         }
         
         @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
+            to {
+                opacity: 0;
+                height: 0;
+                padding: 0;
+                margin: 0;
+                border: 0;
+            }
         }
         
-        /* Contact Page Styles */
-        .contact-icon {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 50%;
+        /* Project Page Styles */
+        .project-card {
+            height: 100%;
+            transition: transform 0.3s ease;
         }
         
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            text-decoration: none;
+        .project-card:hover {
+            transform: translateY(-5px);
         }
         
-        .social-link:hover {
-            background-color: var(--secondary-color);
+        /* Contact Form Styles */
+        .contact-form .form-control {
+            background-color: #1e293b;
+            border-color: #334155;
             color: white;
         }
         
-        /* Responsive Styles */
+        .contact-form .form-control:focus {
+            background-color: #1e293b;
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+        }
+        
+        /* Responsive Adjustments */
         @media (max-width: 992px) {
-            .app-layout {
+            body {
                 flex-direction: column;
             }
             
             .sidebar {
                 width: 100%;
-                position: static;
+                padding: 1rem;
                 height: auto;
-                border-right: none;
-                border-bottom: 1px solid #e0e0e0;
+                position: relative;
+            }
+            
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                margin-bottom: 0;
             }
             
             .main-content {
-                margin-left: 0;
-                padding: 20px;
-            }
-            
-            .hero-section {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-            
-            .about-layout, .resume-layout-pro {
-                flex-direction: column;
+                padding: 1rem;
             }
         }
         
-        @media (max-width: 768px) {
-            .hero-text h1 {
-                font-size: 36px;
-            }
-            
-            .hero-text h1 span {
-                font-size: 20px;
-            }
-            
-            .hero-image {
-                width: 100%;
-                height: auto;
-            }
+        /* Typography Enhancements */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+        }
+        
+        .display-4 {
+            font-weight: 700;
+        }
+        
+        .lead {
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+        
+        /* Button Enhancements */
+        .btn {
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+        }
+        
+        .btn-outline-light:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Card Enhancements */
+        .card {
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: var(--primary);
+        }
+        
+        /* Animation Enhancements */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
 <body>
-    <div id="app"></div>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            MV<span>.</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-link active" data-page="home">Home</a>
+            <a href="#" class="nav-link" data-page="about">About</a>
+            <a href="#" class="nav-link" data-page="resume">Resume</a>
+            <a href="#" class="nav-link" data-page="projects">Projects</a>
+            <a href="#" class="nav-link" data-page="certifications">Certifications</a>
+            <a href="#" class="nav-link" data-page="contact">Contact</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="social-links">
+                <a href="https://x.com/Mandlenkos47988" target="_blank"><i class="bi bi-twitter-x"></i></a>
+                <a href="https://github.com/Vundla" target="_blank"><i class="bi bi-github"></i></a>
+                <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank"><i class="bi bi-linkedin"></i></a>
+            </div>
+        </div>
+    </aside>
 
-    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.15.8/babel.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-
-        // Navigation component
-        const Navigation = ({ activePage }) => {
-            return (
-                <aside className="sidebar">
-                    <div className="sidebar-header">
-                        MV<span>.</span>
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="container">
+                <div class="row align-items-center" style="min-height: 80vh;">
+                    <div class="col-lg-6">
+                        <h1 class="display-4 fw-bold mb-3">Mandlenkosi Vundla</h1>
+                        <h2 class="text-primary mb-4">Software Developer</h2>
+                        <p class="lead mb-4">
+                            My passion for coding has evolved into a deep interest in backend development, where I thrive on building smart, scalable systems. Recently, I've fully integrated AI into my workflow, blending logic and intelligence to build more dynamic and powerful applications.
+                        </p>
+                        <div class="d-flex gap-3">
+                            <a href="#" class="btn btn-primary" data-page="projects">View My Work</a>
+                            <a href="#" class="btn btn-outline-light" data-page="contact">Get In Touch</a>
+                        </div>
                     </div>
-                    <nav className="sidebar-nav">
-                        <a href="#home" className={`nav-link ${activePage === 'home' ? 'active' : ''}`}>Home</a>
-                        <a href="#about" className={`nav-link ${activePage === 'about' ? 'active' : ''}`}>About</a>
-                        <a href="#resume" className={`nav-link ${activePage === 'resume' ? 'active' : ''}`}>Resume</a>
-                        <a href="#portfolio" className={`nav-link ${activePage === 'portfolio' ? 'active' : ''}`}>Portfolio</a>
-                        <a href="#certifications" className={`nav-link ${activePage === 'certifications' ? 'active' : ''}`}>Certifications</a>
-                        <a href="#contact" className={`nav-link ${activePage === 'contact' ? 'active' : ''}`}>Contact</a>
-                    </nav>
-                </aside>
-            );
-        };
+                    <div class="col-lg-6 text-center">
+                        <div class="profile-image-container">
+                            <img src="https://placehold.co/350x450/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="profileImage">
+                            <label for="imageUpload" class="upload-label">Click to upload</label>
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        // Home Page
-        const HomePage = () => {
-            const [profileImage, setProfileImage] = useState("https://placehold.co/350x450/1e1e1e/ffffff?text=Your+Image");
+        <!-- About Page -->
+        <div id="about" class="page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <div class="card bg-dark border-primary h-100">
+                            <div class="card-body text-center">
+                                <div class="profile-image-container mb-3">
+                                    <img src="https://placehold.co/150x150/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="aboutProfileImage">
+                                    <label for="aboutImageUpload" class="upload-label">Upload</label>
+                                    <input type="file" id="aboutImageUpload" accept="image/*" style="display: none;">
+                                </div>
+                                <h3>Mandlenkosi Vundla</h3>
+                                <p class="text-muted">Software Development Trainee</p>
+                                <ul class="list-unstyled text-start mt-4">
+                                    <li class="mb-2"><i class="bi bi-envelope me-2"></i>mandlenkosi.vundla@capaciti.org.za</li>
+                                    <li class="mb-2"><i class="bi bi-phone me-2"></i>+27 69 309 9649</li>
+                                    <li><i class="bi bi-geo-alt me-2"></i>Johannesburg, South Africa</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <a href="#" class="btn btn-primary mb-4" data-page="contact">Get to Know Me</a>
+                        <h1 class="mb-4">Passionate About Creating Digital Experiences</h1>
+                        <p class="mb-4">
+                            Hey there, I'm Mandlenkosi Vundla — a Software Development Trainee with a passion for innovation, growth, and building digital experiences that actually mean something. I believe that tech should empower, uplift, and connect people — not just dazzle them.
+                        </p>
+                        <p>
+                            My path wasn't linear — and that's my edge. Through grit, late nights, self-taught lessons, and eventually formal training through CapaCiTi's Tech Career Accelerator, I've developed real-world skills in Python, JavaScript, Flask, Node.js, React, and C#, with solid experience in full-stack web development, database design, and cloud integration.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            const handleImageUpload = (e) => {
+        <!-- Resume Page -->
+        <div id="resume" class="page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <div class="card resume-card h-100">
+                            <div class="card-body">
+                                <div class="text-center mb-4">
+                                    <div class="profile-image-container" style="width: 150px; height: 150px; margin: 0 auto;">
+                                        <img src="https://placehold.co/300x300/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="resumeProfileImage">
+                                        <label for="resumeImageUpload" class="upload-label">Upload</label>
+                                        <input type="file" id="resumeImageUpload" accept="image/*" style="display: none;">
+                                    </div>
+                                </div>
+                                <h2 class="text-center">Mandlenkosi Vundla</h2>
+                                <p class="text-center text-muted mb-4">Software Development Trainee</p>
+                                
+                                <h4>PROFESSIONAL SUMMARY</h4>
+                                <p class="small">
+                                    Aspiring Software Engineer specializing in backend development, with hands-on experience in building secure, scalable systems. Currently advancing my skills through the CapaCiTi Tech Career Accelerator.
+                                </p>
+                                
+                                <h4 class="mt-4">CONTACT</h4>
+                                <ul class="list-unstyled small">
+                                    <li class="mb-2"><a href="mailto:vundlamandlenkosi0@gmail.com" class="text-white">vundlamandlenkosi0@gmail.com</a></li>
+                                    <li class="mb-2"><a href="tel:+27693099649" class="text-white">069 309 9649</a></li>
+                                    <li class="mb-2"><a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" class="text-white">LinkedIn Profile</a></li>
+                                    <li><a href="https://github.com/Vundla" target="_blank" class="text-white">GitHub Profile</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card resume-card h-100">
+                            <div class="card-body">
+                                <h4>SKILLS</h4>
+                                <ul class="mb-4">
+                                    <li>Backend development (Python, Flask)</li>
+                                    <li>Backend development (Ruby on Rails and Node.js, Express.js)</li>
+                                    <li>Frontend development (React and Vite)</li>
+                                    <li>Frontend development (HTML, CSS, Javascript)</li>
+                                    <li>API design and integration (RESTful APIs)</li>
+                                    <li>Database management (MySQL, SQLite)</li>
+                                    <li>Authentication and authorisation systems</li>
+                                    <li>Version control (Git, GitHub)</li>
+                                </ul>
+                                
+                                <h4>WORK EXPERIENCE</h4>
+                                <div class="mb-4">
+                                    <h5>Software Development Trainee</h5>
+                                    <p class="text-muted">CapaCiTi | April 2025 - Present</p>
+                                    <ul>
+                                        <li>Design, develop, and maintain backend systems and APIs.</li>
+                                        <li>Work with databases to store, retrieve, and manage data securely.</li>
+                                        <li>Collaborate with team members to deliver project requirements.</li>
+                                    </ul>
+                                </div>
+                                
+                                <h4>EDUCATION</h4>
+                                <div class="mb-2">
+                                    <h5>Certificate In Software Engineering Backend</h5>
+                                    <p class="text-muted">ALX AFRICA | 2023 - 2024</p>
+                                </div>
+                                <div>
+                                    <h5>AI & Professional Development Certifications</h5>
+                                    <p class="text-muted">Coursera</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Page -->
+        <div id="projects" class="page">
+            <div class="container">
+                <h1 class="mb-4">My Projects</h1>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <!-- Project cards will be added here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications Page -->
+        <div id="certifications" class="page">
+            <div class="container-fluid">
+                <h1 class="page-title pt-3">My Certifications</h1>
+                <p class="page-subtitle">A collection of my professional achievements and qualifications.</p>
+                
+                <!-- Storage status indicator -->
+                <div id="storageStatus"></div>
+                
+                {/* AI Bootcamp Section with Leopard Skin Theme */}
+                <div class="cert-section leopard-theme mb-5">
+                    <h2 class="section-title mb-4 pt-4 px-4">AI Bootcamp Certification</h2>
+                    <div class="row px-3" id="aiBootcampCerts">
+                        <!-- Certifications will be added here by JavaScript -->
+                    </div>
+                </div>
+                
+                {/* Professional Development Section with Waterfall Theme */}
+                <div class="cert-section waterfall-theme mb-5">
+                    <h2 class="section-title mb-4 pt-4 px-4">Professional Development Bootcamp</h2>
+                    <div class="row px-3" id="professionalDevCerts">
+                        <!-- Certifications will be added here by JavaScript -->
+                    </div>
+                </div>
+                
+                {/* YES Programme Section with Sun Theme */}
+                <div class="cert-section sun-theme mb-5">
+                    <h2 class="section-title mb-4 pt-4 px-4">YES Programme</h2>
+                    <div class="row px-3" id="yesProgramCerts">
+                        <!-- Certifications will be added here by JavaScript -->
+                    </div>
+                </div>
+                
+                {/* Cyber Security Section with Hacker Theme */}
+                <div class="cert-section hacker-theme mb-5">
+                    <h2 class="section-title mb-4 pt-4 px-4">Cyber Security</h2>
+                    <div class="row px-3" id="cyberSecurityCerts">
+                        <!-- Certifications will be added here by JavaScript -->
+                    </div>
+                </div>
+                
+                {/* Foundation Section with Sky Theme */}
+                <div class="cert-section sky-theme mb-5">
+                    <h2 class="section-title mb-4 pt-4 px-4">My Foundation</h2>
+                    <div class="row px-3" id="foundationCerts">
+                        <!-- Certifications will be added here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card bg-dark border-primary h-100">
+                            <div class="card-body">
+                                <h3 class="mb-4">Contact Information</h3>
+                                <ul class="list-unstyled">
+                                    <li class="mb-3"><i class="bi bi-envelope me-2"></i>mandlenkosi.vundla@capaciti.org.za</li>
+                                    <li class="mb-3"><i class="bi bi-phone me-2"></i>+27 69 309 9649</li>
+                                    <li><i class="bi bi-geo-alt me-2"></i>Johannesburg, South Africa</li>
+                                </ul>
+                                
+                                <h5 class="mt-4 mb-3">Follow Me</h5>
+                                <div class="d-flex gap-3">
+                                    <a href="https://x.com/Mandlenkos47988" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-twitter-x"></i></a>
+                                    <a href="https://github.com/Vundla" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-github"></i></a>
+                                    <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-dark border-primary h-100">
+                            <div class="card-body">
+                                <h3 class="mb-4">Send Me a Message</h3>
+                                <form id="contactForm" class="contact-form">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Your Name</label>
+                                        <input type="text" class="form-control" id="name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="message" class="form-label">Message</label>
+                                        <textarea class="form-control" id="message" rows="5" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Page Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show selected page
+                const pageId = this.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            });
+        });
+        
+        // Profile Image Upload
+        function handleImageUpload(inputId, imageId) {
+            const input = document.getElementById(inputId);
+            const image = document.getElementById(imageId);
+            
+            input.addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
-                    reader.onloadend = () => {
-                        setProfileImage(reader.result);
+                    reader.onload = function(event) {
+                        image.src = event.target.result;
+                        localStorage.setItem(imageId, event.target.result);
+                        
+                        // Update all profile images if this is the main one
+                        if (inputId === 'imageUpload') {
+                            document.getElementById('aboutProfileImage').src = event.target.result;
+                            document.getElementById('resumeProfileImage').src = event.target.result;
+                            localStorage.setItem('aboutProfileImage', event.target.result);
+                            localStorage.setItem('resumeProfileImage', event.target.result);
+                        }
                     };
                     reader.readAsDataURL(file);
                 }
-            };
-
-            return (
-                <div className="app-layout">
-                    <Navigation activePage="home" />
-                    <main className="main-content">
-                        <div className="page-container hero-section">
-                            <div className="hero-text">
-                                <h1>
-                                    Mandlenkosi Vundla
-                                    <span>I'm a <strong>Software Developer</strong></span>
-                                </h1>
-                                <p>
-                                    My passion for coding has evolved into a deep interest in backend development, where I thrive on building smart, scalable systems. Recently, I've fully integrated AI into my workflow, blending logic and intelligence to build more dynamic and powerful applications.
-                                </p>
-                                <div className="hero-buttons">
-                                    <a href="#portfolio" className="btn btn-primary">View My Work</a>
-                                    <a href="#contact" className="btn btn-secondary">Get In Touch</a>
-                                </div>
-                            </div>
-                            <div className="hero-image-container">
-                                <img 
-                                    src={profileImage} 
-                                    alt="Mandlenkosi Vundla" 
-                                    className="hero-image"
-                                    id="profileImage"
-                                />
-                                <label htmlFor="imageUpload" className="upload-label">
-                                    Click to upload your image
-                                </label>
-                                <input 
-                                    type="file" 
-                                    id="imageUpload" 
-                                    accept="image/png, image/jpeg"
-                                    onChange={handleImageUpload}
-                                />
-                            </div>
+            });
+        }
+        
+        // Set up image upload handlers
+        handleImageUpload('imageUpload', 'profileImage');
+        handleImageUpload('aboutImageUpload', 'aboutProfileImage');
+        handleImageUpload('resumeImageUpload', 'resumeProfileImage');
+        
+        // Load saved profile images
+        if (localStorage.getItem('profileImage')) {
+            document.getElementById('profileImage').src = localStorage.getItem('profileImage');
+            document.getElementById('aboutProfileImage').src = localStorage.getItem('profileImage');
+            document.getElementById('resumeProfileImage').src = localStorage.getItem('profileImage');
+        }
+        
+        // Projects Data
+        const projects = [
+            {
+                title: "AI Sentiment Analyzer",
+                description: "An application that analyzes sentiment in text using AI algorithms.",
+                github: "https://github.com/vundla/ai-sentiment-analyzer",
+                live: "https://vundla.github.io/ai-sentiment-analyzer/",
+                tags: ["AI", "NLP", "React"]
+            },
+            {
+                title: "Azanian AI Agent",
+                description: "Interactive AI agent for customer support and information retrieval.",
+                github: "https://github.com/yourusername/azanian-ai-agent2",
+                live: "https://landbot.online/v3/H-2934706-7M0LMF0MKRD9B5FG/index.html",
+                tags: ["Chatbot", "AI", "Landbot"]
+            },
+            {
+                title: "AI Resume Builder",
+                description: "Tool that helps create professional resumes using AI suggestions.",
+                github: "https://github.com/vundla/ai-resume-builder",
+                live: "https://vundla.github.io/ai-resume-builder/",
+                tags: ["AI", "Resume", "Productivity"]
+            },
+            {
+                title: "Generative AI Agent",
+                description: "Creative AI agent that generates text, images, and ideas.",
+                github: "https://github.com/vundla/My_Generative_AI_Project",
+                live: "https://vundla.github.io/My_Generative_AI_Project/",
+                tags: ["Generative AI", "Creative", "ML"]
+            },
+            {
+                title: "AI Study Assistant",
+                description: "Smart learning companion that helps with studying and research.",
+                github: "https://github.com/yourusername/ai-study-assistance",
+                live: "https://smart-learning-assistant-henna.vercel.app/",
+                tags: ["Education", "AI", "Learning"]
+            }
+        ];
+        
+        // Render Projects
+        const projectsContainer = document.querySelector('#projects .row');
+        projects.forEach(project => {
+            const projectCol = document.createElement('div');
+            projectCol.className = 'col';
+            
+            projectCol.innerHTML = `
+                <div class="card project-card bg-dark border-secondary h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">${project.title}</h5>
+                        <p class="card-text">${project.description}</p>
+                        <div class="d-flex flex-wrap gap-1 mb-3">
+                            ${project.tags.map(tag => `<span class="badge bg-primary">${tag}</span>`).join('')}
                         </div>
-                    </main>
-                </div>
-            );
-        };
-
-        // About Page
-        const AboutPage = () => {
-            return (
-                <div className="app-layout">
-                    <Navigation activePage="about" />
-                    <main className="main-content">
-                        <div className="page-container">
-                            <div className="about-layout">
-                                <div className="about-left-column">
-                                    <div className="about-info-card">
-                                        <img src="https://placehold.co/150x150/1e1e1e/ffffff?text=You" alt="Mandlenkosi Vundla" className="about-profile-pic" id="aboutProfilePic" />
-                                        <h3>Mandlenkosi Vundla</h3>
-                                        <p className="about-card-subtitle">Software Development Trainee</p>
-                                        <ul className="about-card-contact">
-                                            <li>📧 mandlenkosi.vundla@capaciti.org.za</li>
-                                            <li>📱 +27 69 309 9649</li>
-                                            <li>📍 Johannesburg, South Africa</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div className="about-right-column">
-                                    <a href="#contact" className="btn btn-primary get-to-know-btn">Get to Know Me</a>
-                                    <h1 className="about-main-title">Passionate About Creating Digital Experiences</h1>
-                                    <p>
-                                        Hey there, I'm Mandlenkosi Vundla — a Software Development Trainee with a passion for innovation, growth, and building digital experiences that actually mean something. I believe that tech should empower, uplift, and connect people — not just dazzle them.
-                                    </p>
-                                    <p>
-                                        My path wasn't linear — and that's my edge. Through grit, late nights, self-taught lessons, and eventually formal training through CapaCiTi's Tech Career Accelerator, I've developed real-world skills in Python, JavaScript, Flask, Node.js, React, and C#, with solid experience in full-stack web development, database design, and cloud integration.
-                                    </p>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <div class="d-flex gap-2">
+                            <a href="${project.github}" target="_blank" class="btn btn-sm btn-outline-light flex-grow-1">
+                                <i class="bi bi-github"></i> Code
+                            </a>
+                            <a href="${project.live}" target="_blank" class="btn btn-sm btn-primary flex-grow-1">
+                                <i class="bi bi-box-arrow-up-right"></i> Live
+                            </a>
                         </div>
-                    </main>
+                    </div>
                 </div>
-            );
+            `;
+            
+            projectsContainer.appendChild(projectCol);
+        });
+        
+        // Enhanced Certifications Data and Functionality
+        const buttonColors = {
+            aiBootcamp: [ 
+                '#ff7043', '#ec407a', '#ab47bc', '#5c6bc0', '#29b6f6', '#26a69a', '#9ccc65', '#ffee58', '#ffca28' 
+            ],
+            professionalDev: [ 
+                '#5c6bc0', '#ec407a', '#66bb6a', '#ffa726', '#42a5f5', '#7e57c2', '#26a69a',
+                '#d4e157', '#78909c', '#8d6e63', '#ab47bc', '#29b6f6', '#ef5350', '#9ccc65',
+                '#ffee58', '#ffca28', '#26c6da', '#ff7043', '#ce93d8', '#4db6ac', '#aed581' 
+            ],
+            yesProgram: [ 
+                '#ffa726', '#ffca28', '#ffee58', '#d4e157', '#9ccc65', '#66bb6a', '#26a69a' 
+            ],
+            cyberSecurity: [ 
+                '#5c6bc0', '#7e57c2', '#ab47bc', '#ec407a', '#78909c', '#8d6e63', '#212121' 
+            ],
+            foundation: [ 
+                '#42a5f5', '#29b6f6' 
+            ]
         };
-
-        // Resume Page
-        const ResumePage = () => {
-            return (
-                <div className="app-layout">
-                    <Navigation activePage="resume" />
-                    <main className="main-content">
-                        <div className="page-container">
-                            <div className="resume-layout-pro">
-                                <aside className="resume-sidebar-pro">
-                                    <div className="sidebar-content-wrapper">
-                                        <img src="https://placehold.co/300x300/1e1e1e/ffffff?text=Mandlenkosi" alt="Mandlenkosi Vundla" className="resume-profile-pic" id="resumeProfilePic" />
-                                        <h2 className="resume-name">Mandlenkosi Vundla</h2>
-                                        <p className="resume-title">Software Development Trainee</p>
-                                        
-                                        <div className="resume-section-pro sidebar-section">
-                                            <h3>PROFESSIONAL SUMMARY</h3>
-                                            <p>
-                                                Aspiring Software Engineer specializing in backend development, with hands-on experience in building secure, scalable systems. Currently advancing my skills through the CapaCiTi Tech Career Accelerator, gaining practical expertise in Python, React and Vite, Ruby on Rails, Javascript, Node.js, Express.js, HTML, CSS, Prompts Engineering, AI bootcamp, Cybersecurity Essentials, Flask, SQL, and API development while working on real-world projects.
-                                            </p>
-                                        </div>
-
-                                        <div className="resume-section-pro sidebar-section">
-                                            <h3>CONTACT</h3>
-                                            <ul className="contact-list-pro">
-                                                <li><a href="mailto:vundlamandlenkosi0@gmail.com">vundlamandlenkosi0@gmail.com</a></li>
-                                                <li><a href="tel:+27693099649">069 309 9649</a></li>
-                                                <li><a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a></li>
-                                                <li><a href="https://github.com/Vundla" target="_blank" rel="noopener noreferrer">GitHub Profile</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </aside>
-                                <div className="resume-main-pro">
-                                    <div className="resume-section-pro">
-                                        <h3>SKILLS</h3>
-                                        <ul className="skills-list-pro">
-                                            <li>Backend development (Python, Flask)</li>
-                                            <li>Backend development (Ruby on Rails and Node.js, Express.js)</li>
-                                            <li>Frontend development (React and Vite)</li>
-                                            <li>Frontend development (HTML, CSS, Javascript)</li>
-                                            <li>API design and integration (RESTful APIs)</li>
-                                            <li>Database management (MySQL, SQLite)</li>
-                                            <li>Authentication and authorisation systems</li>
-                                            <li>Version control (Git, GitHub)</li>
-                                        </ul>
-                                    </div>
-                                    <div className="resume-section-pro">
-                                        <h3>WORK EXPERIENCE</h3>
-                                        <div className="experience-item-pro">
-                                            <h4>Software Development Trainee</h4>
-                                            <p className="company-info">CapaCiTi | April 2025 - Present</p>
-                                            <ul>
-                                                <li>Design, develop, and maintain backend systems and APIs.</li>
-                                                <li>Work with databases to store, retrieve, and manage data securely.</li>
-                                                <li>Collaborate with team members to deliver project requirements.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="resume-section-pro">
-                                        <h3>EDUCATION</h3>
-                                        <div className="education-item-pro">
-                                            <h4>Certificate In Software Engineering Backend</h4>
-                                            <p className="institution-info">ALX AFRICA | 2023 - 2024</p>
-                                        </div>
-                                        <div className="education-item-pro">
-                                            <h4>AI & Professional Development Certifications</h4>
-                                            <p className="institution-info">Coursera</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </main>
-                </div>
-            );
+        
+        const removeButtonColors = {
+            aiBootcamp: [ 
+                '#d32f2f', '#c2185b', '#7b1fa2', '#303f9f', '#0288d1', '#00796b', '#689f38', '#fdd835', '#ffb300' 
+            ],
+            professionalDev: [ 
+                '#303f9f', '#c2185b', '#388e3c', '#f57c00', '#1976d2', '#512da8', '#00796b',
+                '#afb42b', '#546e7a', '#5d4037', '#7b1fa2', '#0288d1', '#d32f2f', '#689f38',
+                '#fdd835', '#ffb300', '#0097a7', '#e64a19', '#8e24aa', '#00897b', '#558b2f' 
+            ],
+            yesProgram: [ 
+                '#f57c00', '#ffb300', '#fdd835', '#afb42b', '#689f38', '#388e3c', '#00796b' 
+            ],
+            cyberSecurity: [ 
+                '#303f9f', '#512da8', '#7b1fa2', '#c2185b', '#546e7a', '#5d4037', '#000000' 
+            ],
+            foundation: [ 
+                '#1976d2', '#0288d1' 
+            ]
         };
-
-        // Portfolio Page (Placeholder)
-        const PortfolioPage = () => {
-            return (
-                <div className="app-layout">
-                    <Navigation activePage="portfolio" />
-                    <main className="main-content">
-                        <div className="page-container">
-                            <h1>My Portfolio</h1>
-                            <p>This section will showcase my projects.</p>
-                            <a href="#home" className="btn btn-primary">Back to Home</a>
-                        </div>
-                    </main>
-                </div>
-            );
-        };
-
-        // IndexedDB wrapper functions
+        
+        // Initialize IndexedDB
         const dbName = "certificatesDB";
         const dbVersion = 1;
         const storeName = "certificates";
-
+        
         // Initialize the database
-        const initDB = () => {
+        function initDB() {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open(dbName, dbVersion);
                 
@@ -772,10 +889,10 @@
                     }
                 };
             });
-        };
-
+        }
+        
         // Save certificates to IndexedDB
-        const saveCertificates = async (data) => {
+        async function saveCertificates(data) {
             try {
                 const db = await initDB();
                 const transaction = db.transaction([storeName], "readwrite");
@@ -791,11 +908,13 @@
                     
                     request.onsuccess = () => {
                         console.log("Certificates saved to IndexedDB");
+                        showStorageStatus("success", "All changes saved successfully!");
                         resolve(true);
                     };
                     
                     request.onerror = event => {
                         console.error("Error saving certificates:", event.target.error);
+                        showStorageStatus("error", "There was an issue saving your data. Your certificates might not persist between sessions.");
                         reject(event.target.error);
                     };
                     
@@ -805,12 +924,13 @@
                 });
             } catch (error) {
                 console.error("DB transaction error:", error);
+                showStorageStatus("error", "There was an issue saving your data. Your certificates might not persist between sessions.");
                 return false;
             }
-        };
-
+        }
+        
         // Load certificates from IndexedDB
-        const loadCertificates = async () => {
+        async function loadCertificates() {
             try {
                 const db = await initDB();
                 const transaction = db.transaction([storeName], "readonly");
@@ -843,141 +963,106 @@
                 console.error("DB transaction error:", error);
                 return null;
             }
+        }
+        
+        // Show storage status message
+        function showStorageStatus(type, message) {
+            const statusContainer = document.getElementById('storageStatus');
+            let alertClass = '';
+            let icon = '';
+            
+            switch(type) {
+                case 'success':
+                    alertClass = 'alert-success';
+                    icon = '<i class="bi bi-check-circle me-2"></i>';
+                    break;
+                case 'error':
+                    alertClass = 'alert-danger';
+                    icon = '<i class="bi bi-exclamation-triangle me-2"></i>';
+                    break;
+                case 'loading':
+                    alertClass = 'alert-info';
+                    icon = '<i class="bi bi-cloud-arrow-up me-2"></i>';
+                    break;
+                case 'migrated':
+                    alertClass = 'alert-info';
+                    icon = '<i class="bi bi-arrow-repeat me-2"></i>';
+                    break;
+                default:
+                    alertClass = 'alert-info';
+            }
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${alertClass} mb-3`;
+            alertDiv.innerHTML = icon + message;
+            
+            if (type === 'success') {
+                alertDiv.classList.add('fade-out');
+            }
+            
+            statusContainer.innerHTML = '';
+            statusContainer.appendChild(alertDiv);
+        }
+        
+        // Certificate state
+        let certificates = {
+            aiBootcamp: Array(9).fill(null),
+            professionalDev: Array(21).fill(null),
+            yesProgram: Array(7).fill(null),
+            cyberSecurity: Array(7).fill(null),
+            foundation: Array(2).fill(null)
         };
-
-        // Certifications Page
-        const CertificationsPage = () => {
-            const [certificates, setCertificates] = useState({
-                aiBootcamp: Array(9).fill(null),
-                professionalDev: Array(21).fill(null),
-                yesProgram: Array(7).fill(null),
-                cyberSecurity: Array(7).fill(null),
-                foundation: Array(2).fill(null)
-            });
-            
-            const [storageStatus, setStorageStatus] = useState(null);
-            const [storageReady, setStorageReady] = useState(false);
-            
-            // Button colors remain the same
-            const buttonColors = {
-                aiBootcamp: [
-                    '#ff7043', '#ec407a', '#ab47bc', '#5c6bc0', '#29b6f6', '#26a69a', '#9ccc65', '#ffee58', '#ffca28'
-                ],
-                professionalDev: [
-                    '#5c6bc0', '#ec407a', '#66bb6a', '#ffa726', '#42a5f5', '#7e57c2', '#26a69a',
-                    '#d4e157', '#78909c', '#8d6e63', '#ab47bc', '#29b6f6', '#ef5350', '#9ccc65',
-                    '#ffee58', '#ffca28', '#26c6da', '#ff7043', '#ce93d8', '#4db6ac', '#aed581'
-                ],
-                yesProgram: [
-                    '#ffa726', '#ffca28', '#ffee58', '#d4e157', '#9ccc65', '#66bb6a', '#26a69a'
-                ],
-                cyberSecurity: [
-                    '#5c6bc0', '#7e57c2', '#ab47bc', '#ec407a', '#78909c', '#8d6e63', '#212121'
-                ],
-                foundation: [
-                    '#42a5f5', '#29b6f6'
-                ]
-            };
-            
-            // Remove button colors remain the same
-            const removeButtonColors = {
-                aiBootcamp: [
-                    '#d32f2f', '#c2185b', '#7b1fa2', '#303f9f', '#0288d1', '#00796b', '#689f38', '#fdd835', '#ffb300'
-                ],
-                professionalDev: [
-                    '#303f9f', '#c2185b', '#388e3c', '#f57c00', '#1976d2', '#512da8', '#00796b',
-                    '#afb42b', '#546e7a', '#5d4037', '#7b1fa2', '#0288d1', '#d32f2f', '#689f38',
-                    '#fdd835', '#ffb300', '#0097a7', '#e64a19', '#8e24aa', '#00897b', '#558b2f'
-                ],
-                yesProgram: [
-                    '#f57c00', '#ffb300', '#fdd835', '#afb42b', '#689f38', '#388e3c', '#00796b'
-                ],
-                cyberSecurity: [
-                    '#303f9f', '#512da8', '#7b1fa2', '#c2185b', '#546e7a', '#5d4037', '#000000'
-                ],
-                foundation: [
-                    '#1976d2', '#0288d1'
-                ]
-            };
-
-            // Load saved certificates on component mount
-            useEffect(() => {
-                const loadData = async () => {
-                    try {
-                        setStorageStatus("loading");
+        
+        // Load certificates on page load
+        async function loadCertificatesData() {
+            try {
+                showStorageStatus("loading", "Loading your certificates...");
+                
+                // First try loading from IndexedDB
+                const dbData = await loadCertificates();
+                
+                if (dbData) {
+                    certificates = dbData;
+                    showStorageStatus("success", "Certificates loaded successfully!");
+                } else {
+                    // Fall back to localStorage if no IndexedDB data
+                    const savedCertificates = localStorage.getItem('portfolioCertificates');
+                    if (savedCertificates) {
+                        const parsedCerts = JSON.parse(savedCertificates);
                         
-                        // First try loading from IndexedDB
-                        const dbData = await loadCertificates();
-                        
-                        if (dbData) {
-                            setCertificates(dbData);
-                            setStorageStatus("success");
-                        } else {
-                            // Fall back to localStorage if no IndexedDB data
-                            const savedCertificates = localStorage.getItem('portfolioCertificates');
-                            if (savedCertificates) {
-                                const parsedCerts = JSON.parse(savedCertificates);
-                                
-                                // Handle upgrade from 18 to 21 columns if needed
-                                if (parsedCerts.professionalDev && parsedCerts.professionalDev.length === 18) {
-                                    parsedCerts.professionalDev = [...parsedCerts.professionalDev, null, null, null];
-                                }
-                                
-                                setCertificates(parsedCerts);
-                                console.log("Certificates loaded from localStorage");
-                                
-                                // Migrate from localStorage to IndexedDB
-                                await saveCertificates(parsedCerts);
-                                console.log("Certificates migrated from localStorage to IndexedDB");
-                                setStorageStatus("migrated");
-                            } else {
-                                setStorageStatus("empty");
-                            }
+                        // Handle upgrade from 18 to 21 columns if needed
+                        if (parsedCerts.professionalDev && parsedCerts.professionalDev.length === 18) {
+                            parsedCerts.professionalDev = [...parsedCerts.professionalDev, null, null, null];
                         }
-                    } catch (error) {
-                        console.error("Error loading certificates:", error);
-                        setStorageStatus("error");
-                    } finally {
-                        setStorageReady(true);
-                    }
-                };
-                
-                loadData();
-            }, []);
-
-            // Save certificates to IndexedDB whenever they change
-            useEffect(() => {
-                if (!storageReady) return;
-                
-                const saveData = async () => {
-                    try {
-                        await saveCertificates(certificates);
-                        setStorageStatus("saved");
-                    } catch (error) {
-                        console.error("Error saving certificates:", error);
-                        setStorageStatus("save-error");
                         
-                        // Fallback to localStorage if IndexedDB fails
-                        try {
-                            localStorage.setItem('portfolioCertificates', JSON.stringify(certificates));
-                            console.log("Certificates saved to localStorage as fallback");
-                        } catch (localError) {
-                            console.error("Failed to save to localStorage:", localError);
-                        }
+                        certificates = parsedCerts;
+                        console.log("Certificates loaded from localStorage");
+                        
+                        // Migrate from localStorage to IndexedDB
+                        await saveCertificates(parsedCerts);
+                        console.log("Certificates migrated from localStorage to IndexedDB");
+                        showStorageStatus("migrated", "Your certificates were migrated to improved storage.");
+                    } else {
+                        showStorageStatus("success", "Ready to add your certificates!");
                     }
-                };
-                
-                // Use a debounce to avoid excessive saves
-                const timeoutId = setTimeout(() => {
-                    saveData();
-                }, 1000);
-                
-                return () => clearTimeout(timeoutId);
-            }, [certificates, storageReady]);
-
-            // File upload handler - now with size limit increased to 10MB
-            const handleFileUpload = (section, index) => (event) => {
-                const file = event.target.files[0];
+                }
+            } catch (error) {
+                console.error("Error loading certificates:", error);
+                showStorageStatus("error", "Error loading certificates. Please refresh the page.");
+            }
+            
+            renderCertifications();
+        }
+        
+        // File upload handler
+        function handleFileUpload(section, index) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = ".pdf,.doc,.docx,.jpg,.jpeg,.png";
+            input.style.display = 'none';
+            
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
                 if (!file) return;
                 
                 console.log(`Uploading file: ${file.name}, type: ${file.type}, size: ${file.size / (1024 * 1024).toFixed(2)} MB`);
@@ -989,7 +1074,7 @@
                 }
                 
                 const reader = new FileReader();
-                reader.onloadend = () => {
+                reader.onloadend = function() {
                     let fileDataUrl = reader.result;
                     
                     // Set correct MIME type for PDF files
@@ -1004,598 +1089,205 @@
                     
                     console.log(`File loaded, type: ${fileType}`);
                     
-                    setCertificates(prev => {
-                        const newSection = [...prev[section]];
-                        newSection[index] = {
-                            name: file.name,
-                            file: fileDataUrl,
-                            type: fileType,
-                            timestamp: new Date().getTime(),
-                            fileSize: file.size // Store file size for reference
-                        };
-                        return { ...prev, [section]: newSection };
-                    });
+                    certificates[section][index] = {
+                        name: file.name,
+                        file: fileDataUrl,
+                        type: fileType,
+                        timestamp: new Date().getTime(),
+                        fileSize: file.size
+                    };
                     
-                    setStorageStatus("saving");
+                    showStorageStatus("loading", "Saving your certificates...");
+                    saveCertificates(certificates);
+                    renderCertifications();
                 };
                 
-                reader.onerror = (error) => {
+                reader.onerror = function(error) {
                     console.error("Error reading file:", error);
                     alert('Error reading file. Please try again.');
                 };
                 
                 reader.readAsDataURL(file);
-            };
-            
-            // Remove certificate handler - remains the same
-            const handleRemoveCertificate = (section, index) => {
-                setCertificates(prev => {
-                    const newSection = [...prev[section]];
-                    newSection[index] = null;
-                    return { ...prev, [section]: newSection };
-                });
-                
-                setStorageStatus("saving");
-            };
-            
-            // Title change handler - remains the same
-            const handleTitleChange = (section, index) => (event) => {
-                setCertificates(prev => {
-                    const newSection = [...prev[section]];
-                    if (!newSection[index]) {
-                        newSection[index] = { name: event.target.value, file: null };
-                    } else {
-                        newSection[index] = { ...newSection[index], name: event.target.value };
-                    }
-                    return { ...prev, [section]: newSection };
-                });
-                
-                setStorageStatus("saving");
-            };
-
-            // Function to open PDF in browser - enhanced for reliability
-            const openPdfInBrowser = (dataUrl) => {
-                try {
-                    console.log("Opening PDF with blob URL method");
-                    
-                    // Extract the base64 data part from the data URL
-                    const base64Response = dataUrl.split(',')[1];
-                    
-                    // Convert base64 to binary
-                    const binaryString = window.atob(base64Response);
-                    const bytes = new Uint8Array(binaryString.length);
-                    for (let i = 0; i < binaryString.length; i++) {
-                        bytes[i] = binaryString.charCodeAt(i);
-                    }
-                    
-                    // Create a blob with PDF MIME type
-                    const blob = new Blob([bytes], { type: 'application/pdf' });
-                    
-                    // Create object URL from blob
-                    const blobUrl = URL.createObjectURL(blob);
-                    
-                    // Open in new tab
-                    window.open(blobUrl, '_blank');
-                    
-                    // Clean up URL object after a delay to ensure browser has time to open it
-                    setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-                } catch (error) {
-                    console.error("Error opening PDF:", error);
-                    alert("There was an error opening the PDF. Please try again.");
-                }
-            };
-
-            // Certificate section renderer - mostly the same with added storage status display
-            const renderCertificateSection = (title, section, count, theme) => {
-                return (
-                    <div className={`cert-section ${theme}-theme mb-5`}>
-                        <h2 className="section-title mb-4 pt-4 px-4">
-                            {title}
-                        </h2>
-                        
-                        <div className="px-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
-                            {Array.from({ length: count }).map((_, index) => {
-                                const cert = certificates[section][index];
-                                return (
-                                    <div key={`${section}-${index}`}>
-                                        <div className="cert-card h-100 shadow" style={{ minHeight: '350px', display: 'flex', flexDirection: 'column' }}>
-                                            <div className="d-flex flex-column p-3" style={{ flex: 1 }}>
-                                                <div className="cert-content flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
-                                                    {cert && cert.file ? (
-                                                        <div className="certificate-preview-container mb-3">
-                                                            <div className="certificate-preview mb-3">
-                                                                {cert.file.startsWith('data:image') ? (
-                                                                    <img src={cert.file} alt="Certificate" className="img-fluid rounded" />
-                                                                ) : (
-                                                                    <div className="document-icon">
-                                                                        <i className="bi bi-file-earmark-pdf fs-1"></i>
-                                                                        <p className="mt-2">PDF Document</p>
-                                                                        {cert.fileSize && (
-                                                                            <small className="text-muted">
-                                                                                {(cert.fileSize / (1024 * 1024)).toFixed(2)} MB
-                                                                            </small>
-                                                                        )}
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                            
-                                                            {cert.file.startsWith('data:image') ? (
-                                                                <a 
-                                                                    href={cert.file}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className="btn btn-sm btn-outline-primary mt-2"
-                                                                >
-                                                                    <i className="bi bi-eye me-2"></i> View Image
-                                                                </a>
-                                                            ) : (
-                                                                <div className="d-flex gap-2 justify-content-center w-100">
-                                                                    <button
-                                                                        className="btn btn-sm btn-outline-primary mt-2"
-                                                                        onClick={() => openPdfInBrowser(cert.file)}
-                                                                    >
-                                                                        <i className="bi bi-eye me-2"></i> View PDF
-                                                                    </button>
-                                                                    <a
-                                                                        href={cert.file}
-                                                                        download={`${cert.name || 'certificate'}.pdf`}
-                                                                        className="btn btn-sm btn-outline-secondary mt-2"
-                                                                    >
-                                                                        <i className="bi bi-download me-2"></i> Download
-                                                                    </a>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    ) : (
-                                                        <div className="cert-placeholder mb-3">
-                                                            <i className="bi bi-file-earmark-plus display-1 text-muted"></i>
-                                                            <p className="mt-2 text-muted">Empty Slot</p>
-                                                        </div>
-                                                    )}
-                                                    
-                                                    <input
-                                                        type="text"
-                                                        className="form-control bg-light text-dark border-secondary mt-2"
-                                                        placeholder="Enter Certificate Title"
-                                                        value={(cert && cert.name) || ''}
-                                                        onChange={handleTitleChange(section, index)}
-                                                    />
-                                                </div>
-                                                
-                                                <div className="button-group mt-3">
-                                                    <label
-                                                        htmlFor={`cert-upload-${section}-${index}`}
-                                                        className="btn w-100 mb-2"
-                                                        style={{
-                                                            backgroundColor: buttonColors[section][index % buttonColors[section].length],
-                                                            transition: 'all 0.3s ease'
-                                                        }}
-                                                    >
-                                                        {cert && cert.file ? 'Replace Document' : 'Upload Document'}
-                                                    </label>
-                                                    <input
-                                                        type="file"
-                                                        id={`cert-upload-${section}-${index}`}
-                                                        style={{ display: 'none' }}
-                                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                                        onChange={handleFileUpload(section, index)}
-                                                    />
-                                                    
-                                                    {cert && cert.file && (
-                                                        <button
-                                                            className="btn w-100"
-                                                            style={{
-                                                                backgroundColor: removeButtonColors[section][index % removeButtonColors[section].length],
-                                                                transition: 'all 0.3s ease',
-                                                                color: 'white'
-                                                            }}
-                                                            onClick={() => handleRemoveCertificate(section, index)}
-                                                        >
-                                                            Remove Document
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                );
-            };
-
-            return (
-                <div className="app-layout">
-                    <Navigation activePage="certifications" />
-                    <main className="main-content">
-                        <div className="page-container certifications-container">
-                            <h1 className="page-title pt-3">
-                                My Certifications
-                            </h1>
-                            <p className="page-subtitle">
-                                A collection of my professional achievements and qualifications.
-                            </p>
-                            
-                            {/* Storage status indicator */}
-                            {storageStatus === "saving" && (
-                                <div className="alert alert-info mb-3">
-                                    <i className="bi bi-cloud-arrow-up me-2"></i> Saving your certificates...
-                                </div>
-                            )}
-                            
-                            {storageStatus === "saved" && (
-                                <div className="alert alert-success mb-3 fade-out">
-                                    <i className="bi bi-check-circle me-2"></i> All changes saved successfully!
-                                </div>
-                            )}
-                            
-                            {storageStatus === "migrated" && (
-                                <div className="alert alert-info mb-3">
-                                    <i className="bi bi-arrow-repeat me-2"></i> Your certificates were migrated to improved storage.
-                                </div>
-                            )}
-                            
-                            {storageStatus === "save-error" && (
-                                <div className="alert alert-warning mb-3">
-                                    <i className="bi bi-exclamation-triangle me-2"></i> There was an issue saving your data. Your certificates might not persist between sessions.
-                                </div>
-                            )}
-                            
-                            {/* AI Bootcamp Section with Leopard Skin Theme */}
-                            {renderCertificateSection('AI Bootcamp Certification', 'aiBootcamp', 9, 'leopard')}
-                            
-                            {/* Professional Development Section with Waterfall Theme */}
-                            {renderCertificateSection('Professional Development Bootcamp', 'professionalDev', 21, 'waterfall')}
-                            
-                            {/* YES Programme Section with Sun Theme */}
-                            {renderCertificateSection('YES Programme', 'yesProgram', 7, 'sun')}
-                            
-                            {/* Cyber Security Section with Hacker Theme */}
-                            {renderCertificateSection('Cyber Security', 'cyberSecurity', 7, 'hacker')}
-                            
-                            {/* Foundation Section with Sky Theme */}
-                            {renderCertificateSection('My Foundation', 'foundation', 2, 'sky')}
-                        </div>
-                    </main>
-                </div>
-            );
-        };
-
-        // Contact Page
-        const ContactPage = () => {
-            const [formData, setFormData] = useState({
-                name: '',
-                email: '',
-                subject: '',
-                message: ''
             });
-            const [showAlert, setShowAlert] = useState(false);
-            const [alertType, setAlertType] = useState('success');
-            const [alertMessage, setAlertMessage] = useState('');
-            const [isSubmitting, setIsSubmitting] = useState(false);
+            
+            document.body.appendChild(input);
+            input.click();
+        }
         
-            // Johannesburg coordinates
-            const johannesburgPosition = [-26.2041, 28.0473]; // The Hill, Johannesburg South
-            const myLocation = [-26.2041, 28.0473]; // 58 Plinlimmon Road, The Hill, Johannesburg South, 2197
+        // Remove certificate
+        function handleRemoveCertificate(section, index) {
+            certificates[section][index] = null;
+            showStorageStatus("loading", "Saving your certificates...");
+            saveCertificates(certificates);
+            renderCertifications();
+        }
         
-            const handleChange = (e) => {
-                setFormData({
-                    ...formData,
-                    [e.target.name]: e.target.value
-                });
-            };
+        // Title change handler
+        function handleTitleChange(section, index, value) {
+            if (!certificates[section][index]) {
+                certificates[section][index] = { name: value, file: null };
+            } else {
+                certificates[section][index].name = value;
+            }
+            
+            showStorageStatus("loading", "Saving your certificates...");
+            saveCertificates(certificates);
+        }
         
-            const handleSubmit = async (e) => {
-                e.preventDefault();
-                setIsSubmitting(true);
+        // Function to open PDF in browser
+        function openPdfInBrowser(dataUrl) {
+            try {
+                console.log("Opening PDF with blob URL method");
                 
-                try {
-                    // Simulate API call - replace with actual contact form API
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                // Extract the base64 data part from the data URL
+                const base64Response = dataUrl.split(',')[1];
+                
+                // Convert base64 to binary
+                const binaryString = window.atob(base64Response);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                
+                // Create a blob with PDF MIME type
+                const blob = new Blob([bytes], { type: 'application/pdf' });
+                
+                // Create object URL from blob
+                const blobUrl = URL.createObjectURL(blob);
+                
+                // Open in new tab
+                window.open(blobUrl, '_blank');
+                
+                // Clean up URL object after a delay to ensure browser has time to open it
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+            } catch (error) {
+                console.error("Error opening PDF:", error);
+                alert("There was an error opening the PDF. Please try again.");
+            }
+        }
+        
+        // Render certifications
+        function renderCertifications() {
+            const sections = [
+                { id: 'aiBootcampCerts', section: 'aiBootcamp', count: 9 },
+                { id: 'professionalDevCerts', section: 'professionalDev', count: 21 },
+                { id: 'yesProgramCerts', section: 'yesProgram', count: 7 },
+                { id: 'cyberSecurityCerts', section: 'cyberSecurity', count: 7 },
+                { id: 'foundationCerts', section: 'foundation', count: 2 }
+            ];
+            
+            sections.forEach(({ id, section, count }) => {
+                const container = document.getElementById(id);
+                container.innerHTML = '';
+                
+                for (let i = 0; i < count; i++) {
+                    const cert = certificates[section][i];
+                    const col = document.createElement('div');
+                    col.className = 'col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4';
                     
-                    // Success
-                    setAlertType('success');
-                    setAlertMessage('Thank you for your message! I\'ll get back to you soon.');
-                    setShowAlert(true);
-                    setFormData({ name: '', email: '', subject: '', message: '' });
-        
-                } catch {
-                    setAlertType('danger');
-                    setAlertMessage('Sorry, there was an error sending your message. Please try again.');
-                    setShowAlert(true);
-                } finally {
-                    setIsSubmitting(false);
-                }
-            };
-        
-            const contactInfo = [
-                {
-                    icon: 'bi-envelope-fill',
-                    title: 'Email',
-                    value: 'vundlamandlenkosi0@gmail.com',
-                    link: 'mailto:vundlamandlenkosi0@gmail.com'
-                },
-                {
-                    icon: 'bi-telephone-fill',
-                    title: 'Phone',
-                    value: '+27 69 309 9649',
-                    link: 'tel:+27693099649'
-                },
-                {
-                    icon: 'bi-whatsapp',
-                    title: 'WhatsApp',
-                    value: '+27 69 309 9649',
-                    link: 'https://wa.me/27693099649'
-                },
-                {
-                    icon: 'bi-geo-alt-fill',
-                    title: 'Location',
-                    value: '58 Plinlimmon Road, The Hill, Johannesburg South, 2197',
-                    link: null
-                }
-            ];
-        
-            const socialLinks = [
-                {
-                    icon: 'bi-github',
-                    name: 'GitHub',
-                    url: 'https://github.com/Vundla'
-                },
-                {
-                    icon: 'bi-linkedin',
-                    name: 'LinkedIn',
-                    url: 'https://www.linkedin.com/in/mandlenkosi-vundla-561666278/'
-                },
-                {
-                    icon: 'bi-twitter',
-                    name: 'Twitter',
-                    url: 'https://twitter.com/'
-                }
-            ];
-        
-            return (
-                <div className="app-layout">
-                    <Navigation activePage="contact" />
-                    <main className="main-content">
-                        <div className="page-container">
-                            <div className="py-4">
-                                <div className="mb-4">
-                                    <div className="text-center">
-                                        <h1 className="display-4 mb-3">Contact Me</h1>
-                                        <p className="lead text-muted">
-                                            Let's discuss opportunities and collaborate on exciting projects
-                                        </p>
-                                    </div>
-                                </div>
-        
-                                <div className="g-4" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1.5rem' }}>
-                                    {/* Contact Information */}
-                                    <div>
-                                        <div className="bg-light p-4 rounded h-100">
-                                            <h3 className="mb-4">Contact Information</h3>
-                                            
-                                            {contactInfo.map((info, index) => (
-                                                <div key={index} className="mb-3">
-                                                    <div className="d-flex align-items-center">
-                                                        <div className="contact-icon me-3" style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--primary-color)', color: 'white', borderRadius: '50%' }}>
-                                                            <i className={`bi ${info.icon}`}></i>
-                                                        </div>
-                                                        <div>
-                                                            <h6 className="mb-1">{info.title}</h6>
-                                                            {info.link ? (
-                                                                <a
-                                                                    href={info.link}
-                                                                    className="text-muted"
-                                                                    target={info.link.startsWith('http') ? '_blank' : '_self'}
-                                                                    rel={info.link.startsWith('http') ? 'noopener noreferrer' : ''}
-                                                                >
-                                                                    {info.value}
-                                                                </a>
-                                                            ) : (
-                                                                <p className="mb-0 text-muted">{info.value}</p>
-                                                            )}
-                                                        </div>
+                    col.innerHTML = `
+                        <div class="cert-card h-100 shadow">
+                            <div class="card-body d-flex flex-column">
+                                <div class="cert-content flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center p-3">
+                                    ${cert && cert.file ? `
+                                        <div class="certificate-preview-container mb-3">
+                                            <div class="certificate-preview mb-3">
+                                                ${cert.file.startsWith('data:image') ? `
+                                                    <img src="${cert.file}" alt="Certificate" class="img-fluid rounded">
+                                                ` : `
+                                                    <div class="document-icon">
+                                                        <i class="bi bi-file-earmark-pdf fs-1"></i>
+                                                        <p class="mt-2">PDF Document</p>
+                                                        ${cert.fileSize ? `
+                                                            <small class="text-muted">
+                                                                ${(cert.fileSize / (1024 * 1024)).toFixed(2)} MB
+                                                            </small>
+                                                        ` : ''}
                                                     </div>
-                                                </div>
-                                            ))}
-        
-                                            <hr className="my-4" />
-                                            
-                                            <h5 className="mb-3">Follow Me</h5>
-                                            <div className="d-flex gap-3">
-                                                {socialLinks.map((social, index) => (
-                                                    <a
-                                                        key={index}
-                                                        href={social.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="social-link"
-                                                        style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--primary-color)', color: 'white', borderRadius: '50%', textDecoration: 'none' }}
-                                                    >
-                                                        <i className={`bi ${social.icon}`}></i>
-                                                    </a>
-                                                ))}
+                                                `}
                                             </div>
-                                        </div>
-                                    </div>
-        
-                                    {/* Contact Form */}
-                                    <div>
-                                        <div className="bg-light p-4 rounded">
-                                            <h3 className="mb-4">Send Me a Message</h3>
                                             
-                                            {showAlert && (
-                                                <div className={`alert alert-${alertType} mb-3`}>
-                                                    {alertMessage}
-                                                    <button type="button" className="btn-close" onClick={() => setShowAlert(false)}></button>
+                                            ${cert.file.startsWith('data:image') ? `
+                                                <a href="${cert.file}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-light mt-2">
+                                                    <i class="bi bi-eye me-2"></i> View Image
+                                                </a>
+                                            ` : `
+                                                <div class="d-flex gap-2 justify-content-center w-100">
+                                                    <button class="btn btn-sm btn-outline-light mt-2" onclick="window.certOpenPdf('${cert.file}')">
+                                                        <i class="bi bi-eye me-2"></i> View PDF
+                                                    </button>
+                                                    <a href="${cert.file}" download="${cert.name || 'certificate'}.pdf" class="btn btn-sm btn-outline-primary mt-2">
+                                                        <i class="bi bi-download me-2"></i> Download
+                                                    </a>
                                                 </div>
-                                            )}
-        
-                                            <form onSubmit={handleSubmit}>
-                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                                                    <div>
-                                                        <label className="form-label">Full Name</label>
-                                                        <input
-                                                            type="text"
-                                                            name="name"
-                                                            value={formData.name}
-                                                            onChange={handleChange}
-                                                            required
-                                                            placeholder="Your full name"
-                                                            className="form-control"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <label className="form-label">Email Address</label>
-                                                        <input
-                                                            type="email"
-                                                            name="email"
-                                                            value={formData.email}
-                                                            onChange={handleChange}
-                                                            required
-                                                            placeholder="your.email@example.com"
-                                                            className="form-control"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                
-                                                <div className="mb-3">
-                                                    <label className="form-label">Subject</label>
-                                                    <input
-                                                        type="text"
-                                                        name="subject"
-                                                        value={formData.subject}
-                                                        onChange={handleChange}
-                                                        required
-                                                        placeholder="What's this about?"
-                                                        className="form-control"
-                                                    />
-                                                </div>
-                                                
-                                                <div className="mb-4">
-                                                    <label className="form-label">Message</label>
-                                                    <textarea
-                                                        rows={5}
-                                                        name="message"
-                                                        value={formData.message}
-                                                        onChange={handleChange}
-                                                        required
-                                                        placeholder="Tell me about your project or inquiry..."
-                                                        className="form-control"
-                                                    ></textarea>
-                                                </div>
-                                                
-                                                <button
-                                                    type="submit"
-                                                    className="btn btn-primary w-100"
-                                                    disabled={isSubmitting}
-                                                >
-                                                    {isSubmitting ? (
-                                                        <>
-                                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                                            Sending Message...
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <i className="bi bi-send me-2"></i>
-                                                            Send Message
-                                                        </>
-                                                    )}
-                                                </button>
-                                            </form>
+                                            `}
                                         </div>
-                                    </div>
+                                    ` : `
+                                        <div class="cert-placeholder mb-3">
+                                            <i class="bi bi-file-earmark-plus display-1 text-muted"></i>
+                                            <p class="mt-2 text-muted">Empty Slot</p>
+                                        </div>
+                                    `}
+                                    
+                                    <input type="text" class="form-control bg-dark text-white border-secondary mt-2" 
+                                        placeholder="Enter Certificate Title" 
+                                        value="${(cert && cert.name) || ''}" 
+                                        onchange="window.certTitleChange('${section}', ${i}, this.value)">
                                 </div>
-        
-                                {/* Map Section */}
-                                <div className="mt-5">
-                                    <div className="bg-light rounded" style={{ overflow: 'hidden' }}>
-                                        <div style={{ height: '400px', width: '100%' }}>
-                                            <div id="map" style={{ height: '100%', width: '100%' }}></div>
-                                        </div>
-                                    </div>
+                                
+                                <div class="button-group mt-3">
+                                    <button class="btn w-100 mb-2" 
+                                        style="background-color: ${buttonColors[section][i % buttonColors[section].length]};"
+                                        onclick="window.certUpload('${section}', ${i})">
+                                        ${cert && cert.file ? 'Replace Document' : 'Upload Document'}
+                                    </button>
+                                    
+                                    ${cert && cert.file ? `
+                                        <button class="btn w-100" 
+                                            style="background-color: ${removeButtonColors[section][i % removeButtonColors[section].length]};"
+                                            onclick="window.certRemove('${section}', ${i})">
+                                            Remove Document
+                                        </button>
+                                    ` : ''}
                                 </div>
                             </div>
                         </div>
-                    </main>
-                </div>
-            );
-        };
-
-        // Main App Component
-        const App = () => {
-            const [currentPage, setCurrentPage] = useState('home');
-
-            useEffect(() => {
-                const handleHashChange = () => {
-                    const hash = window.location.hash.substring(1);
-                    if (hash === 'about') setCurrentPage('about');
-                    else if (hash === 'resume') setCurrentPage('resume');
-                    else if (hash === 'portfolio') setCurrentPage('portfolio');
-                    else if (hash === 'certifications') setCurrentPage('certifications');
-                    else if (hash === 'contact') setCurrentPage('contact');
-                    else setCurrentPage('home');
-                };
-
-                window.addEventListener('hashchange', handleHashChange);
-                handleHashChange(); // Initial call
-
-                return () => window.removeEventListener('hashchange', handleHashChange);
-            }, []);
-
-            const renderPage = () => {
-                switch(currentPage) {
-                    case 'about':
-                        return <AboutPage />;
-                    case 'resume':
-                        return <ResumePage />;
-                    case 'portfolio':
-                        return <PortfolioPage />;
-                    case 'certifications':
-                        return <CertificationsPage />;
-                    case 'contact':
-                        return <ContactPage />;
-                    default:
-                        return <HomePage />;
+                    `;
+                    
+                    container.appendChild(col);
                 }
-            };
-
-            return renderPage();
-        };
-
-        // Render the app
-        ReactDOM.render(<App />, document.getElementById('app'));
-
-        // Initialize map after component renders
+            });
+        }
+        
+        // Expose functions to window for inline event handlers
+        window.certUpload = handleFileUpload;
+        window.certRemove = handleRemoveCertificate;
+        window.certTitleChange = handleTitleChange;
+        window.certOpenPdf = openPdfInBrowser;
+        
+        // Initialize certifications when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            if (document.getElementById('map')) {
-                const johannesburgPosition = [-26.2041, 28.0473];
-                const map = L.map('map').setView(johannesburgPosition, 13);
-                
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
-                
-                L.marker(johannesburgPosition).addTo(map)
-                    .bindPopup(`
-                        <div>
-                            <h6 className="mb-2">Mandlenkosi Vundla</h6>
-                            <p className="mb-1">
-                                <i className="bi bi-geo-alt me-1"></i>
-                                58 Plinlimmon Road<br />
-                                The Hill, Johannesburg South<br />
-                                2197, South Africa
-                            </p>
-                            <p className="mb-0">
-                                <i className="bi bi-envelope me-1"></i>
-                                <a href="mailto:vundlamandlenkosi0@gmail.com">
-                                    vundlamandlenkosi0@gmail.com
-                                </a>
-                            </p>
-                        </div>
-                    `);
+            if (document.getElementById('certifications')) {
+                loadCertificatesData();
             }
+        });
+        
+        // Contact Form
+        document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // In a real app, you would send this data to a server
+            console.log('Form submitted:', { name, email, message });
+            
+            // Show success message
+            alert('Thank you for your message! I will get back to you soon.');
+            
+            // Reset form
+            this.reset();
         });
     </script>
 </body>
