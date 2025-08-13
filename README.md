@@ -104,8 +104,8 @@ This project is licensed under the MIT License – see the LICENSE file for deta
 Contact
 Mandlenkosi Vundla
 
-Email: your-email@example.com
+Email: vundlamandlenkosi0@gmail.com
 
 GitHub: https://github.com/vundla
 
-LinkedIn: https://linkedin.com/in/yourprofile
+LinkedIn: https://www.linkedin.com/in/mandlenkosi-vundla-561666278/
