@@ -4,79 +4,403 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mandlenkosi Vundla - Portfolio</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
         :root {
-            --primary: #6366f1;
-            --text-muted: #6c757d;
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
         }
         
         body {
             font-family: 'Inter', sans-serif;
             background-color: white;
-            color: #212529;
-            line-height: 1.6;
+            color: #333;
         }
         
-        /* Sidebar Styles */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
         .sidebar {
-            width: 280px;
-            background-color: #f8f9fa;
-            padding: 2rem;
-            border-right: 1px solid #dee2e6;
+            width: 250px;
+            background-color: white;
+            border-right: 1px solid #e0e0e0;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
         }
         
         .sidebar-header {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 2rem;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #333;
         }
         
         .sidebar-header span {
-            color: var(--primary);
+            color: var(--primary-color);
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         
         .nav-link {
-            color: #495057;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 0.5rem;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
         
-        .nav-link:hover, .nav-link.active {
-            background-color: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
+        .nav-link:hover {
+            background-color: #f0f0f0;
+            color: #333;
         }
         
-        /* Main Content Styles */
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
         .main-content {
-            flex-grow: 1;
-            padding: 2rem;
+            margin-left: 250px;
+            flex: 1;
+            padding: 30px;
             background-color: white;
         }
         
-        /* Certification Page Styles */
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Home Page Styles */
+        .hero-section {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            padding: 50px 0;
+        }
+        
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .hero-text h1 span {
+            display: block;
+            font-size: 24px;
+            font-weight: 400;
+            color: #666;
+        }
+        
+        .hero-text p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f8ff;
+        }
+        
+        .hero-image-container {
+            position: relative;
+        }
+        
+        .hero-image {
+            width: 350px;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .upload-label {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-label:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        #imageUpload {
+            display: none;
+        }
+        
+        /* About Page Styles */
+        .about-layout {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .about-left-column {
+            flex: 1;
+        }
+        
+        .about-right-column {
+            flex: 2;
+        }
+        
+        .about-info-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .about-profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 5px solid #f0f0f0;
+        }
+        
+        .about-info-card h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .about-card-subtitle {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .about-card-contact {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+        
+        .about-card-contact li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .about-main-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .about-right-column p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .get-to-know-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        
+        /* Resume/Contact Page Styles */
+        .resume-layout-pro {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .resume-sidebar-pro {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .resume-main-pro {
+            flex: 2;
+        }
+        
+        .resume-profile-pic {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .resume-name {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .resume-title {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        
+        .resume-section-pro {
+            margin-bottom: 30px;
+        }
+        
+        .resume-section-pro h3 {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .sidebar-section h3 {
+            color: var(--primary-color);
+        }
+        
+        .resume-section-pro p {
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .contact-list-pro {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .contact-list-pro li {
+            margin-bottom: 10px;
+        }
+        
+        .contact-list-pro a {
+            color: #555;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-list-pro a:hover {
+            color: var(--primary-color);
+        }
+        
+        .skills-list-pro {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skills-list-pro li {
+            background-color: #f0f8ff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .experience-item-pro, .education-item-pro {
+            margin-bottom: 25px;
+        }
+        
+        .experience-item-pro h4, .education-item-pro h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .company-info, .institution-info {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .experience-item-pro ul {
+            padding-left: 20px;
+        }
+        
+        .experience-item-pro li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+        
+        /* Certifications Page Styles */
+        .certifications-container {
+            padding: 20px;
+        }
+        
+        .page-title {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .page-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
         .cert-section {
-            margin-bottom: 3rem;
-            background: #f8f9fa;
-            border-radius: 0.5rem;
-            overflow: hidden;
+            margin-bottom: 40px;
         }
         
         .section-title {
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary);
+            font-size: 24px;
+            color: #333;
+            background-color: #f8f9fa;
+            border-radius: 5px;
         }
         
         .cert-card {
-            border: 1px solid #dee2e6;
-            border-radius: 0.5rem;
-            transition: all 0.3s ease;
-            height: 100%;
+            border: 1px solid #ddd;
+            transition: transform 0.3s ease;
         }
         
         .cert-card:hover {
@@ -84,619 +408,336 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
         
-        .cert-placeholder {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-        }
-        
-        .cert-placeholder i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .cert-content {
+            min-height: 200px;
         }
         
         .certificate-preview-container {
-            width: 100%;
+            height: 150px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-        }
-        
-        .certificate-preview {
-            max-width: 100%;
-            max-height: 200px;
-            overflow: hidden;
-            display: flex;
             justify-content: center;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.05);
-            border-radius: 0.25rem;
         }
         
         .certificate-preview img {
+            max-height: 150px;
             max-width: 100%;
-            max-height: 200px;
-            object-fit: contain;
+            border: 1px solid #eee;
         }
         
         .document-icon {
             text-align: center;
-            padding: 1rem;
+            color: #666;
+        }
+        
+        .cert-placeholder {
+            text-align: center;
+            color: #999;
+        }
+        
+        .button-group {
+            margin-top: auto;
         }
         
         .fade-out {
-            animation: fadeOut 3s ease forwards;
+            animation: fadeOut 3s forwards;
             animation-delay: 2s;
         }
         
         @keyframes fadeOut {
-            to {
-                opacity: 0;
-                height: 0;
-                padding: 0;
-                margin: 0;
-                border: 0;
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .app-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .about-layout, .resume-layout-pro {
+                flex-direction: column;
             }
         }
         
-        /* Responsive Adjustments */
-        @media (max-width: 992px) {
-            .sidebar {
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 36px;
+            }
+            
+            .hero-text h1 span {
+                font-size: 20px;
+            }
+            
+            .hero-image {
                 width: 100%;
-                padding: 1rem;
+                height: auto;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            MV<span>.</span>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="#" class="nav-link active" data-page="home">Home</a>
-            <a href="#" class="nav-link" data-page="about">About</a>
-            <a href="#" class="nav-link" data-page="resume">Resume</a>
-            <a href="#" class="nav-link" data-page="projects">Projects</a>
-            <a href="#" class="nav-link" data-page="certifications">Certifications</a>
-            <a href="#" class="nav-link" data-page="contact">Contact</a>
-        </nav>
-    </aside>
+    <div id="app"></div>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-        <!-- Certifications Page -->
-        <div id="certifications" class="page">
-            <div class="container-fluid">
-                <h1 class="page-title pt-3">My Certifications</h1>
-                <p class="page-subtitle">
-                    A collection of my professional achievements and qualifications.
-                </p>
-                
-                <div id="storageStatus"></div>
-                
-                <!-- AI Bootcamp Section -->
-                <div class="cert-section mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">AI Bootcamp Certification</h2>
-                    <div class="row px-3" id="aiBootcampCerts">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
-                
-                <!-- Professional Development Section -->
-                <div class="cert-section mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">Professional Development Bootcamp</h2>
-                    <div class="row px-3" id="professionalDevCerts">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
-                
-                <!-- YES Programme Section -->
-                <div class="cert-section mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">YES Programme</h2>
-                    <div class="row px-3" id="yesProgramCerts">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
-                
-                <!-- Cyber Security Section -->
-                <div class="cert-section mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">Cyber Security</h2>
-                    <div class="row px-3" id="cyberSecurityCerts">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
-                
-                <!-- Foundation Section -->
-                <div class="cert-section mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">My Foundation</h2>
-                    <div class="row px-3" id="foundationCerts">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.15.8/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Page Navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-                document.getElementById(this.getAttribute('data-page')).classList.add('active');
-                
-                // Initialize certifications if needed
-                if (this.getAttribute('data-page') === 'certifications' && !window.certificatesInitialized) {
-                    initializeCertifications();
-                    window.certificatesInitialized = true;
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Navigation component
+        const Navigation = ({ activePage }) => {
+            return (
+                <aside className="sidebar">
+                    <div className="sidebar-header">
+                        MV<span>.</span>
+                    </div>
+                    <nav className="sidebar-nav">
+                        <a href="#home" className={`nav-link ${activePage === 'home' ? 'active' : ''}`}>Home</a>
+                        <a href="#about" className={`nav-link ${activePage === 'about' ? 'active' : ''}`}>About</a>
+                        <a href="#resume" className={`nav-link ${activePage === 'resume' ? 'active' : ''}`}>Resume</a>
+                        <a href="#contact" className={`nav-link ${activePage === 'contact' ? 'active' : ''}`}>Contact</a>
+                    </nav>
+                </aside>
+            );
+        };
+
+        // Home Page
+        const HomePage = () => {
+            const [profileImage, setProfileImage] = useState("https://placehold.co/350x450/1e1e1e/ffffff?text=Your+Image");
+
+            const handleImageUpload = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setProfileImage(reader.result);
+                    };
+                    reader.readAsDataURL(file);
                 }
-            });
-        });
-
-        // Initialize the certifications page when loaded
-        if (document.getElementById('certifications')?.classList.contains('active')) {
-            initializeCertifications();
-            window.certificatesInitialized = true;
-        }
-
-        // Certification Page Implementation (your exact code adapted to vanilla JS)
-        const dbName = "certificatesDB";
-        const dbVersion = 1;
-        const storeName = "certificates";
-        
-        // Button colors
-        const buttonColors = {
-            aiBootcamp: [ 
-                '#ff7043', '#ec407a', '#ab47bc', '#5c6bc0', '#29b6f6', '#26a69a', '#9ccc65', '#ffee58', '#ffca28' 
-            ],
-            professionalDev: [ 
-                '#5c6bc0', '#ec407a', '#66bb6a', '#ffa726', '#42a5f5', '#7e57c2', '#26a69a',
-                '#d4e157', '#78909c', '#8d6e63', '#ab47bc', '#29b6f6', '#ef5350', '#9ccc65',
-                '#ffee58', '#ffca28', '#26c6da', '#ff7043', '#ce93d8', '#4db6ac', '#aed581' 
-            ],
-            yesProgram: [ 
-                '#ffa726', '#ffca28', '#ffee58', '#d4e157', '#9ccc65', '#66bb6a', '#26a69a' 
-            ],
-            cyberSecurity: [ 
-                '#5c6bc0', '#7e57c2', '#ab47bc', '#ec407a', '#78909c', '#8d6e63', '#212121' 
-            ],
-            foundation: [ 
-                '#42a5f5', '#29b6f6' 
-            ]
-        };
-        
-        const removeButtonColors = {
-            aiBootcamp: [ 
-                '#d32f2f', '#c2185b', '#7b1fa2', '#303f9f', '#0288d1', '#00796b', '#689f38', '#fdd835', '#ffb300' 
-            ],
-            professionalDev: [ 
-                '#303f9f', '#c2185b', '#388e3c', '#f57c00', '#1976d2', '#512da8', '#00796b',
-                '#afb42b', '#546e7a', '#5d4037', '#7b1fa2', '#0288d1', '#d32f2f', '#689f38',
-                '#fdd835', '#ffb300', '#0097a7', '#e64a19', '#8e24aa', '#00897b', '#558b2f' 
-            ],
-            yesProgram: [ 
-                '#f57c00', '#ffb300', '#fdd835', '#afb42b', '#689f38', '#388e3c', '#00796b' 
-            ],
-            cyberSecurity: [ 
-                '#303f9f', '#512da8', '#7b1fa2', '#c2185b', '#546e7a', '#5d4037', '#000000' 
-            ],
-            foundation: [ 
-                '#1976d2', '#0288d1' 
-            ]
-        };
-
-        let certificates = {
-            aiBootcamp: Array(9).fill(null),
-            professionalDev: Array(21).fill(null),
-            yesProgram: Array(7).fill(null),
-            cyberSecurity: Array(7).fill(null),
-            foundation: Array(2).fill(null)
-        };
-
-        function initializeCertifications() {
-            // Initialize IndexedDB
-            initDB().then(() => {
-                loadCertificates().then(data => {
-                    if (data) {
-                        certificates = data;
-                        renderCertifications();
-                        showStorageStatus("success", "Certificates loaded successfully!");
-                    } else {
-                        // Check localStorage for fallback
-                        const saved = localStorage.getItem('portfolioCertificates');
-                        if (saved) {
-                            certificates = JSON.parse(saved);
-                            renderCertifications();
-                            showStorageStatus("migrated", "Certificates loaded from localStorage");
-                            // Migrate to IndexedDB
-                            saveCertificates(certificates);
-                        } else {
-                            showStorageStatus("empty", "Ready to add your certificates");
-                            renderCertifications();
-                        }
-                    }
-                }).catch(err => {
-                    console.error("Error loading certificates:", err);
-                    showStorageStatus("error", "Error loading certificates");
-                });
-            });
-        }
-
-        // Initialize the database
-        function initDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName, dbVersion);
-                
-                request.onerror = event => {
-                    console.error("IndexedDB error:", event.target.error);
-                    reject("Error opening database");
-                };
-                
-                request.onsuccess = event => {
-                    console.log("Database opened successfully");
-                    resolve(event.target.result);
-                };
-                
-                request.onupgradeneeded = event => {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains(storeName)) {
-                        db.createObjectStore(storeName, { keyPath: "id" });
-                        console.log("Object store created");
-                    }
-                };
-            });
-        }
-
-        // Save certificates to IndexedDB
-        function saveCertificates(data) {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName, dbVersion);
-                
-                request.onsuccess = event => {
-                    const db = event.target.result;
-                    const transaction = db.transaction([storeName], "readwrite");
-                    const store = transaction.objectStore(storeName);
-                    
-                    const saveRequest = store.put({
-                        id: "userCertificates",
-                        data: data,
-                        lastUpdated: new Date().toISOString()
-                    });
-                    
-                    saveRequest.onsuccess = () => {
-                        console.log("Certificates saved to IndexedDB");
-                        showStorageStatus("saved", "All changes saved successfully!");
-                        resolve(true);
-                    };
-                    
-                    saveRequest.onerror = event => {
-                        console.error("Error saving certificates:", event.target.error);
-                        // Fallback to localStorage
-                        localStorage.setItem('portfolioCertificates', JSON.stringify(data));
-                        showStorageStatus("save-error", "Saved to localStorage as fallback");
-                        reject(event.target.error);
-                    };
-                };
-                
-                request.onerror = event => {
-                    console.error("Error opening database:", event.target.error);
-                    // Fallback to localStorage
-                    localStorage.setItem('portfolioCertificates', JSON.stringify(data));
-                    showStorageStatus("save-error", "Saved to localStorage as fallback");
-                    reject(event.target.error);
-                };
-            });
-        }
-
-        // Load certificates from IndexedDB
-        function loadCertificates() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName, dbVersion);
-                
-                request.onsuccess = event => {
-                    const db = event.target.result;
-                    const transaction = db.transaction([storeName], "readonly");
-                    const store = transaction.objectStore(storeName);
-                    
-                    const getRequest = store.get("userCertificates");
-                    
-                    getRequest.onsuccess = event => {
-                        const result = event.target.result;
-                        if (result) {
-                            console.log("Certificates loaded from IndexedDB");
-                            resolve(result.data);
-                        } else {
-                            console.log("No certificates found in IndexedDB");
-                            resolve(null);
-                        }
-                    };
-                    
-                    getRequest.onerror = event => {
-                        console.error("Error loading certificates:", event.target.error);
-                        reject(event.target.error);
-                    };
-                };
-                
-                request.onerror = event => {
-                    console.error("Error opening database:", event.target.error);
-                    reject(event.target.error);
-                };
-            });
-        }
-
-        // Show storage status message
-        function showStorageStatus(type, message) {
-            const statusContainer = document.getElementById('storageStatus');
-            let alertClass = '';
-            let icon = '';
-            
-            switch(type) {
-                case 'success':
-                    alertClass = 'alert-success';
-                    icon = '<i class="bi bi-check-circle me-2"></i>';
-                    break;
-                case 'error':
-                    alertClass = 'alert-danger';
-                    icon = '<i class="bi bi-exclamation-triangle me-2"></i>';
-                    break;
-                case 'loading':
-                    alertClass = 'alert-info';
-                    icon = '<i class="bi bi-cloud-arrow-up me-2"></i>';
-                    break;
-                case 'migrated':
-                    alertClass = 'alert-info';
-                    icon = '<i class="bi bi-arrow-repeat me-2"></i>';
-                    break;
-                case 'saved':
-                    alertClass = 'alert-success';
-                    icon = '<i class="bi bi-check-circle me-2"></i>';
-                    break;
-                case 'save-error':
-                    alertClass = 'alert-warning';
-                    icon = '<i class="bi bi-exclamation-triangle me-2"></i>';
-                    break;
-                case 'empty':
-                    alertClass = 'alert-info';
-                    icon = '<i class="bi bi-info-circle me-2"></i>';
-                    break;
-                default:
-                    alertClass = 'alert-info';
-            }
-            
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert ${alertClass} mb-3`;
-            alertDiv.innerHTML = icon + message;
-            
-            if (type === 'saved') {
-                alertDiv.classList.add('fade-out');
-            }
-            
-            statusContainer.innerHTML = '';
-            statusContainer.appendChild(alertDiv);
-        }
-
-        // File upload handler
-        function handleFileUpload(section, index, event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            console.log(`Uploading file: ${file.name}, type: ${file.type}, size: ${file.size / (1024 * 1024).toFixed(2)} MB`);
-            
-            // Check file size - 10MB limit for IndexedDB
-            if (file.size > 10 * 1024 * 1024) {
-                alert('File size exceeds 10MB. Please choose a smaller file or compress it.');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                let fileDataUrl = reader.result;
-                
-                // Set correct MIME type for PDF files
-                let fileType = file.type;
-                if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
-                    fileType = 'application/pdf';
-                    // Ensure correct MIME type in data URL
-                    if (!fileDataUrl.includes('data:application/pdf')) {
-                        fileDataUrl = fileDataUrl.replace(/^data:.*?;base64,/, 'data:application/pdf;base64,');
-                    }
-                }
-                
-                console.log(`File loaded, type: ${fileType}`);
-                
-                // Update certificates
-                const newSection = [...certificates[section]];
-                newSection[index] = {
-                    name: file.name,
-                    file: fileDataUrl,
-                    type: fileType,
-                    timestamp: new Date().getTime(),
-                    fileSize: file.size
-                };
-                
-                certificates = {...certificates, [section]: newSection};
-                
-                showStorageStatus("loading", "Saving your certificates...");
-                saveCertificates(certificates)
-                    .then(() => renderCertifications())
-                    .catch(err => console.error("Error saving:", err));
             };
-            
-            reader.onerror = function(error) {
-                console.error("Error reading file:", error);
-                alert('Error reading file. Please try again.');
-            };
-            
-            reader.readAsDataURL(file);
-        }
 
-        // Remove certificate
-        function handleRemoveCertificate(section, index) {
-            const newSection = [...certificates[section]];
-            newSection[index] = null;
-            certificates = {...certificates, [section]: newSection};
-            
-            showStorageStatus("loading", "Saving your certificates...");
-            saveCertificates(certificates)
-                .then(() => renderCertifications())
-                .catch(err => console.error("Error saving:", err));
-        }
-
-        // Title change handler
-        function handleTitleChange(section, index, value) {
-            const newSection = [...certificates[section]];
-            if (!newSection[index]) {
-                newSection[index] = { name: value, file: null };
-            } else {
-                newSection[index] = { ...newSection[index], name: value };
-            }
-            
-            certificates = {...certificates, [section]: newSection};
-            
-            showStorageStatus("loading", "Saving your certificates...");
-            saveCertificates(certificates)
-                .then(() => renderCertifications())
-                .catch(err => console.error("Error saving:", err));
-        }
-
-        // Function to open PDF in browser
-        function openPdfInBrowser(dataUrl) {
-            try {
-                console.log("Opening PDF with blob URL method");
-                
-                // Extract the base64 data part from the data URL
-                const base64Response = dataUrl.split(',')[1];
-                
-                // Convert base64 to binary
-                const binaryString = window.atob(base64Response);
-                const bytes = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
-                }
-                
-                // Create a blob with PDF MIME type
-                const blob = new Blob([bytes], { type: 'application/pdf' });
-                
-                // Create object URL from blob
-                const blobUrl = URL.createObjectURL(blob);
-                
-                // Open in new tab
-                window.open(blobUrl, '_blank');
-                
-                // Clean up URL object after a delay to ensure browser has time to open it
-                setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-            } catch (error) {
-                console.error("Error opening PDF:", error);
-                alert("There was an error opening the PDF. Please try again.");
-            }
-        }
-
-        // Render certifications
-        function renderCertifications() {
-            const sections = [
-                { id: 'aiBootcampCerts', section: 'aiBootcamp', count: 9 },
-                { id: 'professionalDevCerts', section: 'professionalDev', count: 21 },
-                { id: 'yesProgramCerts', section: 'yesProgram', count: 7 },
-                { id: 'cyberSecurityCerts', section: 'cyberSecurity', count: 7 },
-                { id: 'foundationCerts', section: 'foundation', count: 2 }
-            ];
-            
-            sections.forEach(({ id, section, count }) => {
-                const container = document.getElementById(id);
-                container.innerHTML = '';
-                
-                for (let i = 0; i < count; i++) {
-                    const cert = certificates[section][i];
-                    const col = document.createElement('div');
-                    col.className = 'col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4';
-                    
-                    col.innerHTML = `
-                        <div class="cert-card h-100 shadow">
-                            <div class="card-body d-flex flex-column">
-                                <div class="cert-content flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center p-3">
-                                    ${cert && cert.file ? `
-                                        <div class="certificate-preview-container mb-3">
-                                            <div class="certificate-preview mb-3">
-                                                ${cert.file.startsWith('data:image') ? `
-                                                    <img src="${cert.file}" alt="Certificate" class="img-fluid rounded">
-                                                ` : `
-                                                    <div class="document-icon">
-                                                        <i class="bi bi-file-earmark-pdf fs-1"></i>
-                                                        <p class="mt-2">PDF Document</p>
-                                                        ${cert.fileSize ? `
-                                                            <small class="text-muted">
-                                                                ${(cert.fileSize / (1024 * 1024)).toFixed(2)} MB
-                                                            </small>
-                                                        ` : ''}
-                                                    </div>
-                                                `}
-                                            </div>
-                                            
-                                            ${cert.file.startsWith('data:image') ? `
-                                                <a href="${cert.file}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary mt-2">
-                                                    <i class="bi bi-eye me-2"></i> View Image
-                                                </a>
-                                            ` : `
-                                                <div class="d-flex gap-2 justify-content-center w-100">
-                                                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="window.certOpenPdf('${cert.file}')">
-                                                        <i class="bi bi-eye me-2"></i> View PDF
-                                                    </button>
-                                                    <a href="${cert.file}" download="${cert.name || 'certificate'}.pdf" class="btn btn-sm btn-primary mt-2">
-                                                        <i class="bi bi-download me-2"></i> Download
-                                                    </a>
-                                                </div>
-                                            `}
-                                        </div>
-                                    ` : `
-                                        <div class="cert-placeholder mb-3">
-                                            <i class="bi bi-file-earmark-plus display-1 text-muted"></i>
-                                            <p class="mt-2 text-muted">Empty Slot</p>
-                                        </div>
-                                    `}
-                                    
-                                    <input type="text" class="form-control mt-2" 
-                                        placeholder="Enter Certificate Title" 
-                                        value="${(cert && cert.name) || ''}" 
-                                        onchange="window.certTitleChange('${section}', ${i}, this.value)">
+            return (
+                <div className="app-layout">
+                    <Navigation activePage="home" />
+                    <main className="main-content">
+                        <div className="page-container hero-section">
+                            <div className="hero-text">
+                                <h1>
+                                    Mandlenkosi Vundla
+                                    <span>I'm a <strong>Software Developer</strong></span>
+                                </h1>
+                                <p>
+                                    My passion for coding has evolved into a deep interest in backend development, where I thrive on building smart, scalable systems. Recently, I've fully integrated AI into my workflow, blending logic and intelligence to build more dynamic and powerful applications.
+                                </p>
+                                <div className="hero-buttons">
+                                    <a href="#portfolio" className="btn btn-primary">View My Work</a>
+                                    <a href="#contact" className="btn btn-secondary">Get In Touch</a>
                                 </div>
-                                
-                                <div class="button-group mt-3">
-                                    <label class="btn w-100 mb-2" 
-                                        style="background-color: ${buttonColors[section][i % buttonColors[section].length]}; color: white;"
-                                        onclick="document.getElementById('cert-upload-${section}-${i}').click()">
-                                        ${cert && cert.file ? 'Replace Document' : 'Upload Document'}
-                                    </label>
-                                    <input type="file" id="cert-upload-${section}-${i}" style="display: none;" 
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" 
-                                        onchange="window.certUpload('${section}', ${i}, event)">
-                                    
-                                    ${cert && cert.file ? `
-                                        <button class="btn w-100" 
-                                            style="background-color: ${removeButtonColors[section][i % removeButtonColors[section].length]}; color: white;"
-                                            onclick="window.certRemove('${section}', ${i})">
-                                            Remove Document
-                                        </button>
-                                    ` : ''}
+                            </div>
+                            <div className="hero-image-container">
+                                <img 
+                                    src={profileImage} 
+                                    alt="Mandlenkosi Vundla" 
+                                    className="hero-image"
+                                    id="profileImage"
+                                />
+                                <label htmlFor="imageUpload" className="upload-label">
+                                    Click to upload your image
+                                </label>
+                                <input 
+                                    type="file" 
+                                    id="imageUpload" 
+                                    accept="image/png, image/jpeg"
+                                    onChange={handleImageUpload}
+                                />
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        // About Page
+        const AboutPage = () => {
+            return (
+                <div className="app-layout">
+                    <Navigation activePage="about" />
+                    <main className="main-content">
+                        <div className="page-container">
+                            <div className="about-layout">
+                                <div className="about-left-column">
+                                    <div className="about-info-card">
+                                        <img src="https://placehold.co/150x150/1e1e1e/ffffff?text=You" alt="Mandlenkosi Vundla" className="about-profile-pic" id="aboutProfilePic" />
+                                        <h3>Mandlenkosi Vundla</h3>
+                                        <p className="about-card-subtitle">Software Development Trainee</p>
+                                        <ul className="about-card-contact">
+                                            <li>📧 mandlenkosi.vundla@capaciti.org.za</li>
+                                            <li>📱 +27 69 309 9649</li>
+                                            <li>📍 Johannesburg, South Africa</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="about-right-column">
+                                    <a href="#contact" className="btn btn-primary get-to-know-btn">Get to Know Me</a>
+                                    <h1 className="about-main-title">Passionate About Creating Digital Experiences</h1>
+                                    <p>
+                                        Hey there, I'm Mandlenkosi Vundla — a Software Development Trainee with a passion for innovation, growth, and building digital experiences that actually mean something. I believe that tech should empower, uplift, and connect people — not just dazzle them.
+                                    </p>
+                                    <p>
+                                        My path wasn't linear — and that's my edge. Through grit, late nights, self-taught lessons, and eventually formal training through CapaCiTi's Tech Career Accelerator, I've developed real-world skills in Python, JavaScript, Flask, Node.js, React, and C#, with solid experience in full-stack web development, database design, and cloud integration.
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                    `;
-                    
-                    container.appendChild(col);
-                }
-            });
-        }
+                    </main>
+                </div>
+            );
+        };
 
-        // Expose functions to window for inline event handlers
-        window.certUpload = handleFileUpload;
-        window.certRemove = handleRemoveCertificate;
-        window.certTitleChange = handleTitleChange;
-        window.certOpenPdf = openPdfInBrowser;
+        // Resume Page
+        const ResumePage = () => {
+            return (
+                <div className="app-layout">
+                    <Navigation activePage="resume" />
+                    <main className="main-content">
+                        <div className="page-container">
+                            <div className="resume-layout-pro">
+                                <aside className="resume-sidebar-pro">
+                                    <div className="sidebar-content-wrapper">
+                                        <img src="https://placehold.co/300x300/1e1e1e/ffffff?text=Mandlenkosi" alt="Mandlenkosi Vundla" className="resume-profile-pic" id="resumeProfilePic" />
+                                        <h2 className="resume-name">Mandlenkosi Vundla</h2>
+                                        <p className="resume-title">Software Development Trainee</p>
+                                        
+                                        <div className="resume-section-pro sidebar-section">
+                                            <h3>PROFESSIONAL SUMMARY</h3>
+                                            <p>
+                                                Aspiring Software Engineer specializing in backend development, with hands-on experience in building secure, scalable systems. Currently advancing my skills through the CapaCiTi Tech Career Accelerator, gaining practical expertise in Python, React and Vite, Ruby on Rails, Javascript, Node.js, Express.js, HTML, CSS, Prompts Engineering, AI bootcamp, Cybersecurity Essentials, Flask, SQL, and API development while working on real-world projects.
+                                            </p>
+                                        </div>
+
+                                        <div className="resume-section-pro sidebar-section">
+                                            <h3>CONTACT</h3>
+                                            <ul className="contact-list-pro">
+                                                <li><a href="mailto:vundlamandlenkosi0@gmail.com">vundlamandlenkosi0@gmail.com</a></li>
+                                                <li><a href="tel:+27693099649">069 309 9649</a></li>
+                                                <li><a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a></li>
+                                                <li><a href="https://github.com/Vundla" target="_blank" rel="noopener noreferrer">GitHub Profile</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </aside>
+                                <div className="resume-main-pro">
+                                    <div className="resume-section-pro">
+                                        <h3>SKILLS</h3>
+                                        <ul className="skills-list-pro">
+                                            <li>Backend development (Python, Flask)</li>
+                                            <li>Backend development (Ruby on Rails and Node.js, Express.js)</li>
+                                            <li>Frontend development (React and Vite)</li>
+                                            <li>Frontend development (HTML, CSS, Javascript)</li>
+                                            <li>API design and integration (RESTful APIs)</li>
+                                            <li>Database management (MySQL, SQLite)</li>
+                                            <li>Authentication and authorisation systems</li>
+                                            <li>Version control (Git, GitHub)</li>
+                                        </ul>
+                                    </div>
+                                    <div className="resume-section-pro">
+                                        <h3>WORK EXPERIENCE</h3>
+                                        <div className="experience-item-pro">
+                                            <h4>Software Development Trainee</h4>
+                                            <p className="company-info">CapaCiTi | April 2025 - Present</p>
+                                            <ul>
+                                                <li>Design, develop, and maintain backend systems and APIs.</li>
+                                                <li>Work with databases to store, retrieve, and manage data securely.</li>
+                                                <li>Collaborate with team members to deliver project requirements.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="resume-section-pro">
+                                        <h3>EDUCATION</h3>
+                                        <div className="education-item-pro">
+                                            <h4>Certificate In Software Engineering Backend</h4>
+                                            <p className="institution-info">ALX AFRICA | 2023 - 2024</p>
+                                        </div>
+                                        <div className="education-item-pro">
+                                            <h4>AI & Professional Development Certifications</h4>
+                                            <p className="institution-info">Coursera</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        // Contact Page (same as Resume in this case)
+        const ContactPage = () => {
+            return <ResumePage />;
+        };
+
+        // Main App Component
+        const App = () => {
+            const [currentPage, setCurrentPage] = useState('home');
+
+            useEffect(() => {
+                const handleHashChange = () => {
+                    const hash = window.location.hash.substring(1);
+                    if (hash === 'about') setCurrentPage('about');
+                    else if (hash === 'resume') setCurrentPage('resume');
+                    else if (hash === 'contact') setCurrentPage('contact');
+                    else setCurrentPage('home');
+                };
+
+                window.addEventListener('hashchange', handleHashChange);
+                handleHashChange(); // Initial call
+
+                return () => window.removeEventListener('hashchange', handleHashChange);
+            }, []);
+
+            const renderPage = () => {
+                switch(currentPage) {
+                    case 'about':
+                        return <AboutPage />;
+                    case 'resume':
+                        return <ResumePage />;
+                    case 'contact':
+                        return <ContactPage />;
+                    default:
+                        return <HomePage />;
+                }
+            };
+
+            return renderPage();
+        };
+
+        // Render the app
+        ReactDOM.render(<App />, document.getElementById('app'));
     </script>
 </body>
 </html>
