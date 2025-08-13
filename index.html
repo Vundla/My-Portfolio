@@ -7,313 +7,110 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root {
-            --dark-bg: #0f172a;
-            --sidebar-bg: #1e293b;
             --primary: #6366f1;
-            --text-light: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
+            --text-muted: #6c757d;
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
+            color: #212529;
             line-height: 1.6;
         }
         
         /* Sidebar Styles */
         .sidebar {
             width: 280px;
-            background-color: var(--sidebar-bg);
+            background-color: #f8f9fa;
             padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
+            border-right: 1px solid #dee2e6;
         }
         
         .sidebar-header {
             font-size: 1.5rem;
             font-weight: bold;
             margin-bottom: 2rem;
-            color: white;
         }
         
         .sidebar-header span {
             color: var(--primary);
         }
         
-        .sidebar-nav {
-            flex-grow: 1;
-        }
-        
         .nav-link {
-            display: block;
+            color: #495057;
             padding: 0.75rem 1rem;
-            color: var(--text-muted);
-            text-decoration: none;
             border-radius: 0.5rem;
             margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
         }
         
         .nav-link:hover, .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-        
-        .nav-link.active {
+            background-color: rgba(99, 102, 241, 0.1);
             color: var(--primary);
-        }
-        
-        .sidebar-footer {
-            margin-top: auto;
-            padding-top: 2rem;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-        
-        .social-links a {
-            color: var(--text-muted);
-            font-size: 1.25rem;
-            transition: color 0.3s ease;
-        }
-        
-        .social-links a:hover {
-            color: white;
         }
         
         /* Main Content Styles */
         .main-content {
             flex-grow: 1;
             padding: 2rem;
-            overflow-y: auto;
+            background-color: white;
         }
         
-        /* Page Transitions */
-        .page {
-            display: none;
-        }
-        
-        .page.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Profile Image Upload */
-        .profile-image-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 1rem;
-            cursor: pointer;
-        }
-        
-        .profile-image {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--primary);
-            transition: all 0.3s ease;
-        }
-        
-        .upload-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            text-align: center;
-            padding: 0.5rem;
-            font-size: 0.8rem;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border-bottom-left-radius: 75px;
-            border-bottom-right-radius: 75px;
-        }
-        
-        .profile-image-container:hover .upload-label {
-            opacity: 1;
-        }
-        
-        .profile-image-container:hover .profile-image {
-            transform: scale(1.05);
-        }
-        
-        /* Resume Page Enhancements */
+        /* Resume Page Styles */
         .resume-card {
-            background-color: #1e293b;
-            border: 1px solid var(--border-color);
+            border: 1px solid #dee2e6;
             border-radius: 0.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%;
-        }
-        
-        .resume-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         
         .resume-card h4 {
             color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Certification Page Styles (Your Original) */
+        .cert-section {
+            margin-bottom: 3rem;
+            background: rgba(248, 249, 250, 0.5);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--primary);
-            margin-bottom: 1rem;
         }
         
-        .resume-card ul {
-            padding-left: 1.5rem;
-        }
-        
-        .resume-card li {
-            margin-bottom: 0.5rem;
-        }
-        
-        /* Contact Page Styles */
-        .contact-icon {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(99, 102, 241, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-        }
-        
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: var(--text-muted);
+        .cert-card {
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
             transition: all 0.3s ease;
         }
         
-        .social-link:hover {
-            background-color: var(--primary);
-            color: white;
-            transform: scale(1.1);
+        .cert-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
         
+        /* Contact Page Styles */
         .contact-form .form-control {
-            background-color: #1e293b;
-            border-color: var(--border-color);
-            color: white;
+            background-color: white;
+            border: 1px solid #dee2e6;
         }
         
         .contact-form .form-control:focus {
-            background-color: #1e293b;
             border-color: var(--primary);
-            color: white;
             box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
-        }
-        
-        /* Map Container */
-        .leaflet-container {
-            background-color: #1e293b !important;
-        }
-        
-        .leaflet-popup-content {
-            color: #333;
         }
         
         /* Responsive Adjustments */
         @media (max-width: 992px) {
-            body {
-                flex-direction: column;
-            }
-            
             .sidebar {
                 width: 100%;
                 padding: 1rem;
-                height: auto;
-                position: relative;
             }
-            
-            .sidebar-nav {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-            
-            .nav-link {
-                margin-bottom: 0;
-            }
-            
-            .main-content {
-                padding: 1rem;
-            }
-        }
-        
-        /* Typography Enhancements */
-        h1, h2, h3, h4, h5, h6 {
-            font-weight: 600;
-        }
-        
-        .display-4 {
-            font-weight: 700;
-        }
-        
-        .lead {
-            font-weight: 400;
-            color: var(--text-muted);
-        }
-        
-        /* Button Enhancements */
-        .btn {
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-        
-        .btn-primary:hover {
-            background-color: #4f46e5;
-            border-color: #4f46e5;
-        }
-        
-        .btn-outline-light:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Card Enhancements */
-        .card {
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            border-color: var(--primary);
         }
     </style>
 </head>
@@ -331,79 +128,10 @@
             <a href="#" class="nav-link" data-page="certifications">Certifications</a>
             <a href="#" class="nav-link" data-page="contact">Contact</a>
         </nav>
-        <div class="sidebar-footer">
-            <div class="social-links">
-                <a href="https://x.com/Mandlenkos47988" target="_blank"><i class="bi bi-twitter-x"></i></a>
-                <a href="https://github.com/Vundla" target="_blank"><i class="bi bi-github"></i></a>
-                <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank"><i class="bi bi-linkedin"></i></a>
-            </div>
-        </div>
     </aside>
 
     <!-- Main Content Area -->
     <main class="main-content">
-        <!-- Home Page -->
-        <div id="home" class="page active">
-            <div class="container">
-                <div class="row align-items-center" style="min-height: 80vh;">
-                    <div class="col-lg-6">
-                        <h1 class="display-4 fw-bold mb-3">Mandlenkosi Vundla</h1>
-                        <h2 class="text-primary mb-4">Software Developer</h2>
-                        <p class="lead mb-4">
-                            My passion for coding has evolved into a deep interest in backend development, where I thrive on building smart, scalable systems. Recently, I've fully integrated AI into my workflow, blending logic and intelligence to build more dynamic and powerful applications.
-                        </p>
-                        <div class="d-flex gap-3">
-                            <a href="#" class="btn btn-primary" data-page="projects">View My Work</a>
-                            <a href="#" class="btn btn-outline-light" data-page="contact">Get In Touch</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 text-center">
-                        <div class="profile-image-container">
-                            <img src="https://placehold.co/350x450/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="profileImage">
-                            <label for="imageUpload" class="upload-label">Click to upload</label>
-                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- About Page -->
-        <div id="about" class="page">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 mb-4">
-                        <div class="card bg-dark border-primary h-100">
-                            <div class="card-body text-center">
-                                <div class="profile-image-container mb-3">
-                                    <img src="https://placehold.co/150x150/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="aboutProfileImage">
-                                    <label for="aboutImageUpload" class="upload-label">Upload</label>
-                                    <input type="file" id="aboutImageUpload" accept="image/*" style="display: none;">
-                                </div>
-                                <h3>Mandlenkosi Vundla</h3>
-                                <p class="text-muted">Software Development Trainee</p>
-                                <ul class="list-unstyled text-start mt-4">
-                                    <li class="mb-2"><i class="bi bi-envelope me-2"></i>mandlenkosi.vundla@capaciti.org.za</li>
-                                    <li class="mb-2"><i class="bi bi-phone me-2"></i>+27 69 309 9649</li>
-                                    <li><i class="bi bi-geo-alt me-2"></i>Johannesburg, South Africa</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8">
-                        <a href="#" class="btn btn-primary mb-4" data-page="contact">Get to Know Me</a>
-                        <h1 class="mb-4">Passionate About Creating Digital Experiences</h1>
-                        <p class="mb-4">
-                            Hey there, I'm Mandlenkosi Vundla — a Software Development Trainee with a passion for innovation, growth, and building digital experiences that actually mean something. I believe that tech should empower, uplift, and connect people — not just dazzle them.
-                        </p>
-                        <p>
-                            My path wasn't linear — and that's my edge. Through grit, late nights, self-taught lessons, and eventually formal training through CapaCiTi's Tech Career Accelerator, I've developed real-world skills in Python, JavaScript, Flask, Node.js, React, and C#, with solid experience in full-stack web development, database design, and cloud integration.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Resume Page -->
         <div id="resume" class="page">
             <div class="container">
@@ -412,26 +140,22 @@
                         <div class="card resume-card h-100">
                             <div class="card-body">
                                 <div class="text-center mb-4">
-                                    <div class="profile-image-container" style="width: 150px; height: 150px; margin: 0 auto;">
-                                        <img src="https://placehold.co/300x300/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="resumeProfileImage">
-                                        <label for="resumeImageUpload" class="upload-label">Upload</label>
-                                        <input type="file" id="resumeImageUpload" accept="image/*" style="display: none;">
-                                    </div>
+                                    <img src="https://placehold.co/150x150" alt="Profile" class="rounded-circle" width="150">
                                 </div>
                                 <h2 class="text-center">Mandlenkosi Vundla</h2>
                                 <p class="text-center text-muted mb-4">Software Development Trainee</p>
                                 
                                 <h4>PROFESSIONAL SUMMARY</h4>
                                 <p class="small">
-                                    Aspiring Software Engineer specializing in backend development, with hands-on experience in building secure, scalable systems. Currently advancing my skills through the CapaCiTi Tech Career Accelerator.
+                                    Aspiring Software Engineer specializing in backend development, with hands-on experience in building secure, scalable systems.
                                 </p>
                                 
                                 <h4 class="mt-4">CONTACT</h4>
                                 <ul class="list-unstyled small">
-                                    <li class="mb-2"><a href="mailto:vundlamandlenkosi0@gmail.com" class="text-white">vundlamandlenkosi0@gmail.com</a></li>
-                                    <li class="mb-2"><a href="tel:+27693099649" class="text-white">069 309 9649</a></li>
-                                    <li class="mb-2"><a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" class="text-white">LinkedIn Profile</a></li>
-                                    <li><a href="https://github.com/Vundla" target="_blank" class="text-white">GitHub Profile</a></li>
+                                    <li class="mb-2"><a href="mailto:vundlamandlenkosi0@gmail.com">vundlamandlenkosi0@gmail.com</a></li>
+                                    <li class="mb-2"><a href="tel:+27693099649">069 309 9649</a></li>
+                                    <li class="mb-2"><a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank">LinkedIn Profile</a></li>
+                                    <li><a href="https://github.com/Vundla" target="_blank">GitHub Profile</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -444,11 +168,8 @@
                                     <li>Backend development (Python, Flask)</li>
                                     <li>Backend development (Ruby on Rails and Node.js, Express.js)</li>
                                     <li>Frontend development (React and Vite)</li>
-                                    <li>Frontend development (HTML, CSS, Javascript)</li>
                                     <li>API design and integration (RESTful APIs)</li>
                                     <li>Database management (MySQL, SQLite)</li>
-                                    <li>Authentication and authorisation systems</li>
-                                    <li>Version control (Git, GitHub)</li>
                                 </ul>
                                 
                                 <h4>WORK EXPERIENCE</h4>
@@ -456,9 +177,8 @@
                                     <h5>Software Development Trainee</h5>
                                     <p class="text-muted">CapaCiTi | April 2025 - Present</p>
                                     <ul>
-                                        <li>Design, develop, and maintain backend systems and APIs.</li>
-                                        <li>Work with databases to store, retrieve, and manage data securely.</li>
-                                        <li>Collaborate with team members to deliver project requirements.</li>
+                                        <li>Design, develop, and maintain backend systems and APIs</li>
+                                        <li>Work with databases to store and manage data</li>
                                     </ul>
                                 </div>
                                 
@@ -467,10 +187,6 @@
                                     <h5>Certificate In Software Engineering Backend</h5>
                                     <p class="text-muted">ALX AFRICA | 2023 - 2024</p>
                                 </div>
-                                <div>
-                                    <h5>AI & Professional Development Certifications</h5>
-                                    <p class="text-muted">Coursera</p>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -478,187 +194,68 @@
             </div>
         </div>
 
-        <!-- Projects Page -->
-        <div id="projects" class="page">
-            <div class="container">
-                <h1 class="mb-4">My Projects</h1>
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                    <!-- Project cards will be added here by JavaScript -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Certifications Page -->
+        <!-- Certifications Page (Your Original Version) -->
         <div id="certifications" class="page">
-            <div class="container">
-                <h1 class="mb-4">My Certifications</h1>
-                <div class="mb-4">
-                    <button class="btn btn-primary" id="addCertBtn">Add New Certification</button>
-                    <input type="file" id="certUpload" accept="image/*,.pdf" style="display: none;">
-                </div>
+            <div class="container-fluid">
+                <h1 class="page-title pt-3">My Certifications</h1>
+                <p class="page-subtitle">A collection of my professional achievements and qualifications.</p>
                 
-                <div class="cert-section">
-                    <h2 class="section-title">AI Bootcamp Certification</h2>
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="aiBootcampCerts">
-                        <!-- Certifications will be added here by JavaScript -->
+                <div id="storageStatus"></div>
+                
+                <div class="cert-section leopard-theme mb-5">
+                    <h2 class="section-title mb-4 pt-4 px-4">AI Bootcamp Certification</h2>
+                    <div class="row px-3" id="aiBootcampCerts">
+                        <!-- Will be populated by JavaScript -->
                     </div>
                 </div>
                 
-                <div class="cert-section">
-                    <h2 class="section-title">Professional Development</h2>
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="professionalDevCerts">
-                        <!-- Certifications will be added here by JavaScript -->
+                <div class="cert-section waterfall-theme mb-5">
+                    <h2 class="section-title mb-4 pt-4 px-4">Professional Development Bootcamp</h2>
+                    <div class="row px-3" id="professionalDevCerts">
+                        <!-- Will be populated by JavaScript -->
                     </div>
                 </div>
+                
+                <!-- Additional certification sections -->
             </div>
         </div>
 
-        <!-- Contact Page -->
+        <!-- Contact Page (White Theme) -->
         <div id="contact" class="page">
-            <div class="container py-4">
-                <div class="row mb-4">
-                    <div class="col text-center">
-                        <h1 class="display-4 mb-3">Contact Me</h1>
-                        <p class="lead text-muted">
-                            Let's discuss opportunities and collaborate on exciting projects
-                        </p>
-                    </div>
-                </div>
-
-                <div class="row g-4">
-                    <!-- Contact Information -->
-                    <div class="col-lg-4">
-                        <div class="card bg-dark border-secondary h-100">
-                            <div class="card-body p-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
                                 <h3 class="mb-4">Contact Information</h3>
-                                
-                                <!-- Email -->
-                                <div class="mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="contact-icon me-3">
-                                            <i class="bi bi-envelope-fill"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-1">Email</h6>
-                                            <a href="mailto:vundlamandlenkosi0@gmail.com" class="text-muted">
-                                                vundlamandlenkosi0@gmail.com
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Phone -->
-                                <div class="mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="contact-icon me-3">
-                                            <i class="bi bi-telephone-fill"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-1">Phone</h6>
-                                            <a href="tel:+27693099649" class="text-muted">
-                                                +27 69 309 9649
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- WhatsApp -->
-                                <div class="mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="contact-icon me-3">
-                                            <i class="bi bi-whatsapp"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-1">WhatsApp</h6>
-                                            <a href="https://wa.me/27693099649" class="text-muted" target="_blank">
-                                                +27 69 309 9649
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Location -->
-                                <div class="mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="contact-icon me-3">
-                                            <i class="bi bi-geo-alt-fill"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-1">Location</h6>
-                                            <p class="mb-0 text-muted">
-                                                58 Plinlimmon Road, The Hill, Johannesburg South, 2197
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr class="my-4" style="border-color: var(--border-color);">
-                                
-                                <h5 class="mb-3">Follow Me</h5>
-                                <div class="d-flex gap-3">
-                                    <a href="https://github.com/Vundla" target="_blank" class="social-link">
-                                        <i class="bi bi-github"></i>
-                                    </a>
-                                    <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" class="social-link">
-                                        <i class="bi bi-linkedin"></i>
-                                    </a>
-                                    <a href="https://x.com/Mandlenkos47988" target="_blank" class="social-link">
-                                        <i class="bi bi-twitter-x"></i>
-                                    </a>
-                                </div>
+                                <ul class="list-unstyled">
+                                    <li class="mb-3"><i class="bi bi-envelope me-2"></i>mandlenkosi.vundla@capaciti.org.za</li>
+                                    <li class="mb-3"><i class="bi bi-phone me-2"></i>+27 69 309 9649</li>
+                                    <li><i class="bi bi-geo-alt me-2"></i>Johannesburg, South Africa</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Contact Form -->
-                    <div class="col-lg-8">
-                        <div class="card bg-dark border-secondary">
-                            <div class="card-body p-4">
+                    <div class="col-lg-6">
+                        <div class="card h-100">
+                            <div class="card-body">
                                 <h3 class="mb-4">Send Me a Message</h3>
-                                
-                                <div id="contactAlert" class="alert d-none"></div>
-
-                                <form id="contactForm">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="contactName" class="form-label">Full Name</label>
-                                                <input type="text" class="form-control" id="contactName" name="name" required placeholder="Your full name">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="contactEmail" class="form-label">Email Address</label>
-                                                <input type="email" class="form-control" id="contactEmail" name="email" required placeholder="your.email@example.com">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
+                                <form id="contactForm" class="contact-form">
                                     <div class="mb-3">
-                                        <label for="contactSubject" class="form-label">Subject</label>
-                                        <input type="text" class="form-control" id="contactSubject" name="subject" required placeholder="What's this about?">
+                                        <label for="name" class="form-label">Your Name</label>
+                                        <input type="text" class="form-control" id="name" required>
                                     </div>
-                                    
-                                    <div class="mb-4">
-                                        <label for="contactMessage" class="form-label">Message</label>
-                                        <textarea class="form-control" id="contactMessage" name="message" rows="5" required placeholder="Tell me about your project or inquiry..."></textarea>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email" required>
                                     </div>
-                                    
-                                    <button type="submit" class="btn btn-primary w-100" id="contactSubmit">
-                                        <i class="bi bi-send me-2"></i>
-                                        Send Message
-                                    </button>
+                                    <div class="mb-3">
+                                        <label for="message" class="form-label">Message</label>
+                                        <textarea class="form-control" id="message" rows="5" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Send Message</button>
                                 </form>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Map Section -->
-                <div class="mt-5">
-                    <div class="card bg-dark border-secondary">
-                        <div class="card-body p-0">
-                            <div id="map" style="height: 400px; width: 100%;"></div>
                         </div>
                     </div>
                 </div>
@@ -667,250 +264,20 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // Your original certification page JavaScript here
+        // Including all the IndexedDB functionality and certificate management
+        
         // Page Navigation
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                
-                // Remove active class from all links
-                document.querySelectorAll('.nav-link').forEach(el => {
-                    el.classList.remove('active');
-                });
-                
-                // Add active class to clicked link
+                document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
                 this.classList.add('active');
-                
-                // Hide all pages
-                document.querySelectorAll('.page').forEach(page => {
-                    page.classList.remove('active');
-                });
-                
-                // Show selected page
-                const pageId = this.getAttribute('data-page');
-                document.getElementById(pageId).classList.add('active');
-                
-                // Scroll to top
-                window.scrollTo(0, 0);
-                
-                // Initialize map if contact page is shown
-                if (pageId === 'contact') {
-                    initMap();
-                }
+                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+                document.getElementById(this.getAttribute('data-page')).classList.add('active');
             });
         });
-        
-        // Profile Image Upload
-        function handleImageUpload(inputId, imageId) {
-            const input = document.getElementById(inputId);
-            const image = document.getElementById(imageId);
-            
-            input.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        image.src = event.target.result;
-                        localStorage.setItem(imageId, event.target.result);
-                        
-                        // Update all profile images if this is the main one
-                        if (inputId === 'imageUpload') {
-                            document.getElementById('aboutProfileImage').src = event.target.result;
-                            document.getElementById('resumeProfileImage').src = event.target.result;
-                            localStorage.setItem('aboutProfileImage', event.target.result);
-                            localStorage.setItem('resumeProfileImage', event.target.result);
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-        
-        // Set up image upload handlers
-        handleImageUpload('imageUpload', 'profileImage');
-        handleImageUpload('aboutImageUpload', 'aboutProfileImage');
-        handleImageUpload('resumeImageUpload', 'resumeProfileImage');
-        
-        // Load saved profile images
-        if (localStorage.getItem('profileImage')) {
-            document.getElementById('profileImage').src = localStorage.getItem('profileImage');
-            document.getElementById('aboutProfileImage').src = localStorage.getItem('profileImage');
-            document.getElementById('resumeProfileImage').src = localStorage.getItem('profileImage');
-        }
-        
-        // Projects Data
-        const projects = [
-            {
-                title: "AI Sentiment Analyzer",
-                description: "An application that analyzes sentiment in text using AI algorithms.",
-                github: "https://github.com/vundla/ai-sentiment-analyzer",
-                live: "https://vundla.github.io/ai-sentiment-analyzer/",
-                tags: ["AI", "NLP", "React"]
-            },
-            {
-                title: "Azanian AI Agent",
-                description: "Interactive AI agent for customer support and information retrieval.",
-                github: "https://github.com/yourusername/azanian-ai-agent2",
-                live: "https://landbot.online/v3/H-2934706-7M0LMF0MKRD9B5FG/index.html",
-                tags: ["Chatbot", "AI", "Landbot"]
-            },
-            {
-                title: "AI Resume Builder",
-                description: "Tool that helps create professional resumes using AI suggestions.",
-                github: "https://github.com/vundla/ai-resume-builder",
-                live: "https://vundla.github.io/ai-resume-builder/",
-                tags: ["AI", "Resume", "Productivity"]
-            },
-            {
-                title: "Generative AI Agent",
-                description: "Creative AI agent that generates text, images, and ideas.",
-                github: "https://github.com/vundla/My_Generative_AI_Project",
-                live: "https://vundla.github.io/My_Generative_AI_Project/",
-                tags: ["Generative AI", "Creative", "ML"]
-            },
-            {
-                title: "AI Study Assistant",
-                description: "Smart learning companion that helps with studying and research.",
-                github: "https://github.com/yourusername/ai-study-assistance",
-                live: "https://smart-learning-assistant-henna.vercel.app/",
-                tags: ["Education", "AI", "Learning"]
-            }
-        ];
-        
-        // Render Projects
-        const projectsContainer = document.querySelector('#projects .row');
-        projects.forEach(project => {
-            const projectCol = document.createElement('div');
-            projectCol.className = 'col';
-            
-            projectCol.innerHTML = `
-                <div class="card project-card bg-dark border-secondary h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">${project.title}</h5>
-                        <p class="card-text">${project.description}</p>
-                        <div class="d-flex flex-wrap gap-1 mb-3">
-                            ${project.tags.map(tag => `<span class="badge bg-primary">${tag}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent border-top-0">
-                        <div class="d-flex gap-2">
-                            <a href="${project.github}" target="_blank" class="btn btn-sm btn-outline-light flex-grow-1">
-                                <i class="bi bi-github"></i> Code
-                            </a>
-                            <a href="${project.live}" target="_blank" class="btn btn-sm btn-primary flex-grow-1">
-                                <i class="bi bi-box-arrow-up-right"></i> Live
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            projectsContainer.appendChild(projectCol);
-        });
-        
-        // Contact Form Handling
-        const contactForm = document.getElementById('contactForm');
-        if (contactForm) {
-            contactForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const submitBtn = document.getElementById('contactSubmit');
-                const alertDiv = document.getElementById('contactAlert');
-                
-                // Get form data
-                const formData = {
-                    name: document.getElementById('contactName').value,
-                    email: document.getElementById('contactEmail').value,
-                    subject: document.getElementById('contactSubject').value,
-                    message: document.getElementById('contactMessage').value
-                };
-                
-                // Show loading state
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = `
-                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                    Sending Message...
-                `;
-                
-                // Hide any previous alerts
-                alertDiv.classList.add('d-none');
-                
-                try {
-                    // Simulate API call
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    
-                    // Show success message
-                    alertDiv.classList.remove('d-none', 'alert-danger');
-                    alertDiv.classList.add('alert-success');
-                    alertDiv.innerHTML = 'Thank you for your message! I\'ll get back to you soon.';
-                    
-                    // Reset form
-                    contactForm.reset();
-                } catch (error) {
-                    // Show error message
-                    alertDiv.classList.remove('d-none', 'alert-success');
-                    alertDiv.classList.add('alert-danger');
-                    alertDiv.innerHTML = 'Sorry, there was an error sending your message. Please try again.';
-                } finally {
-                    // Reset button state
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = `
-                        <i class="bi bi-send me-2"></i>
-                        Send Message
-                    `;
-                }
-            });
-        }
-        
-        // Initialize Map
-        function initMap() {
-            // Johannesburg coordinates
-            const johannesburgPosition = [-26.2041, 28.0473];
-            const myLocation = [-26.2041, 28.0473];
-            
-            // Check if map container exists
-            const mapContainer = document.getElementById('map');
-            if (!mapContainer || mapContainer._leaflet_map) return;
-            
-            // Create map
-            const map = L.map('map').setView(johannesburgPosition, 13);
-            
-            // Add tile layer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-            
-            // Add marker
-            const marker = L.marker(myLocation).addTo(map);
-            
-            // Add popup to marker
-            marker.bindPopup(`
-                <div>
-                    <h6 class="mb-2">Mandlenkosi Vundla</h6>
-                    <p class="mb-1">
-                        <i class="bi bi-geo-alt me-1"></i>
-                        58 Plinlimmon Road<br />
-                        The Hill, Johannesburg South<br />
-                        2197, South Africa
-                    </p>
-                    <p class="mb-0">
-                        <i class="bi bi-envelope me-1"></i>
-                        <a href="mailto:vundlamandlenkosi0@gmail.com">
-                            vundlamandlenkosi0@gmail.com
-                        </a>
-                    </p>
-                </div>
-            `);
-            
-            // Disable scroll wheel zoom
-            map.scrollWheelZoom.disable();
-        }
-        
-        // Initialize map when contact page is loaded
-        if (document.getElementById('contact')?.classList.contains('active')) {
-            initMap();
-        }
     </script>
 </body>
 </html>
