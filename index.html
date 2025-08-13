@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root {
             --dark-bg: #0f172a;
@@ -14,11 +15,7 @@
             --primary: #6366f1;
             --text-light: #f1f5f9;
             --text-muted: #94a3b8;
-            --leopard-primary: #ff7043;
-            --waterfall-primary: #29b6f6;
-            --sun-primary: #ffca28;
-            --hacker-primary: #66bb6a;
-            --sky-primary: #42a5f5;
+            --border-color: #334155;
         }
         
         body {
@@ -39,7 +36,7 @@
             padding: 2rem;
             display: flex;
             flex-direction: column;
-            border-right: 1px solid #334155;
+            border-right: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             height: 100vh;
@@ -169,9 +166,10 @@
         /* Resume Page Enhancements */
         .resume-card {
             background-color: #1e293b;
-            border: 1px solid #334155;
+            border: 1px solid var(--border-color);
             border-radius: 0.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
         }
         
         .resume-card:hover {
@@ -194,129 +192,39 @@
             margin-bottom: 0.5rem;
         }
         
-        /* Certification Page Styles */
-        .cert-section {
-            margin-bottom: 3rem;
-            background: rgba(30, 41, 59, 0.5);
-            border-radius: 0.5rem;
-            overflow: hidden;
-        }
-        
-        .leopard-theme .section-title {
-            color: var(--leopard-primary);
-            border-bottom-color: var(--leopard-primary);
-        }
-        
-        .waterfall-theme .section-title {
-            color: var(--waterfall-primary);
-            border-bottom-color: var(--waterfall-primary);
-        }
-        
-        .sun-theme .section-title {
-            color: var(--sun-primary);
-            border-bottom-color: var(--sun-primary);
-        }
-        
-        .hacker-theme .section-title {
-            color: var(--hacker-primary);
-            border-bottom-color: var(--hacker-primary);
-        }
-        
-        .sky-theme .section-title {
-            color: var(--sky-primary);
-            border-bottom-color: var(--sky-primary);
-        }
-        
-        .section-title {
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary);
-        }
-        
-        .cert-card {
-            height: 100%;
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .cert-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .cert-placeholder {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-        }
-        
-        .cert-placeholder i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .certificate-preview-container {
-            width: 100%;
+        /* Contact Page Styles */
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
             align-items: center;
-        }
-        
-        .certificate-preview {
-            max-width: 100%;
-            max-height: 200px;
-            overflow: hidden;
-            display: flex;
             justify-content: center;
+            color: var(--primary);
+        }
+        
+        .social-link {
+            display: flex;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 0.25rem;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
         }
         
-        .certificate-preview img {
-            max-width: 100%;
-            max-height: 200px;
-            object-fit: contain;
+        .social-link:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: scale(1.1);
         }
         
-        .document-icon {
-            text-align: center;
-            padding: 1rem;
-        }
-        
-        .fade-out {
-            animation: fadeOut 3s ease forwards;
-            animation-delay: 2s;
-        }
-        
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                height: 0;
-                padding: 0;
-                margin: 0;
-                border: 0;
-            }
-        }
-        
-        /* Project Page Styles */
-        .project-card {
-            height: 100%;
-            transition: transform 0.3s ease;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        /* Contact Form Styles */
         .contact-form .form-control {
             background-color: #1e293b;
-            border-color: #334155;
+            border-color: var(--border-color);
             color: white;
         }
         
@@ -325,6 +233,15 @@
             border-color: var(--primary);
             color: white;
             box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+        }
+        
+        /* Map Container */
+        .leaflet-container {
+            background-color: #1e293b !important;
+        }
+        
+        .leaflet-popup-content {
+            color: #333;
         }
         
         /* Responsive Adjustments */
@@ -391,23 +308,12 @@
         
         /* Card Enhancements */
         .card {
-            border: 1px solid #334155;
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
         
         .card:hover {
             border-color: var(--primary);
-        }
-        
-        /* Animation Enhancements */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
         }
     </style>
 </head>
@@ -584,49 +490,23 @@
 
         <!-- Certifications Page -->
         <div id="certifications" class="page">
-            <div class="container-fluid">
-                <h1 class="page-title pt-3">My Certifications</h1>
-                <p class="page-subtitle">A collection of my professional achievements and qualifications.</p>
+            <div class="container">
+                <h1 class="mb-4">My Certifications</h1>
+                <div class="mb-4">
+                    <button class="btn btn-primary" id="addCertBtn">Add New Certification</button>
+                    <input type="file" id="certUpload" accept="image/*,.pdf" style="display: none;">
+                </div>
                 
-                <!-- Storage status indicator -->
-                <div id="storageStatus"></div>
-                
-                {/* AI Bootcamp Section with Leopard Skin Theme */}
-                <div class="cert-section leopard-theme mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">AI Bootcamp Certification</h2>
-                    <div class="row px-3" id="aiBootcampCerts">
+                <div class="cert-section">
+                    <h2 class="section-title">AI Bootcamp Certification</h2>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="aiBootcampCerts">
                         <!-- Certifications will be added here by JavaScript -->
                     </div>
                 </div>
                 
-                {/* Professional Development Section with Waterfall Theme */}
-                <div class="cert-section waterfall-theme mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">Professional Development Bootcamp</h2>
-                    <div class="row px-3" id="professionalDevCerts">
-                        <!-- Certifications will be added here by JavaScript -->
-                    </div>
-                </div>
-                
-                {/* YES Programme Section with Sun Theme */}
-                <div class="cert-section sun-theme mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">YES Programme</h2>
-                    <div class="row px-3" id="yesProgramCerts">
-                        <!-- Certifications will be added here by JavaScript -->
-                    </div>
-                </div>
-                
-                {/* Cyber Security Section with Hacker Theme */}
-                <div class="cert-section hacker-theme mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">Cyber Security</h2>
-                    <div class="row px-3" id="cyberSecurityCerts">
-                        <!-- Certifications will be added here by JavaScript -->
-                    </div>
-                </div>
-                
-                {/* Foundation Section with Sky Theme */}
-                <div class="cert-section sky-theme mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">My Foundation</h2>
-                    <div class="row px-3" id="foundationCerts">
+                <div class="cert-section">
+                    <h2 class="section-title">Professional Development</h2>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="professionalDevCerts">
                         <!-- Certifications will be added here by JavaScript -->
                     </div>
                 </div>
@@ -635,47 +515,150 @@
 
         <!-- Contact Page -->
         <div id="contact" class="page">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 mb-4">
-                        <div class="card bg-dark border-primary h-100">
-                            <div class="card-body">
+            <div class="container py-4">
+                <div class="row mb-4">
+                    <div class="col text-center">
+                        <h1 class="display-4 mb-3">Contact Me</h1>
+                        <p class="lead text-muted">
+                            Let's discuss opportunities and collaborate on exciting projects
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Contact Information -->
+                    <div class="col-lg-4">
+                        <div class="card bg-dark border-secondary h-100">
+                            <div class="card-body p-4">
                                 <h3 class="mb-4">Contact Information</h3>
-                                <ul class="list-unstyled">
-                                    <li class="mb-3"><i class="bi bi-envelope me-2"></i>mandlenkosi.vundla@capaciti.org.za</li>
-                                    <li class="mb-3"><i class="bi bi-phone me-2"></i>+27 69 309 9649</li>
-                                    <li><i class="bi bi-geo-alt me-2"></i>Johannesburg, South Africa</li>
-                                </ul>
                                 
-                                <h5 class="mt-4 mb-3">Follow Me</h5>
+                                <!-- Email -->
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="contact-icon me-3">
+                                            <i class="bi bi-envelope-fill"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Email</h6>
+                                            <a href="mailto:vundlamandlenkosi0@gmail.com" class="text-muted">
+                                                vundlamandlenkosi0@gmail.com
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Phone -->
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="contact-icon me-3">
+                                            <i class="bi bi-telephone-fill"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Phone</h6>
+                                            <a href="tel:+27693099649" class="text-muted">
+                                                +27 69 309 9649
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- WhatsApp -->
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="contact-icon me-3">
+                                            <i class="bi bi-whatsapp"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">WhatsApp</h6>
+                                            <a href="https://wa.me/27693099649" class="text-muted" target="_blank">
+                                                +27 69 309 9649
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Location -->
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="contact-icon me-3">
+                                            <i class="bi bi-geo-alt-fill"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Location</h6>
+                                            <p class="mb-0 text-muted">
+                                                58 Plinlimmon Road, The Hill, Johannesburg South, 2197
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4" style="border-color: var(--border-color);">
+                                
+                                <h5 class="mb-3">Follow Me</h5>
                                 <div class="d-flex gap-3">
-                                    <a href="https://x.com/Mandlenkos47988" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-twitter-x"></i></a>
-                                    <a href="https://github.com/Vundla" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-github"></i></a>
-                                    <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-linkedin"></i></a>
+                                    <a href="https://github.com/Vundla" target="_blank" class="social-link">
+                                        <i class="bi bi-github"></i>
+                                    </a>
+                                    <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" class="social-link">
+                                        <i class="bi bi-linkedin"></i>
+                                    </a>
+                                    <a href="https://x.com/Mandlenkos47988" target="_blank" class="social-link">
+                                        <i class="bi bi-twitter-x"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="card bg-dark border-primary h-100">
-                            <div class="card-body">
+
+                    <!-- Contact Form -->
+                    <div class="col-lg-8">
+                        <div class="card bg-dark border-secondary">
+                            <div class="card-body p-4">
                                 <h3 class="mb-4">Send Me a Message</h3>
-                                <form id="contactForm" class="contact-form">
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Your Name</label>
-                                        <input type="text" class="form-control" id="name" required>
+                                
+                                <div id="contactAlert" class="alert d-none"></div>
+
+                                <form id="contactForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="contactName" class="form-label">Full Name</label>
+                                                <input type="text" class="form-control" id="contactName" name="name" required placeholder="Your full name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="contactEmail" class="form-label">Email Address</label>
+                                                <input type="email" class="form-control" id="contactEmail" name="email" required placeholder="your.email@example.com">
+                                            </div>
+                                        </div>
                                     </div>
+                                    
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" id="email" required>
+                                        <label for="contactSubject" class="form-label">Subject</label>
+                                        <input type="text" class="form-control" id="contactSubject" name="subject" required placeholder="What's this about?">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="message" class="form-label">Message</label>
-                                        <textarea class="form-control" id="message" rows="5" required></textarea>
+                                    
+                                    <div class="mb-4">
+                                        <label for="contactMessage" class="form-label">Message</label>
+                                        <textarea class="form-control" id="contactMessage" name="message" rows="5" required placeholder="Tell me about your project or inquiry..."></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                                    
+                                    <button type="submit" class="btn btn-primary w-100" id="contactSubmit">
+                                        <i class="bi bi-send me-2"></i>
+                                        Send Message
+                                    </button>
                                 </form>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Section -->
+                <div class="mt-5">
+                    <div class="card bg-dark border-secondary">
+                        <div class="card-body p-0">
+                            <div id="map" style="height: 400px; width: 100%;"></div>
                         </div>
                     </div>
                 </div>
@@ -684,6 +667,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // Page Navigation
         document.querySelectorAll('.nav-link').forEach(link => {
@@ -709,6 +693,11 @@
                 
                 // Scroll to top
                 window.scrollTo(0, 0);
+                
+                // Initialize map if contact page is shown
+                if (pageId === 'contact') {
+                    initMap();
+                }
             });
         });
         
@@ -820,475 +809,108 @@
             projectsContainer.appendChild(projectCol);
         });
         
-        // Enhanced Certifications Data and Functionality
-        const buttonColors = {
-            aiBootcamp: [ 
-                '#ff7043', '#ec407a', '#ab47bc', '#5c6bc0', '#29b6f6', '#26a69a', '#9ccc65', '#ffee58', '#ffca28' 
-            ],
-            professionalDev: [ 
-                '#5c6bc0', '#ec407a', '#66bb6a', '#ffa726', '#42a5f5', '#7e57c2', '#26a69a',
-                '#d4e157', '#78909c', '#8d6e63', '#ab47bc', '#29b6f6', '#ef5350', '#9ccc65',
-                '#ffee58', '#ffca28', '#26c6da', '#ff7043', '#ce93d8', '#4db6ac', '#aed581' 
-            ],
-            yesProgram: [ 
-                '#ffa726', '#ffca28', '#ffee58', '#d4e157', '#9ccc65', '#66bb6a', '#26a69a' 
-            ],
-            cyberSecurity: [ 
-                '#5c6bc0', '#7e57c2', '#ab47bc', '#ec407a', '#78909c', '#8d6e63', '#212121' 
-            ],
-            foundation: [ 
-                '#42a5f5', '#29b6f6' 
-            ]
-        };
-        
-        const removeButtonColors = {
-            aiBootcamp: [ 
-                '#d32f2f', '#c2185b', '#7b1fa2', '#303f9f', '#0288d1', '#00796b', '#689f38', '#fdd835', '#ffb300' 
-            ],
-            professionalDev: [ 
-                '#303f9f', '#c2185b', '#388e3c', '#f57c00', '#1976d2', '#512da8', '#00796b',
-                '#afb42b', '#546e7a', '#5d4037', '#7b1fa2', '#0288d1', '#d32f2f', '#689f38',
-                '#fdd835', '#ffb300', '#0097a7', '#e64a19', '#8e24aa', '#00897b', '#558b2f' 
-            ],
-            yesProgram: [ 
-                '#f57c00', '#ffb300', '#fdd835', '#afb42b', '#689f38', '#388e3c', '#00796b' 
-            ],
-            cyberSecurity: [ 
-                '#303f9f', '#512da8', '#7b1fa2', '#c2185b', '#546e7a', '#5d4037', '#000000' 
-            ],
-            foundation: [ 
-                '#1976d2', '#0288d1' 
-            ]
-        };
-        
-        // Initialize IndexedDB
-        const dbName = "certificatesDB";
-        const dbVersion = 1;
-        const storeName = "certificates";
-        
-        // Initialize the database
-        function initDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName, dbVersion);
+        // Contact Form Handling
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
                 
-                request.onerror = event => {
-                    console.error("IndexedDB error:", event.target.error);
-                    reject("Error opening database");
+                const submitBtn = document.getElementById('contactSubmit');
+                const alertDiv = document.getElementById('contactAlert');
+                
+                // Get form data
+                const formData = {
+                    name: document.getElementById('contactName').value,
+                    email: document.getElementById('contactEmail').value,
+                    subject: document.getElementById('contactSubject').value,
+                    message: document.getElementById('contactMessage').value
                 };
                 
-                request.onsuccess = event => {
-                    console.log("Database opened successfully");
-                    resolve(event.target.result);
-                };
+                // Show loading state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Sending Message...
+                `;
                 
-                request.onupgradeneeded = event => {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains(storeName)) {
-                        db.createObjectStore(storeName, { keyPath: "id" });
-                        console.log("Object store created");
-                    }
-                };
-            });
-        }
-        
-        // Save certificates to IndexedDB
-        async function saveCertificates(data) {
-            try {
-                const db = await initDB();
-                const transaction = db.transaction([storeName], "readwrite");
-                const store = transaction.objectStore(storeName);
+                // Hide any previous alerts
+                alertDiv.classList.add('d-none');
                 
-                return new Promise((resolve, reject) => {
-                    // Save with a single key for simplicity
-                    const request = store.put({
-                        id: "userCertificates",
-                        data: data,
-                        lastUpdated: new Date().toISOString()
-                    });
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 2000));
                     
-                    request.onsuccess = () => {
-                        console.log("Certificates saved to IndexedDB");
-                        showStorageStatus("success", "All changes saved successfully!");
-                        resolve(true);
-                    };
+                    // Show success message
+                    alertDiv.classList.remove('d-none', 'alert-danger');
+                    alertDiv.classList.add('alert-success');
+                    alertDiv.innerHTML = 'Thank you for your message! I\'ll get back to you soon.';
                     
-                    request.onerror = event => {
-                        console.error("Error saving certificates:", event.target.error);
-                        showStorageStatus("error", "There was an issue saving your data. Your certificates might not persist between sessions.");
-                        reject(event.target.error);
-                    };
-                    
-                    transaction.oncomplete = () => {
-                        db.close();
-                    };
-                });
-            } catch (error) {
-                console.error("DB transaction error:", error);
-                showStorageStatus("error", "There was an issue saving your data. Your certificates might not persist between sessions.");
-                return false;
-            }
-        }
-        
-        // Load certificates from IndexedDB
-        async function loadCertificates() {
-            try {
-                const db = await initDB();
-                const transaction = db.transaction([storeName], "readonly");
-                const store = transaction.objectStore(storeName);
-                
-                return new Promise((resolve, reject) => {
-                    const request = store.get("userCertificates");
-                    
-                    request.onsuccess = event => {
-                        const result = event.target.result;
-                        if (result) {
-                            console.log("Certificates loaded from IndexedDB");
-                            resolve(result.data);
-                        } else {
-                            console.log("No certificates found in IndexedDB");
-                            resolve(null);
-                        }
-                    };
-                    
-                    request.onerror = event => {
-                        console.error("Error loading certificates:", event.target.error);
-                        reject(event.target.error);
-                    };
-                    
-                    transaction.oncomplete = () => {
-                        db.close();
-                    };
-                });
-            } catch (error) {
-                console.error("DB transaction error:", error);
-                return null;
-            }
-        }
-        
-        // Show storage status message
-        function showStorageStatus(type, message) {
-            const statusContainer = document.getElementById('storageStatus');
-            let alertClass = '';
-            let icon = '';
-            
-            switch(type) {
-                case 'success':
-                    alertClass = 'alert-success';
-                    icon = '<i class="bi bi-check-circle me-2"></i>';
-                    break;
-                case 'error':
-                    alertClass = 'alert-danger';
-                    icon = '<i class="bi bi-exclamation-triangle me-2"></i>';
-                    break;
-                case 'loading':
-                    alertClass = 'alert-info';
-                    icon = '<i class="bi bi-cloud-arrow-up me-2"></i>';
-                    break;
-                case 'migrated':
-                    alertClass = 'alert-info';
-                    icon = '<i class="bi bi-arrow-repeat me-2"></i>';
-                    break;
-                default:
-                    alertClass = 'alert-info';
-            }
-            
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert ${alertClass} mb-3`;
-            alertDiv.innerHTML = icon + message;
-            
-            if (type === 'success') {
-                alertDiv.classList.add('fade-out');
-            }
-            
-            statusContainer.innerHTML = '';
-            statusContainer.appendChild(alertDiv);
-        }
-        
-        // Certificate state
-        let certificates = {
-            aiBootcamp: Array(9).fill(null),
-            professionalDev: Array(21).fill(null),
-            yesProgram: Array(7).fill(null),
-            cyberSecurity: Array(7).fill(null),
-            foundation: Array(2).fill(null)
-        };
-        
-        // Load certificates on page load
-        async function loadCertificatesData() {
-            try {
-                showStorageStatus("loading", "Loading your certificates...");
-                
-                // First try loading from IndexedDB
-                const dbData = await loadCertificates();
-                
-                if (dbData) {
-                    certificates = dbData;
-                    showStorageStatus("success", "Certificates loaded successfully!");
-                } else {
-                    // Fall back to localStorage if no IndexedDB data
-                    const savedCertificates = localStorage.getItem('portfolioCertificates');
-                    if (savedCertificates) {
-                        const parsedCerts = JSON.parse(savedCertificates);
-                        
-                        // Handle upgrade from 18 to 21 columns if needed
-                        if (parsedCerts.professionalDev && parsedCerts.professionalDev.length === 18) {
-                            parsedCerts.professionalDev = [...parsedCerts.professionalDev, null, null, null];
-                        }
-                        
-                        certificates = parsedCerts;
-                        console.log("Certificates loaded from localStorage");
-                        
-                        // Migrate from localStorage to IndexedDB
-                        await saveCertificates(parsedCerts);
-                        console.log("Certificates migrated from localStorage to IndexedDB");
-                        showStorageStatus("migrated", "Your certificates were migrated to improved storage.");
-                    } else {
-                        showStorageStatus("success", "Ready to add your certificates!");
-                    }
-                }
-            } catch (error) {
-                console.error("Error loading certificates:", error);
-                showStorageStatus("error", "Error loading certificates. Please refresh the page.");
-            }
-            
-            renderCertifications();
-        }
-        
-        // File upload handler
-        function handleFileUpload(section, index) {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = ".pdf,.doc,.docx,.jpg,.jpeg,.png";
-            input.style.display = 'none';
-            
-            input.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                console.log(`Uploading file: ${file.name}, type: ${file.type}, size: ${file.size / (1024 * 1024).toFixed(2)} MB`);
-                
-                // Check file size - 10MB limit for IndexedDB
-                if (file.size > 10 * 1024 * 1024) {
-                    alert('File size exceeds 10MB. Please choose a smaller file or compress it.');
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onloadend = function() {
-                    let fileDataUrl = reader.result;
-                    
-                    // Set correct MIME type for PDF files
-                    let fileType = file.type;
-                    if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
-                        fileType = 'application/pdf';
-                        // Ensure correct MIME type in data URL
-                        if (!fileDataUrl.includes('data:application/pdf')) {
-                            fileDataUrl = fileDataUrl.replace(/^data:.*?;base64,/, 'data:application/pdf;base64,');
-                        }
-                    }
-                    
-                    console.log(`File loaded, type: ${fileType}`);
-                    
-                    certificates[section][index] = {
-                        name: file.name,
-                        file: fileDataUrl,
-                        type: fileType,
-                        timestamp: new Date().getTime(),
-                        fileSize: file.size
-                    };
-                    
-                    showStorageStatus("loading", "Saving your certificates...");
-                    saveCertificates(certificates);
-                    renderCertifications();
-                };
-                
-                reader.onerror = function(error) {
-                    console.error("Error reading file:", error);
-                    alert('Error reading file. Please try again.');
-                };
-                
-                reader.readAsDataURL(file);
-            });
-            
-            document.body.appendChild(input);
-            input.click();
-        }
-        
-        // Remove certificate
-        function handleRemoveCertificate(section, index) {
-            certificates[section][index] = null;
-            showStorageStatus("loading", "Saving your certificates...");
-            saveCertificates(certificates);
-            renderCertifications();
-        }
-        
-        // Title change handler
-        function handleTitleChange(section, index, value) {
-            if (!certificates[section][index]) {
-                certificates[section][index] = { name: value, file: null };
-            } else {
-                certificates[section][index].name = value;
-            }
-            
-            showStorageStatus("loading", "Saving your certificates...");
-            saveCertificates(certificates);
-        }
-        
-        // Function to open PDF in browser
-        function openPdfInBrowser(dataUrl) {
-            try {
-                console.log("Opening PDF with blob URL method");
-                
-                // Extract the base64 data part from the data URL
-                const base64Response = dataUrl.split(',')[1];
-                
-                // Convert base64 to binary
-                const binaryString = window.atob(base64Response);
-                const bytes = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
-                }
-                
-                // Create a blob with PDF MIME type
-                const blob = new Blob([bytes], { type: 'application/pdf' });
-                
-                // Create object URL from blob
-                const blobUrl = URL.createObjectURL(blob);
-                
-                // Open in new tab
-                window.open(blobUrl, '_blank');
-                
-                // Clean up URL object after a delay to ensure browser has time to open it
-                setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-            } catch (error) {
-                console.error("Error opening PDF:", error);
-                alert("There was an error opening the PDF. Please try again.");
-            }
-        }
-        
-        // Render certifications
-        function renderCertifications() {
-            const sections = [
-                { id: 'aiBootcampCerts', section: 'aiBootcamp', count: 9 },
-                { id: 'professionalDevCerts', section: 'professionalDev', count: 21 },
-                { id: 'yesProgramCerts', section: 'yesProgram', count: 7 },
-                { id: 'cyberSecurityCerts', section: 'cyberSecurity', count: 7 },
-                { id: 'foundationCerts', section: 'foundation', count: 2 }
-            ];
-            
-            sections.forEach(({ id, section, count }) => {
-                const container = document.getElementById(id);
-                container.innerHTML = '';
-                
-                for (let i = 0; i < count; i++) {
-                    const cert = certificates[section][i];
-                    const col = document.createElement('div');
-                    col.className = 'col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4';
-                    
-                    col.innerHTML = `
-                        <div class="cert-card h-100 shadow">
-                            <div class="card-body d-flex flex-column">
-                                <div class="cert-content flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center p-3">
-                                    ${cert && cert.file ? `
-                                        <div class="certificate-preview-container mb-3">
-                                            <div class="certificate-preview mb-3">
-                                                ${cert.file.startsWith('data:image') ? `
-                                                    <img src="${cert.file}" alt="Certificate" class="img-fluid rounded">
-                                                ` : `
-                                                    <div class="document-icon">
-                                                        <i class="bi bi-file-earmark-pdf fs-1"></i>
-                                                        <p class="mt-2">PDF Document</p>
-                                                        ${cert.fileSize ? `
-                                                            <small class="text-muted">
-                                                                ${(cert.fileSize / (1024 * 1024)).toFixed(2)} MB
-                                                            </small>
-                                                        ` : ''}
-                                                    </div>
-                                                `}
-                                            </div>
-                                            
-                                            ${cert.file.startsWith('data:image') ? `
-                                                <a href="${cert.file}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-light mt-2">
-                                                    <i class="bi bi-eye me-2"></i> View Image
-                                                </a>
-                                            ` : `
-                                                <div class="d-flex gap-2 justify-content-center w-100">
-                                                    <button class="btn btn-sm btn-outline-light mt-2" onclick="window.certOpenPdf('${cert.file}')">
-                                                        <i class="bi bi-eye me-2"></i> View PDF
-                                                    </button>
-                                                    <a href="${cert.file}" download="${cert.name || 'certificate'}.pdf" class="btn btn-sm btn-outline-primary mt-2">
-                                                        <i class="bi bi-download me-2"></i> Download
-                                                    </a>
-                                                </div>
-                                            `}
-                                        </div>
-                                    ` : `
-                                        <div class="cert-placeholder mb-3">
-                                            <i class="bi bi-file-earmark-plus display-1 text-muted"></i>
-                                            <p class="mt-2 text-muted">Empty Slot</p>
-                                        </div>
-                                    `}
-                                    
-                                    <input type="text" class="form-control bg-dark text-white border-secondary mt-2" 
-                                        placeholder="Enter Certificate Title" 
-                                        value="${(cert && cert.name) || ''}" 
-                                        onchange="window.certTitleChange('${section}', ${i}, this.value)">
-                                </div>
-                                
-                                <div class="button-group mt-3">
-                                    <button class="btn w-100 mb-2" 
-                                        style="background-color: ${buttonColors[section][i % buttonColors[section].length]};"
-                                        onclick="window.certUpload('${section}', ${i})">
-                                        ${cert && cert.file ? 'Replace Document' : 'Upload Document'}
-                                    </button>
-                                    
-                                    ${cert && cert.file ? `
-                                        <button class="btn w-100" 
-                                            style="background-color: ${removeButtonColors[section][i % removeButtonColors[section].length]};"
-                                            onclick="window.certRemove('${section}', ${i})">
-                                            Remove Document
-                                        </button>
-                                    ` : ''}
-                                </div>
-                            </div>
-                        </div>
+                    // Reset form
+                    contactForm.reset();
+                } catch (error) {
+                    // Show error message
+                    alertDiv.classList.remove('d-none', 'alert-success');
+                    alertDiv.classList.add('alert-danger');
+                    alertDiv.innerHTML = 'Sorry, there was an error sending your message. Please try again.';
+                } finally {
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `
+                        <i class="bi bi-send me-2"></i>
+                        Send Message
                     `;
-                    
-                    container.appendChild(col);
                 }
             });
         }
         
-        // Expose functions to window for inline event handlers
-        window.certUpload = handleFileUpload;
-        window.certRemove = handleRemoveCertificate;
-        window.certTitleChange = handleTitleChange;
-        window.certOpenPdf = openPdfInBrowser;
+        // Initialize Map
+        function initMap() {
+            // Johannesburg coordinates
+            const johannesburgPosition = [-26.2041, 28.0473];
+            const myLocation = [-26.2041, 28.0473];
+            
+            // Check if map container exists
+            const mapContainer = document.getElementById('map');
+            if (!mapContainer || mapContainer._leaflet_map) return;
+            
+            // Create map
+            const map = L.map('map').setView(johannesburgPosition, 13);
+            
+            // Add tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // Add marker
+            const marker = L.marker(myLocation).addTo(map);
+            
+            // Add popup to marker
+            marker.bindPopup(`
+                <div>
+                    <h6 class="mb-2">Mandlenkosi Vundla</h6>
+                    <p class="mb-1">
+                        <i class="bi bi-geo-alt me-1"></i>
+                        58 Plinlimmon Road<br />
+                        The Hill, Johannesburg South<br />
+                        2197, South Africa
+                    </p>
+                    <p class="mb-0">
+                        <i class="bi bi-envelope me-1"></i>
+                        <a href="mailto:vundlamandlenkosi0@gmail.com">
+                            vundlamandlenkosi0@gmail.com
+                        </a>
+                    </p>
+                </div>
+            `);
+            
+            // Disable scroll wheel zoom
+            map.scrollWheelZoom.disable();
+        }
         
-        // Initialize certifications when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            if (document.getElementById('certifications')) {
-                loadCertificatesData();
-            }
-        });
-        
-        // Contact Form
-        document.getElementById('contactForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            // In a real app, you would send this data to a server
-            console.log('Form submitted:', { name, email, message });
-            
-            // Show success message
-            alert('Thank you for your message! I will get back to you soon.');
-            
-            // Reset form
-            this.reset();
-        });
+        // Initialize map when contact page is loaded
+        if (document.getElementById('contact')?.classList.contains('active')) {
+            initMap();
+        }
     </script>
 </body>
 </html>
