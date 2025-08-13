@@ -7,8 +7,524 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
-        /* [All your existing CSS styles remain exactly the same] */
-        /* ... (keep all your existing CSS) ... */
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: white;
+            color: #333;
+        }
+        
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            border-right: 1px solid #e0e0e0;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+        }
+        
+        .sidebar-header {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .sidebar-header span {
+            color: var(--primary-color);
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .nav-link {
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 30px;
+            background-color: white;
+        }
+        
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Home Page Styles */
+        .hero-section {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            padding: 50px 0;
+        }
+        
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .hero-text h1 span {
+            display: block;
+            font-size: 24px;
+            font-weight: 400;
+            color: #666;
+        }
+        
+        .hero-text p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f8ff;
+        }
+        
+        .hero-image-container {
+            position: relative;
+        }
+        
+        .hero-image {
+            width: 350px;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .upload-label {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-label:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        #imageUpload {
+            display: none;
+        }
+        
+        /* About Page Styles */
+        .about-layout {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .about-left-column {
+            flex: 1;
+        }
+        
+        .about-right-column {
+            flex: 2;
+        }
+        
+        .about-info-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .about-profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 5px solid #f0f0f0;
+        }
+        
+        .about-info-card h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .about-card-subtitle {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .about-card-contact {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+        
+        .about-card-contact li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .about-main-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .about-right-column p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .get-to-know-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        
+        /* Resume/Contact Page Styles */
+        .resume-layout-pro {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .resume-sidebar-pro {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .resume-main-pro {
+            flex: 2;
+        }
+        
+        .resume-profile-pic {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .resume-name {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .resume-title {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        
+        .resume-section-pro {
+            margin-bottom: 30px;
+        }
+        
+        .resume-section-pro h3 {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .sidebar-section h3 {
+            color: var(--primary-color);
+        }
+        
+        .resume-section-pro p {
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .contact-list-pro {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .contact-list-pro li {
+            margin-bottom: 10px;
+        }
+        
+        .contact-list-pro a {
+            color: #555;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-list-pro a:hover {
+            color: var(--primary-color);
+        }
+        
+        .skills-list-pro {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skills-list-pro li {
+            background-color: #f0f8ff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .experience-item-pro, .education-item-pro {
+            margin-bottom: 25px;
+        }
+        
+        .experience-item-pro h4, .education-item-pro h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .company-info, .institution-info {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .experience-item-pro ul {
+            padding-left: 20px;
+        }
+        
+        .experience-item-pro li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+        
+        /* Certifications Page Styles */
+        .certifications-container {
+            padding: 20px;
+        }
+        
+        .page-title {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .page-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .cert-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            color: #333;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .cert-card {
+            border: 1px solid #ddd;
+            transition: transform 0.3s ease;
+        }
+        
+        .cert-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cert-content {
+            min-height: 200px;
+        }
+        
+        .certificate-preview-container {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-preview img {
+            max-height: 150px;
+            max-width: 100%;
+            border: 1px solid #eee;
+        }
+        
+        .document-icon {
+            text-align: center;
+            color: #666;
+        }
+        
+        .cert-placeholder {
+            text-align: center;
+            color: #999;
+        }
+        
+        .button-group {
+            margin-top: auto;
+        }
+        
+        .fade-out {
+            animation: fadeOut 3s forwards;
+            animation-delay: 2s;
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        /* Contact Page Styles */
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+        }
+        
+        .social-link:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .app-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .about-layout, .resume-layout-pro {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 36px;
+            }
+            
+            .hero-text h1 span {
+                font-size: 20px;
+            }
+            
+            .hero-image {
+                width: 100%;
+                height: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -18,6 +534,7 @@
     <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.15.8/babel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
@@ -227,16 +744,518 @@
             );
         };
 
-        // Certifications Page (Placeholder)
+        // IndexedDB wrapper functions
+        const dbName = "certificatesDB";
+        const dbVersion = 1;
+        const storeName = "certificates";
+
+        // Initialize the database
+        const initDB = () => {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(dbName, dbVersion);
+                
+                request.onerror = event => {
+                    console.error("IndexedDB error:", event.target.error);
+                    reject("Error opening database");
+                };
+                
+                request.onsuccess = event => {
+                    console.log("Database opened successfully");
+                    resolve(event.target.result);
+                };
+                
+                request.onupgradeneeded = event => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(storeName)) {
+                        db.createObjectStore(storeName, { keyPath: "id" });
+                        console.log("Object store created");
+                    }
+                };
+            });
+        };
+
+        // Save certificates to IndexedDB
+        const saveCertificates = async (data) => {
+            try {
+                const db = await initDB();
+                const transaction = db.transaction([storeName], "readwrite");
+                const store = transaction.objectStore(storeName);
+                
+                return new Promise((resolve, reject) => {
+                    // Save with a single key for simplicity
+                    const request = store.put({
+                        id: "userCertificates",
+                        data: data,
+                        lastUpdated: new Date().toISOString()
+                    });
+                    
+                    request.onsuccess = () => {
+                        console.log("Certificates saved to IndexedDB");
+                        resolve(true);
+                    };
+                    
+                    request.onerror = event => {
+                        console.error("Error saving certificates:", event.target.error);
+                        reject(event.target.error);
+                    };
+                    
+                    transaction.oncomplete = () => {
+                        db.close();
+                    };
+                });
+            } catch (error) {
+                console.error("DB transaction error:", error);
+                return false;
+            }
+        };
+
+        // Load certificates from IndexedDB
+        const loadCertificates = async () => {
+            try {
+                const db = await initDB();
+                const transaction = db.transaction([storeName], "readonly");
+                const store = transaction.objectStore(storeName);
+                
+                return new Promise((resolve, reject) => {
+                    const request = store.get("userCertificates");
+                    
+                    request.onsuccess = event => {
+                        const result = event.target.result;
+                        if (result) {
+                            console.log("Certificates loaded from IndexedDB");
+                            resolve(result.data);
+                        } else {
+                            console.log("No certificates found in IndexedDB");
+                            resolve(null);
+                        }
+                    };
+                    
+                    request.onerror = event => {
+                        console.error("Error loading certificates:", event.target.error);
+                        reject(event.target.error);
+                    };
+                    
+                    transaction.oncomplete = () => {
+                        db.close();
+                    };
+                });
+            } catch (error) {
+                console.error("DB transaction error:", error);
+                return null;
+            }
+        };
+
+        // Certifications Page
         const CertificationsPage = () => {
+            const [certificates, setCertificates] = useState({
+                aiBootcamp: Array(9).fill(null),
+                professionalDev: Array(21).fill(null),
+                yesProgram: Array(7).fill(null),
+                cyberSecurity: Array(7).fill(null),
+                foundation: Array(2).fill(null)
+            });
+            
+            const [storageStatus, setStorageStatus] = useState(null);
+            const [storageReady, setStorageReady] = useState(false);
+            
+            // Button colors remain the same
+            const buttonColors = {
+                aiBootcamp: [
+                    '#ff7043', '#ec407a', '#ab47bc', '#5c6bc0', '#29b6f6', '#26a69a', '#9ccc65', '#ffee58', '#ffca28'
+                ],
+                professionalDev: [
+                    '#5c6bc0', '#ec407a', '#66bb6a', '#ffa726', '#42a5f5', '#7e57c2', '#26a69a',
+                    '#d4e157', '#78909c', '#8d6e63', '#ab47bc', '#29b6f6', '#ef5350', '#9ccc65',
+                    '#ffee58', '#ffca28', '#26c6da', '#ff7043', '#ce93d8', '#4db6ac', '#aed581'
+                ],
+                yesProgram: [
+                    '#ffa726', '#ffca28', '#ffee58', '#d4e157', '#9ccc65', '#66bb6a', '#26a69a'
+                ],
+                cyberSecurity: [
+                    '#5c6bc0', '#7e57c2', '#ab47bc', '#ec407a', '#78909c', '#8d6e63', '#212121'
+                ],
+                foundation: [
+                    '#42a5f5', '#29b6f6'
+                ]
+            };
+            
+            // Remove button colors remain the same
+            const removeButtonColors = {
+                aiBootcamp: [
+                    '#d32f2f', '#c2185b', '#7b1fa2', '#303f9f', '#0288d1', '#00796b', '#689f38', '#fdd835', '#ffb300'
+                ],
+                professionalDev: [
+                    '#303f9f', '#c2185b', '#388e3c', '#f57c00', '#1976d2', '#512da8', '#00796b',
+                    '#afb42b', '#546e7a', '#5d4037', '#7b1fa2', '#0288d1', '#d32f2f', '#689f38',
+                    '#fdd835', '#ffb300', '#0097a7', '#e64a19', '#8e24aa', '#00897b', '#558b2f'
+                ],
+                yesProgram: [
+                    '#f57c00', '#ffb300', '#fdd835', '#afb42b', '#689f38', '#388e3c', '#00796b'
+                ],
+                cyberSecurity: [
+                    '#303f9f', '#512da8', '#7b1fa2', '#c2185b', '#546e7a', '#5d4037', '#000000'
+                ],
+                foundation: [
+                    '#1976d2', '#0288d1'
+                ]
+            };
+
+            // Load saved certificates on component mount
+            useEffect(() => {
+                const loadData = async () => {
+                    try {
+                        setStorageStatus("loading");
+                        
+                        // First try loading from IndexedDB
+                        const dbData = await loadCertificates();
+                        
+                        if (dbData) {
+                            setCertificates(dbData);
+                            setStorageStatus("success");
+                        } else {
+                            // Fall back to localStorage if no IndexedDB data
+                            const savedCertificates = localStorage.getItem('portfolioCertificates');
+                            if (savedCertificates) {
+                                const parsedCerts = JSON.parse(savedCertificates);
+                                
+                                // Handle upgrade from 18 to 21 columns if needed
+                                if (parsedCerts.professionalDev && parsedCerts.professionalDev.length === 18) {
+                                    parsedCerts.professionalDev = [...parsedCerts.professionalDev, null, null, null];
+                                }
+                                
+                                setCertificates(parsedCerts);
+                                console.log("Certificates loaded from localStorage");
+                                
+                                // Migrate from localStorage to IndexedDB
+                                await saveCertificates(parsedCerts);
+                                console.log("Certificates migrated from localStorage to IndexedDB");
+                                setStorageStatus("migrated");
+                            } else {
+                                setStorageStatus("empty");
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Error loading certificates:", error);
+                        setStorageStatus("error");
+                    } finally {
+                        setStorageReady(true);
+                    }
+                };
+                
+                loadData();
+            }, []);
+
+            // Save certificates to IndexedDB whenever they change
+            useEffect(() => {
+                if (!storageReady) return;
+                
+                const saveData = async () => {
+                    try {
+                        await saveCertificates(certificates);
+                        setStorageStatus("saved");
+                    } catch (error) {
+                        console.error("Error saving certificates:", error);
+                        setStorageStatus("save-error");
+                        
+                        // Fallback to localStorage if IndexedDB fails
+                        try {
+                            localStorage.setItem('portfolioCertificates', JSON.stringify(certificates));
+                            console.log("Certificates saved to localStorage as fallback");
+                        } catch (localError) {
+                            console.error("Failed to save to localStorage:", localError);
+                        }
+                    }
+                };
+                
+                // Use a debounce to avoid excessive saves
+                const timeoutId = setTimeout(() => {
+                    saveData();
+                }, 1000);
+                
+                return () => clearTimeout(timeoutId);
+            }, [certificates, storageReady]);
+
+            // File upload handler - now with size limit increased to 10MB
+            const handleFileUpload = (section, index) => (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                console.log(`Uploading file: ${file.name}, type: ${file.type}, size: ${file.size / (1024 * 1024).toFixed(2)} MB`);
+                
+                // Check file size - 10MB limit for IndexedDB
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size exceeds 10MB. Please choose a smaller file or compress it.');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    let fileDataUrl = reader.result;
+                    
+                    // Set correct MIME type for PDF files
+                    let fileType = file.type;
+                    if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+                        fileType = 'application/pdf';
+                        // Ensure correct MIME type in data URL
+                        if (!fileDataUrl.includes('data:application/pdf')) {
+                            fileDataUrl = fileDataUrl.replace(/^data:.*?;base64,/, 'data:application/pdf;base64,');
+                        }
+                    }
+                    
+                    console.log(`File loaded, type: ${fileType}`);
+                    
+                    setCertificates(prev => {
+                        const newSection = [...prev[section]];
+                        newSection[index] = {
+                            name: file.name,
+                            file: fileDataUrl,
+                            type: fileType,
+                            timestamp: new Date().getTime(),
+                            fileSize: file.size // Store file size for reference
+                        };
+                        return { ...prev, [section]: newSection };
+                    });
+                    
+                    setStorageStatus("saving");
+                };
+                
+                reader.onerror = (error) => {
+                    console.error("Error reading file:", error);
+                    alert('Error reading file. Please try again.');
+                };
+                
+                reader.readAsDataURL(file);
+            };
+            
+            // Remove certificate handler - remains the same
+            const handleRemoveCertificate = (section, index) => {
+                setCertificates(prev => {
+                    const newSection = [...prev[section]];
+                    newSection[index] = null;
+                    return { ...prev, [section]: newSection };
+                });
+                
+                setStorageStatus("saving");
+            };
+            
+            // Title change handler - remains the same
+            const handleTitleChange = (section, index) => (event) => {
+                setCertificates(prev => {
+                    const newSection = [...prev[section]];
+                    if (!newSection[index]) {
+                        newSection[index] = { name: event.target.value, file: null };
+                    } else {
+                        newSection[index] = { ...newSection[index], name: event.target.value };
+                    }
+                    return { ...prev, [section]: newSection };
+                });
+                
+                setStorageStatus("saving");
+            };
+
+            // Function to open PDF in browser - enhanced for reliability
+            const openPdfInBrowser = (dataUrl) => {
+                try {
+                    console.log("Opening PDF with blob URL method");
+                    
+                    // Extract the base64 data part from the data URL
+                    const base64Response = dataUrl.split(',')[1];
+                    
+                    // Convert base64 to binary
+                    const binaryString = window.atob(base64Response);
+                    const bytes = new Uint8Array(binaryString.length);
+                    for (let i = 0; i < binaryString.length; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    
+                    // Create a blob with PDF MIME type
+                    const blob = new Blob([bytes], { type: 'application/pdf' });
+                    
+                    // Create object URL from blob
+                    const blobUrl = URL.createObjectURL(blob);
+                    
+                    // Open in new tab
+                    window.open(blobUrl, '_blank');
+                    
+                    // Clean up URL object after a delay to ensure browser has time to open it
+                    setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+                } catch (error) {
+                    console.error("Error opening PDF:", error);
+                    alert("There was an error opening the PDF. Please try again.");
+                }
+            };
+
+            // Certificate section renderer - mostly the same with added storage status display
+            const renderCertificateSection = (title, section, count, theme) => {
+                return (
+                    <div className={`cert-section ${theme}-theme mb-5`}>
+                        <h2 className="section-title mb-4 pt-4 px-4">
+                            {title}
+                        </h2>
+                        
+                        <div className="px-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
+                            {Array.from({ length: count }).map((_, index) => {
+                                const cert = certificates[section][index];
+                                return (
+                                    <div key={`${section}-${index}`}>
+                                        <div className="cert-card h-100 shadow" style={{ minHeight: '350px', display: 'flex', flexDirection: 'column' }}>
+                                            <div className="d-flex flex-column p-3" style={{ flex: 1 }}>
+                                                <div className="cert-content flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
+                                                    {cert && cert.file ? (
+                                                        <div className="certificate-preview-container mb-3">
+                                                            <div className="certificate-preview mb-3">
+                                                                {cert.file.startsWith('data:image') ? (
+                                                                    <img src={cert.file} alt="Certificate" className="img-fluid rounded" />
+                                                                ) : (
+                                                                    <div className="document-icon">
+                                                                        <i className="bi bi-file-earmark-pdf fs-1"></i>
+                                                                        <p className="mt-2">PDF Document</p>
+                                                                        {cert.fileSize && (
+                                                                            <small className="text-muted">
+                                                                                {(cert.fileSize / (1024 * 1024)).toFixed(2)} MB
+                                                                            </small>
+                                                                        )}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                            
+                                                            {cert.file.startsWith('data:image') ? (
+                                                                <a 
+                                                                    href={cert.file}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="btn btn-sm btn-outline-primary mt-2"
+                                                                >
+                                                                    <i className="bi bi-eye me-2"></i> View Image
+                                                                </a>
+                                                            ) : (
+                                                                <div className="d-flex gap-2 justify-content-center w-100">
+                                                                    <button
+                                                                        className="btn btn-sm btn-outline-primary mt-2"
+                                                                        onClick={() => openPdfInBrowser(cert.file)}
+                                                                    >
+                                                                        <i className="bi bi-eye me-2"></i> View PDF
+                                                                    </button>
+                                                                    <a
+                                                                        href={cert.file}
+                                                                        download={`${cert.name || 'certificate'}.pdf`}
+                                                                        className="btn btn-sm btn-outline-secondary mt-2"
+                                                                    >
+                                                                        <i className="bi bi-download me-2"></i> Download
+                                                                    </a>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <div className="cert-placeholder mb-3">
+                                                            <i className="bi bi-file-earmark-plus display-1 text-muted"></i>
+                                                            <p className="mt-2 text-muted">Empty Slot</p>
+                                                        </div>
+                                                    )}
+                                                    
+                                                    <input
+                                                        type="text"
+                                                        className="form-control bg-light text-dark border-secondary mt-2"
+                                                        placeholder="Enter Certificate Title"
+                                                        value={(cert && cert.name) || ''}
+                                                        onChange={handleTitleChange(section, index)}
+                                                    />
+                                                </div>
+                                                
+                                                <div className="button-group mt-3">
+                                                    <label
+                                                        htmlFor={`cert-upload-${section}-${index}`}
+                                                        className="btn w-100 mb-2"
+                                                        style={{
+                                                            backgroundColor: buttonColors[section][index % buttonColors[section].length],
+                                                            transition: 'all 0.3s ease'
+                                                        }}
+                                                    >
+                                                        {cert && cert.file ? 'Replace Document' : 'Upload Document'}
+                                                    </label>
+                                                    <input
+                                                        type="file"
+                                                        id={`cert-upload-${section}-${index}`}
+                                                        style={{ display: 'none' }}
+                                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                                        onChange={handleFileUpload(section, index)}
+                                                    />
+                                                    
+                                                    {cert && cert.file && (
+                                                        <button
+                                                            className="btn w-100"
+                                                            style={{
+                                                                backgroundColor: removeButtonColors[section][index % removeButtonColors[section].length],
+                                                                transition: 'all 0.3s ease',
+                                                                color: 'white'
+                                                            }}
+                                                            onClick={() => handleRemoveCertificate(section, index)}
+                                                        >
+                                                            Remove Document
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                );
+            };
+
             return (
                 <div className="app-layout">
                     <Navigation activePage="certifications" />
                     <main className="main-content">
-                        <div className="page-container">
-                            <h1>My Certifications</h1>
-                            <p>This section will display my certifications.</p>
-                            <a href="#home" className="btn btn-primary">Back to Home</a>
+                        <div className="page-container certifications-container">
+                            <h1 className="page-title pt-3">
+                                My Certifications
+                            </h1>
+                            <p className="page-subtitle">
+                                A collection of my professional achievements and qualifications.
+                            </p>
+                            
+                            {/* Storage status indicator */}
+                            {storageStatus === "saving" && (
+                                <div className="alert alert-info mb-3">
+                                    <i className="bi bi-cloud-arrow-up me-2"></i> Saving your certificates...
+                                </div>
+                            )}
+                            
+                            {storageStatus === "saved" && (
+                                <div className="alert alert-success mb-3 fade-out">
+                                    <i className="bi bi-check-circle me-2"></i> All changes saved successfully!
+                                </div>
+                            )}
+                            
+                            {storageStatus === "migrated" && (
+                                <div className="alert alert-info mb-3">
+                                    <i className="bi bi-arrow-repeat me-2"></i> Your certificates were migrated to improved storage.
+                                </div>
+                            )}
+                            
+                            {storageStatus === "save-error" && (
+                                <div className="alert alert-warning mb-3">
+                                    <i className="bi bi-exclamation-triangle me-2"></i> There was an issue saving your data. Your certificates might not persist between sessions.
+                                </div>
+                            )}
+                            
+                            {/* AI Bootcamp Section with Leopard Skin Theme */}
+                            {renderCertificateSection('AI Bootcamp Certification', 'aiBootcamp', 9, 'leopard')}
+                            
+                            {/* Professional Development Section with Waterfall Theme */}
+                            {renderCertificateSection('Professional Development Bootcamp', 'professionalDev', 21, 'waterfall')}
+                            
+                            {/* YES Programme Section with Sun Theme */}
+                            {renderCertificateSection('YES Programme', 'yesProgram', 7, 'sun')}
+                            
+                            {/* Cyber Security Section with Hacker Theme */}
+                            {renderCertificateSection('Cyber Security', 'cyberSecurity', 7, 'hacker')}
+                            
+                            {/* Foundation Section with Sky Theme */}
+                            {renderCertificateSection('My Foundation', 'foundation', 2, 'sky')}
                         </div>
                     </main>
                 </div>
@@ -245,54 +1264,256 @@
 
         // Contact Page
         const ContactPage = () => {
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                subject: '',
+                message: ''
+            });
+            const [showAlert, setShowAlert] = useState(false);
+            const [alertType, setAlertType] = useState('success');
+            const [alertMessage, setAlertMessage] = useState('');
+            const [isSubmitting, setIsSubmitting] = useState(false);
+        
+            // Johannesburg coordinates
+            const johannesburgPosition = [-26.2041, 28.0473]; // The Hill, Johannesburg South
+            const myLocation = [-26.2041, 28.0473]; // 58 Plinlimmon Road, The Hill, Johannesburg South, 2197
+        
+            const handleChange = (e) => {
+                setFormData({
+                    ...formData,
+                    [e.target.name]: e.target.value
+                });
+            };
+        
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setIsSubmitting(true);
+                
+                try {
+                    // Simulate API call - replace with actual contact form API
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // Success
+                    setAlertType('success');
+                    setAlertMessage('Thank you for your message! I\'ll get back to you soon.');
+                    setShowAlert(true);
+                    setFormData({ name: '', email: '', subject: '', message: '' });
+        
+                } catch {
+                    setAlertType('danger');
+                    setAlertMessage('Sorry, there was an error sending your message. Please try again.');
+                    setShowAlert(true);
+                } finally {
+                    setIsSubmitting(false);
+                }
+            };
+        
+            const contactInfo = [
+                {
+                    icon: 'bi-envelope-fill',
+                    title: 'Email',
+                    value: 'vundlamandlenkosi0@gmail.com',
+                    link: 'mailto:vundlamandlenkosi0@gmail.com'
+                },
+                {
+                    icon: 'bi-telephone-fill',
+                    title: 'Phone',
+                    value: '+27 69 309 9649',
+                    link: 'tel:+27693099649'
+                },
+                {
+                    icon: 'bi-whatsapp',
+                    title: 'WhatsApp',
+                    value: '+27 69 309 9649',
+                    link: 'https://wa.me/27693099649'
+                },
+                {
+                    icon: 'bi-geo-alt-fill',
+                    title: 'Location',
+                    value: '58 Plinlimmon Road, The Hill, Johannesburg South, 2197',
+                    link: null
+                }
+            ];
+        
+            const socialLinks = [
+                {
+                    icon: 'bi-github',
+                    name: 'GitHub',
+                    url: 'https://github.com/Vundla'
+                },
+                {
+                    icon: 'bi-linkedin',
+                    name: 'LinkedIn',
+                    url: 'https://www.linkedin.com/in/mandlenkosi-vundla-561666278/'
+                },
+                {
+                    icon: 'bi-twitter',
+                    name: 'Twitter',
+                    url: 'https://twitter.com/'
+                }
+            ];
+        
             return (
                 <div className="app-layout">
                     <Navigation activePage="contact" />
                     <main className="main-content">
                         <div className="page-container">
-                            <div className="resume-layout-pro">
-                                <aside className="resume-sidebar-pro">
-                                    <div className="sidebar-content-wrapper">
-                                        <img src="https://placehold.co/300x300/1e1e1e/ffffff?text=Mandlenkosi" alt="Mandlenkosi Vundla" className="resume-profile-pic" id="resumeProfilePic" />
-                                        <h2 className="resume-name">Mandlenkosi Vundla</h2>
-                                        <p className="resume-title">Software Development Trainee</p>
-                                        
-                                        <div className="resume-section-pro sidebar-section">
-                                            <h3>PROFESSIONAL SUMMARY</h3>
-                                            <p>
-                                                Aspiring Software Engineer specializing in backend development, with hands-on experience in building secure, scalable systems. Currently advancing my skills through the CapaCiTi Tech Career Accelerator, gaining practical expertise in Python, React and Vite, Ruby on Rails, Javascript, Node.js, Express.js, HTML, CSS, Prompts Engineering, AI bootcamp, Cybersecurity Essentials, Flask, SQL, and API development while working on real-world projects.
-                                            </p>
-                                        </div>
-
-                                        <div className="resume-section-pro sidebar-section">
-                                            <h3>CONTACT</h3>
-                                            <ul className="contact-list-pro">
-                                                <li><a href="mailto:vundlamandlenkosi0@gmail.com">vundlamandlenkosi0@gmail.com</a></li>
-                                                <li><a href="tel:+27693099649">069 309 9649</a></li>
-                                                <li><a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a></li>
-                                                <li><a href="https://github.com/Vundla" target="_blank" rel="noopener noreferrer">GitHub Profile</a></li>
-                                            </ul>
+                            <div className="py-4">
+                                <div className="mb-4">
+                                    <div className="text-center">
+                                        <h1 className="display-4 mb-3">Contact Me</h1>
+                                        <p className="lead text-muted">
+                                            Let's discuss opportunities and collaborate on exciting projects
+                                        </p>
+                                    </div>
+                                </div>
+        
+                                <div className="g-4" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1.5rem' }}>
+                                    {/* Contact Information */}
+                                    <div>
+                                        <div className="bg-light p-4 rounded h-100">
+                                            <h3 className="mb-4">Contact Information</h3>
+                                            
+                                            {contactInfo.map((info, index) => (
+                                                <div key={index} className="mb-3">
+                                                    <div className="d-flex align-items-center">
+                                                        <div className="contact-icon me-3" style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--primary-color)', color: 'white', borderRadius: '50%' }}>
+                                                            <i className={`bi ${info.icon}`}></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 className="mb-1">{info.title}</h6>
+                                                            {info.link ? (
+                                                                <a
+                                                                    href={info.link}
+                                                                    className="text-muted"
+                                                                    target={info.link.startsWith('http') ? '_blank' : '_self'}
+                                                                    rel={info.link.startsWith('http') ? 'noopener noreferrer' : ''}
+                                                                >
+                                                                    {info.value}
+                                                                </a>
+                                                            ) : (
+                                                                <p className="mb-0 text-muted">{info.value}</p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+        
+                                            <hr className="my-4" />
+                                            
+                                            <h5 className="mb-3">Follow Me</h5>
+                                            <div className="d-flex gap-3">
+                                                {socialLinks.map((social, index) => (
+                                                    <a
+                                                        key={index}
+                                                        href={social.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="social-link"
+                                                        style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--primary-color)', color: 'white', borderRadius: '50%', textDecoration: 'none' }}
+                                                    >
+                                                        <i className={`bi ${social.icon}`}></i>
+                                                    </a>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
-                                </aside>
-                                <div className="resume-main-pro">
-                                    <div className="resume-section-pro">
-                                        <h3>CONTACT FORM</h3>
-                                        <form>
-                                            <div className="mb-3">
-                                                <label htmlFor="name" className="form-label">Name</label>
-                                                <input type="text" className="form-control" id="name" />
-                                            </div>
-                                            <div className="mb-3">
-                                                <label htmlFor="email" className="form-label">Email</label>
-                                                <input type="email" className="form-control" id="email" />
-                                            </div>
-                                            <div className="mb-3">
-                                                <label htmlFor="message" className="form-label">Message</label>
-                                                <textarea className="form-control" id="message" rows="5"></textarea>
-                                            </div>
-                                            <button type="submit" className="btn btn-primary">Send Message</button>
-                                        </form>
+        
+                                    {/* Contact Form */}
+                                    <div>
+                                        <div className="bg-light p-4 rounded">
+                                            <h3 className="mb-4">Send Me a Message</h3>
+                                            
+                                            {showAlert && (
+                                                <div className={`alert alert-${alertType} mb-3`}>
+                                                    {alertMessage}
+                                                    <button type="button" className="btn-close" onClick={() => setShowAlert(false)}></button>
+                                                </div>
+                                            )}
+        
+                                            <form onSubmit={handleSubmit}>
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                                                    <div>
+                                                        <label className="form-label">Full Name</label>
+                                                        <input
+                                                            type="text"
+                                                            name="name"
+                                                            value={formData.name}
+                                                            onChange={handleChange}
+                                                            required
+                                                            placeholder="Your full name"
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="form-label">Email Address</label>
+                                                        <input
+                                                            type="email"
+                                                            name="email"
+                                                            value={formData.email}
+                                                            onChange={handleChange}
+                                                            required
+                                                            placeholder="your.email@example.com"
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="mb-3">
+                                                    <label className="form-label">Subject</label>
+                                                    <input
+                                                        type="text"
+                                                        name="subject"
+                                                        value={formData.subject}
+                                                        onChange={handleChange}
+                                                        required
+                                                        placeholder="What's this about?"
+                                                        className="form-control"
+                                                    />
+                                                </div>
+                                                
+                                                <div className="mb-4">
+                                                    <label className="form-label">Message</label>
+                                                    <textarea
+                                                        rows={5}
+                                                        name="message"
+                                                        value={formData.message}
+                                                        onChange={handleChange}
+                                                        required
+                                                        placeholder="Tell me about your project or inquiry..."
+                                                        className="form-control"
+                                                    ></textarea>
+                                                </div>
+                                                
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary w-100"
+                                                    disabled={isSubmitting}
+                                                >
+                                                    {isSubmitting ? (
+                                                        <>
+                                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                            Sending Message...
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <i className="bi bi-send me-2"></i>
+                                                            Send Message
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                {/* Map Section */}
+                                <div className="mt-5">
+                                    <div className="bg-light rounded" style={{ overflow: 'hidden' }}>
+                                        <div style={{ height: '400px', width: '100%' }}>
+                                            <div id="map" style={{ height: '100%', width: '100%' }}></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -345,6 +1566,37 @@
 
         // Render the app
         ReactDOM.render(<App />, document.getElementById('app'));
+
+        // Initialize map after component renders
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('map')) {
+                const johannesburgPosition = [-26.2041, 28.0473];
+                const map = L.map('map').setView(johannesburgPosition, 13);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+                
+                L.marker(johannesburgPosition).addTo(map)
+                    .bindPopup(`
+                        <div>
+                            <h6 className="mb-2">Mandlenkosi Vundla</h6>
+                            <p className="mb-1">
+                                <i className="bi bi-geo-alt me-1"></i>
+                                58 Plinlimmon Road<br />
+                                The Hill, Johannesburg South<br />
+                                2197, South Africa
+                            </p>
+                            <p className="mb-0">
+                                <i className="bi bi-envelope me-1"></i>
+                                <a href="mailto:vundlamandlenkosi0@gmail.com">
+                                    vundlamandlenkosi0@gmail.com
+                                </a>
+                            </p>
+                        </div>
+                    `);
+            }
+        });
     </script>
 </body>
 </html>
