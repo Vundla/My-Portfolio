@@ -3,117 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mandlenkosi Vundla - Portfolio</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Mandlenkosi Vundla - Software Engineer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --dark-bg: #0f172a;
-            --sidebar-bg: #1e293b;
-            --primary: #6366f1;
-            --text-light: #f1f5f9;
-            --text-muted: #94a3b8;
-            --leopard-primary: #ff7043;
-            --waterfall-primary: #29b6f6;
-            --sun-primary: #ffca28;
-            --hacker-primary: #66bb6a;
-            --sky-primary: #42a5f5;
+            --brand-dark: #0F172A;
+            --brand-card: #1E293B;
+            --brand-purple: #8B5CF6;
+            --brand-purple-hover: #7C3AED;
+            --text-light: #E2E8F0;
+            --text-muted: #94A3B8;
+            --primary-color: var(--brand-purple);
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: var(--brand-dark);
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-bg: var(--brand-card);
+            --text-primary: var(--text-light);
+            --text-secondary: var(--text-muted);
+            --bg-primary: var(--brand-dark);
+        }
+
+        .theme-ruby {
+            --primary-color: #a11d25;
+            --secondary-color: #5b0000;
+            --accent-color: #d10010;
+            --dark-color: #2b0e0e;
+            --text-light: #ffffff;
+            --text-muted: #cccccc;
+            --card-bg: #3a0f0f;
+            --bg-primary: #2b0e0e;
+        }
+
+        .theme-blue {
+            --primary-color: #2563eb;
+            --secondary-color: #1d4ed8;
+            --accent-color: #60a5fa;
+            --dark-color: #1e3a8a;
+            --card-bg: #1e293b;
+            --bg-primary: #0f172a;
+        }
+
+        .theme-green {
+            --primary-color: #059669;
+            --secondary-color: #047857;
+            --accent-color: #34d399;
+            --dark-color: #064e3b;
+            --card-bg: #1c4532;
+            --bg-primary: #022c22;
+        }
+
+        .theme-orange {
+            --primary-color: #ea580c;
+            --secondary-color: #c2410c;
+            --accent-color: #fdba74;
+            --dark-color: #7c2d12;
+            --card-bg: #422006;
+            --bg-primary: #431407;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
         }
         
-        /* Sidebar Styles */
-        .sidebar {
-            width: 280px;
-            background-color: var(--sidebar-bg);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid #334155;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: var(--gradient);
+            color: var(--text-light);
+            padding: 1rem 0;
             position: sticky;
             top: 0;
-            height: 100vh;
-            overflow-y: auto;
+            z-index: 100;
+            box-shadow: var(--shadow);
         }
         
-        .sidebar-header {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 2rem;
-            color: white;
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
-        .sidebar-header span {
-            color: var(--primary);
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
         }
         
-        .sidebar-nav {
-            flex-grow: 1;
+        .logo span {
+            color: var(--accent-color);
         }
         
-        .nav-link {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: var(--text-muted);
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-light);
             text-decoration: none;
-            border-radius: 0.5rem;
-            margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            position: relative;
         }
         
-        .nav-link:hover, .nav-link.active {
+        .nav-links a:hover, .nav-links a.active {
             background-color: rgba(255, 255, 255, 0.1);
-            color: white;
         }
         
-        .nav-link.active {
-            color: var(--primary);
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--accent-color);
+            transition: var(--transition);
         }
         
-        .sidebar-footer {
-            margin-top: auto;
-            padding-top: 2rem;
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 80%;
+            left: 10%;
+        }
+        
+        .theme-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .theme-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+        }
+        
+        .hero {
+            padding: 5rem 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-light);
+            text-align: center;
+            position: relative;
+        }
+        
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-img-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid var(--secondary-color);
+            object-fit: cover;
+            background-color: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: var(--primary-color);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+        
+        .profile-img:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+        }
+        
+        .upload-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .upload-overlay:hover {
+            transform: scale(1.1);
+            background: var(--accent-color);
+        }
+        
+        .profile h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .profile p {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--text-secondary);
         }
         
         .social-links {
             display: flex;
             gap: 1rem;
-            justify-content: center;
+            margin-top: 1rem;
         }
         
         .social-links a {
-            color: var(--text-muted);
-            font-size: 1.25rem;
-            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
         }
         
         .social-links a:hover {
-            color: white;
+            transform: translateY(-5px);
+            background-color: var(--primary-color);
+            color: var(--text-light);
         }
         
-        /* Main Content Styles */
-        .main-content {
-            flex-grow: 1;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-        
-        /* Page Transitions */
-        .page {
+        .tab-content {
             display: none;
+            padding: 4rem 0;
+            min-height: 60vh;
         }
         
-        .page.active {
+        .tab-content.active {
             display: block;
             animation: fadeIn 0.5s ease;
         }
@@ -123,1172 +312,1040 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Profile Image Upload */
-        .profile-image-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 1rem;
-            cursor: pointer;
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
         }
         
-        .profile-image {
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+        }
+        
+        .section-title p {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 1rem auto 0;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .about-text h2, .skills h2, .certificates h2, .projects h2, .contact h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .about-text h2:after, .skills h2:after, .certificates h2:after, .projects h2:after, .contact h2:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--gradient);
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .skill-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .skill-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .skill-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .skill-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .skill-card p {
+            color: var(--text-secondary);
+        }
+        
+        .certificates-section {
+            margin-top: 3rem;
+        }
+        
+        .upload-area {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 3rem;
+            text-align: center;
+            border: 2px dashed var(--text-muted);
+            transition: var(--transition);
+        }
+        
+        .upload-area:hover {
+            border-color: var(--secondary-color);
+        }
+        
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .certificate-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .certificate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .certificate-img {
+            height: 200px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--text-light);
+        }
+        
+        .certificate-details {
+            padding: 1.5rem;
+        }
+        
+        .certificate-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .project-img {
+            height: 200px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--text-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--primary);
-            transition: all 0.3s ease;
-        }
-        
-        .upload-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            text-align: center;
-            padding: 0.5rem;
-            font-size: 0.8rem;
-            cursor: pointer;
+            background: rgba(0, 0, 0, 0.2);
             opacity: 0;
-            transition: opacity 0.3s ease;
-            border-bottom-left-radius: 75px;
-            border-bottom-right-radius: 75px;
+            transition: var(--transition);
         }
         
-        .profile-image-container:hover .upload-label {
+        .project-card:hover .project-img::before {
             opacity: 1;
         }
         
-        .profile-image-container:hover .profile-image {
-            transform: scale(1.05);
+        .project-details {
+            padding: 1.5rem;
         }
         
-        /* Resume Page Enhancements */
-        .resume-card {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 0.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
         }
         
-        .resume-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        .project-tag {
+            background-color: var(--dark-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
         }
         
-        .resume-card h4 {
-            color: var(--primary);
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary);
-            margin-bottom: 1rem;
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
         }
         
-        .resume-card ul {
-            padding-left: 1.5rem;
-        }
-        
-        .resume-card li {
-            margin-bottom: 0.5rem;
-        }
-        
-        /* Certification Page Styles */
-        .cert-section {
-            margin-bottom: 3rem;
-            background: rgba(30, 41, 59, 0.5);
-            border-radius: 0.5rem;
-            overflow: hidden;
-        }
-        
-        .leopard-theme .section-title {
-            color: var(--leopard-primary);
-            border-bottom-color: var(--leopard-primary);
-        }
-        
-        .waterfall-theme .section-title {
-            color: var(--waterfall-primary);
-            border-bottom-color: var(--waterfall-primary);
-        }
-        
-        .sun-theme .section-title {
-            color: var(--sun-primary);
-            border-bottom-color: var(--sun-primary);
-        }
-        
-        .hacker-theme .section-title {
-            color: var(--hacker-primary);
-            border-bottom-color: var(--hacker-primary);
-        }
-        
-        .sky-theme .section-title {
-            color: var(--sky-primary);
-            border-bottom-color: var(--sky-primary);
-        }
-        
-        .section-title {
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary);
-        }
-        
-        .cert-card {
-            height: 100%;
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .cert-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .cert-placeholder {
-            text-align: center;
+        .contact-info {
+            background-color: var(--card-bg);
             padding: 2rem;
-            color: var(--text-muted);
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
         }
         
-        .cert-placeholder i {
-            font-size: 3rem;
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-detail i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+            width: 30px;
+        }
+        
+        .contact-form {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--text-muted);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--dark-color);
+            color: var(--text-primary);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .map {
+            height: 300px;
+            background-color: var(--dark-color);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--gradient);
+            color: var(--text-light);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #27ae60);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color), #e67e22);
+        }
+        
+        .upload-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .upload-column {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-column:hover {
+            transform: translateY(-5px);
+        }
+        
+        .upload-column-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
             margin-bottom: 1rem;
         }
         
-        .certificate-preview-container {
-            width: 100%;
+        .upload-column.active {
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            color: var(--text-light);
+            background-color: var(--success-color);
+            box-shadow: var(--card-shadow);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background-color: var(--accent-color);
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: var(--text-light);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         
-        .certificate-preview {
-            max-width: 100%;
-            max-height: 200px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 0.25rem;
-        }
-        
-        .certificate-preview img {
-            max-width: 100%;
-            max-height: 200px;
-            object-fit: contain;
-        }
-        
-        .document-icon {
-            text-align: center;
-            padding: 1rem;
-        }
-        
-        .fade-out {
-            animation: fadeOut 3s ease forwards;
-            animation-delay: 2s;
-        }
-        
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                height: 0;
-                padding: 0;
-                margin: 0;
-                border: 0;
-            }
-        }
-        
-        /* Project Page Styles */
-        .project-card {
-            height: 100%;
-            transition: transform 0.3s ease;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        /* Contact Form Styles */
-        .contact-form .form-control {
-            background-color: #1e293b;
-            border-color: #334155;
-            color: white;
-        }
-        
-        .contact-form .form-control:focus {
-            background-color: #1e293b;
-            border-color: var(--primary);
-            color: white;
-            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
-        }
-        
-        /* Responsive Adjustments */
-        @media (max-width: 992px) {
-            body {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                padding: 1rem;
-                height: auto;
-                position: relative;
-            }
-            
-            .sidebar-nav {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-            
-            .nav-link {
-                margin-bottom: 0;
-            }
-            
-            .main-content {
-                padding: 1rem;
-            }
-        }
-        
-        /* Typography Enhancements */
-        h1, h2, h3, h4, h5, h6 {
-            font-weight: 600;
-        }
-        
-        .display-4 {
+        .footer-logo {
+            font-size: 2rem;
             font-weight: 700;
+            margin-bottom: 1rem;
         }
         
-        .lead {
-            font-weight: 400;
-            color: var(--text-muted);
+        .footer-logo span {
+            color: var(--accent-color);
         }
         
-        /* Button Enhancements */
-        .btn {
-            font-weight: 500;
-            transition: all 0.3s ease;
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            margin: 1.5rem 0;
         }
         
-        .btn-primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
         }
         
-        .btn-primary:hover {
-            background-color: #4f46e5;
-            border-color: #4f46e5;
+        .footer-links a:hover {
+            color: var(--secondary-color);
         }
         
-        .btn-outline-light:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Card Enhancements */
-        .card {
-            border: 1px solid #334155;
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            border-color: var(--primary);
-        }
-        
-        /* Animation Enhancements */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
+        @media (max-width: 768px) {
+            .about-content, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .upload-columns {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile h1 {
+                font-size: 2.2rem;
+            }
+            
+            .profile p {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
-<body>
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            MV<span>.</span>
+<body class="theme-ruby">
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">M.Vundla <span>|</span> Software Engineer</div>
+                <ul class="nav-links">
+                    <li><a href="#about" class="nav-link active" data-tab="about">About Me</a></li>
+                    <li><a href="#certificates" class="nav-link" data-tab="certificates">Certificates</a></li>
+                    <li><a href="#projects" class="nav-link" data-tab="projects">Projects</a></li>
+                    <li><a href="#contact" class="nav-link" data-tab="contact">Contact</a></li>
+                    <li class="theme-selector">
+                        <button class="theme-btn" onclick="changeTheme('default')" title="Default Theme">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <button class="theme-btn" onclick="changeTheme('ruby')" title="Ruby Theme">
+                            <i class="fas fa-gem"></i>
+                        </button>
+                        <button class="theme-btn" onclick="changeTheme('blue')" title="Blue Theme">
+                            <i class="fas fa-palette"></i>
+                        </button>
+                        <button class="theme-btn" onclick="changeThemeRandom()" title="Random Theme">
+                            <i class="fas fa-random"></i>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
         </div>
-        <nav class="sidebar-nav">
-            <a href="#" class="nav-link active" data-page="home">Home</a>
-            <a href="#" class="nav-link" data-page="about">About</a>
-            <a href="#" class="nav-link" data-page="resume">Resume</a>
-            <a href="#" class="nav-link" data-page="projects">Projects</a>
-            <a href="#" class="nav-link" data-page="certifications">Certifications</a>
-            <a href="#" class="nav-link" data-page="contact">Contact</a>
-        </nav>
-        <div class="sidebar-footer">
-            <div class="social-links">
-                <a href="https://x.com/Mandlenkos47988" target="_blank"><i class="bi bi-twitter-x"></i></a>
-                <a href="https://github.com/Vundla" target="_blank"><i class="bi bi-github"></i></a>
-                <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank"><i class="bi bi-linkedin"></i></a>
-            </div>
-        </div>
-    </aside>
+    </header>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-        <!-- Home Page -->
-        <div id="home" class="page active">
-            <div class="container">
-                <div class="row align-items-center" style="min-height: 80vh;">
-                    <div class="col-lg-6">
-                        <h1 class="display-4 fw-bold mb-3">Mandlenkosi Vundla</h1>
-                        <h2 class="text-primary mb-4">Software Developer</h2>
-                        <p class="lead mb-4">
-                            My passion for coding has evolved into a deep interest in backend development, where I thrive on building smart, scalable systems. Recently, I've fully integrated AI into my workflow, blending logic and intelligence to build more dynamic and powerful applications.
-                        </p>
-                        <div class="d-flex gap-3">
-                            <a href="#" class="btn btn-primary" data-page="projects">View My Work</a>
-                            <a href="#" class="btn btn-outline-light" data-page="contact">Get In Touch</a>
-                        </div>
+    <section class="hero">
+        <div class="container">
+            <div class="profile">
+                <div class="profile-img-container">
+                    <div class="profile-img" id="profile-image">
+                        <i class="fas fa-user"></i>
                     </div>
-                    <div class="col-lg-6 text-center">
-                        <div class="profile-image-container">
-                            <img src="https://placehold.co/350x450/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="profileImage">
-                            <label for="imageUpload" class="upload-label">Click to upload</label>
-                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-                        </div>
+                    <div class="upload-overlay" onclick="document.getElementById('profile-upload').click()">
+                        <i class="fas fa-camera"></i>
                     </div>
+                    <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+                </div>
+                <h1>Mandlenkosi Vundla</h1>
+                <p>Backend Specialist & Software Development Trainee</p>
+                <p class="tagline">"Transforming ideas into scalable digital solutions with robust backend architecture and cutting-edge technology."</p>
+                <div class="social-links">
+                    <a href="https://github.com/Vundla" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="mailto:vundlamandlenkosi0@gmail.com" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- About Page -->
-        <div id="about" class="page">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 mb-4">
-                        <div class="card bg-dark border-primary h-100">
-                            <div class="card-body text-center">
-                                <div class="profile-image-container mb-3">
-                                    <img src="https://placehold.co/150x150/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="aboutProfileImage">
-                                    <label for="aboutImageUpload" class="upload-label">Upload</label>
-                                    <input type="file" id="aboutImageUpload" accept="image/*" style="display: none;">
-                                </div>
-                                <h3>Mandlenkosi Vundla</h3>
-                                <p class="text-muted">Software Development Trainee</p>
-                                <ul class="list-unstyled text-start mt-4">
-                                    <li class="mb-2"><i class="bi bi-envelope me-2"></i>mandlenkosi.vundla@capaciti.org.za</li>
-                                    <li class="mb-2"><i class="bi bi-phone me-2"></i>+27 69 309 9649</li>
-                                    <li><i class="bi bi-geo-alt me-2"></i>Johannesburg, South Africa</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8">
-                        <a href="#" class="btn btn-primary mb-4" data-page="contact">Get to Know Me</a>
-                        <h1 class="mb-4">Passionate About Creating Digital Experiences</h1>
-                        <p class="mb-4">
-                            Hey there, I'm Mandlenkosi Vundla — a Software Development Trainee with a passion for innovation, growth, and building digital experiences that actually mean something. I believe that tech should empower, uplift, and connect people — not just dazzle them.
-                        </p>
-                        <p>
-                            My path wasn't linear — and that's my edge. Through grit, late nights, self-taught lessons, and eventually formal training through CapaCiTi's Tech Career Accelerator, I've developed real-world skills in Python, JavaScript, Flask, Node.js, React, and C#, with solid experience in full-stack web development, database design, and cloud integration.
-                        </p>
-                    </div>
-                </div>
+    <main class="container">
+        <!-- About Tab -->
+        <div id="about" class="tab-content active">
+            <div class="section-title">
+                <h2>About Me</h2>
+                <p>Get to know my journey, skills, and passion for software engineering</p>
             </div>
-        </div>
-
-        <!-- Resume Page -->
-        <div id="resume" class="page">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 mb-4">
-                        <div class="card resume-card h-100">
-                            <div class="card-body">
-                                <div class="text-center mb-4">
-                                    <div class="profile-image-container" style="width: 150px; height: 150px; margin: 0 auto;">
-                                        <img src="https://placehold.co/300x300/1e1e1e/ffffff?text=Mandlenkosi" alt="Profile" class="profile-image" id="resumeProfileImage">
-                                        <label for="resumeImageUpload" class="upload-label">Upload</label>
-                                        <input type="file" id="resumeImageUpload" accept="image/*" style="display: none;">
-                                    </div>
-                                </div>
-                                <h2 class="text-center">Mandlenkosi Vundla</h2>
-                                <p class="text-center text-muted mb-4">Software Development Trainee</p>
-                                
-                                <h4>PROFESSIONAL SUMMARY</h4>
-                                <p class="small">
-                                    Aspiring Software Engineer specializing in backend development, with hands-on experience in building secure, scalable systems. Currently advancing my skills through the CapaCiTi Tech Career Accelerator.
-                                </p>
-                                
-                                <h4 class="mt-4">CONTACT</h4>
-                                <ul class="list-unstyled small">
-                                    <li class="mb-2"><a href="mailto:vundlamandlenkosi0@gmail.com" class="text-white">vundlamandlenkosi0@gmail.com</a></li>
-                                    <li class="mb-2"><a href="tel:+27693099649" class="text-white">069 309 9649</a></li>
-                                    <li class="mb-2"><a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" class="text-white">LinkedIn Profile</a></li>
-                                    <li><a href="https://github.com/Vundla" target="_blank" class="text-white">GitHub Profile</a></li>
-                                </ul>
-                            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>My Journey</h2>
+                    <p>I am a passionate Software Engineer specializing in backend development with a strong foundation in computer science principles and software engineering methodologies. Currently, I'm expanding my skills as a Software Development Trainee at UVU AFRICA CAPACITI.</p>
+                    <p>My journey in software engineering began with a focus on backend systems, where I developed expertise in creating efficient, scalable, and secure server-side applications. I believe that robust backend systems are the foundation of any successful digital product.</p>
+                    <p>At CAPACITI, I've had the opportunity to work with a diverse technology stack including HTML, React, Vite, Ruby, Angular, JavaScript, Python, Node.js, Flask, and MariaDB. I've also gained experience with containerization using Podman.</p>
+                    <p>I'm now confident in my ability to build full-stack applications and tackle any development challenge that comes my way.</p>
+                </div>
+                <div class="skills">
+                    <h2>What is Software Engineering?</h2>
+                    <p>Software engineering is a structured approach to designing, developing, and maintaining software systems. It combines computer science, engineering principles, and problem-solving to create efficient and reliable software that meets user needs.</p>
+                    <p>Software engineers ensure that applications are scalable, secure, and maintainable. They focus on system design, code quality, testing, and deployment. Their work is essential to sustaining modern digital infrastructure across industries like healthcare, finance, education, and entertainment.</p>
+                    <h2>My Skills</h2>
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <i class="fab fa-js"></i>
+                            <h3>JavaScript</h3>
+                            <p>Advanced knowledge of JS and Node.js</p>
                         </div>
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="card resume-card h-100">
-                            <div class="card-body">
-                                <h4>SKILLS</h4>
-                                <ul class="mb-4">
-                                    <li>Backend development (Python, Flask)</li>
-                                    <li>Backend development (Ruby on Rails and Node.js, Express.js)</li>
-                                    <li>Frontend development (React and Vite)</li>
-                                    <li>Frontend development (HTML, CSS, Javascript)</li>
-                                    <li>API design and integration (RESTful APIs)</li>
-                                    <li>Database management (MySQL, SQLite)</li>
-                                    <li>Authentication and authorisation systems</li>
-                                    <li>Version control (Git, GitHub)</li>
-                                </ul>
-                                
-                                <h4>WORK EXPERIENCE</h4>
-                                <div class="mb-4">
-                                    <h5>Software Development Trainee</h5>
-                                    <p class="text-muted">CapaCiTi | April 2025 - Present</p>
-                                    <ul>
-                                        <li>Design, develop, and maintain backend systems and APIs.</li>
-                                        <li>Work with databases to store, retrieve, and manage data securely.</li>
-                                        <li>Collaborate with team members to deliver project requirements.</li>
-                                    </ul>
-                                </div>
-                                
-                                <h4>EDUCATION</h4>
-                                <div class="mb-2">
-                                    <h5>Certificate In Software Engineering Backend</h5>
-                                    <p class="text-muted">ALX AFRICA | 2023 - 2024</p>
-                                </div>
-                                <div>
-                                    <h5>AI & Professional Development Certifications</h5>
-                                    <p class="text-muted">Coursera</p>
-                                </div>
-                            </div>
+                        <div class="skill-card">
+                            <i class="fab fa-python"></i>
+                            <h3>Python</h3>
+                            <p>Flask, Django, and data processing</p>
+                        </div>
+                        <div class="skill-card">
+                            <i class="fas fa-database"></i>
+                            <h3>Databases</h3>
+                            <p>MariaDB, MySQL, MongoDB</p>
+                        </div>
+                        <div class="skill-card">
+                            <i class="fab fa-docker"></i>
+                            <h3>Containerization</h3>
+                            <p>Podman, Docker</p>
+                        </div>
+                        <div class="skill-card">
+                            <i class="fab fa-node-js"></i>
+                            <h3>Node.js & Express</h3>
+                            <p>Server-side JavaScript runtime</p>
+                        </div>
+                        <div class="skill-card">
+                            <i class="fab fa-react"></i>
+                            <h3>React & Vite</h3>
+                            <p>Modern frontend development</p>
+                        </div>
+                        <div class="skill-card">
+                            <i class="fab fa-angular"></i>
+                            <h3>Angular</h3>
+                            <p>Platform for web applications</p>
+                        </div>
+                        <div class="skill-card">
+                            <i class="fas fa-gem"></i>
+                            <h3>Ruby on Rails</h3>
+                            <p>Web application framework</p>
+                        </div>
+                        <div class="skill-card">
+                            <i class="fab fa-vuejs"></i>
+                            <h3>Vue.js</h3>
+                            <p>Progressive JavaScript framework</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Projects Page -->
-        <div id="projects" class="page">
-            <div class="container">
-                <h1 class="mb-4">My Projects</h1>
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                    <!-- Project cards will be added here by JavaScript -->
-                </div>
+        <!-- Certificates Tab -->
+        <div id="certificates" class="tab-content">
+            <div class="section-title">
+                <h2>My Certificates</h2>
+                <p>Upload and manage your professional certifications (PDF format only)</p>
+            </div>
+            
+            <div class="upload-area">
+                <h3>Upload New Certificate</h3>
+                <p>Select a PDF file to upload to one of the available slots</p>
+                <input type="file" id="certificate-upload" accept=".pdf">
+                <button class="btn" onclick="uploadCertificate()">Upload Certificate</button>
+                <p id="selected-slot-info">No slot selected</p>
+            </div>
+            
+            <div class="upload-columns" id="certificates-container">
+                <!-- 35 certificate slots will be generated here -->
             </div>
         </div>
 
-        <!-- Certifications Page -->
-        <div id="certifications" class="page">
-            <div class="container-fluid">
-                <h1 class="page-title pt-3">My Certifications</h1>
-                <p class="page-subtitle">A collection of my professional achievements and qualifications.</p>
-                
-                <!-- Storage status indicator -->
-                <div id="storageStatus"></div>
-                
-                {/* AI Bootcamp Section with Leopard Skin Theme */}
-                <div class="cert-section leopard-theme mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">AI Bootcamp Certification</h2>
-                    <div class="row px-3" id="aiBootcampCerts">
-                        <!-- Certifications will be added here by JavaScript -->
-                    </div>
+        <!-- Projects Tab -->
+        <div id="projects" class="tab-content">
+            <div class="section-title">
+                <h2>My Projects</h2>
+                <p>Showcase of my work with links to live projects and repositories</p>
+            </div>
+            
+            <div class="upload-area">
+                <h3>Add New Project</h3>
+                <div class="form-group">
+                    <input type="text" id="project-title" class="form-control" placeholder="Project Title">
                 </div>
-                
-                {/* Professional Development Section with Waterfall Theme */}
-                <div class="cert-section waterfall-theme mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">Professional Development Bootcamp</h2>
-                    <div class="row px-3" id="professionalDevCerts">
-                        <!-- Certifications will be added here by JavaScript -->
-                    </div>
+                <div class="form-group">
+                    <input type="text" id="project-link" class="form-control" placeholder="Project URL">
                 </div>
-                
-                {/* YES Programme Section with Sun Theme */}
-                <div class="cert-section sun-theme mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">YES Programme</h2>
-                    <div class="row px-3" id="yesProgramCerts">
-                        <!-- Certifications will be added here by JavaScript -->
-                    </div>
+                <div class="form-group">
+                    <textarea id="project-desc" class="form-control" placeholder="Project Description"></textarea>
                 </div>
-                
-                {/* Cyber Security Section with Hacker Theme */}
-                <div class="cert-section hacker-theme mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">Cyber Security</h2>
-                    <div class="row px-3" id="cyberSecurityCerts">
-                        <!-- Certifications will be added here by JavaScript -->
-                    </div>
+                <div class="form-group">
+                    <input type="text" id="project-tags" class="form-control" placeholder="Technologies used (comma separated)">
                 </div>
-                
-                {/* Foundation Section with Sky Theme */}
-                <div class="cert-section sky-theme mb-5">
-                    <h2 class="section-title mb-4 pt-4 px-4">My Foundation</h2>
-                    <div class="row px-3" id="foundationCerts">
-                        <!-- Certifications will be added here by JavaScript -->
-                    </div>
-                </div>
+                <button class="btn" onclick="addProject()">Add Project</button>
+            </div>
+            
+            <div class="projects-grid" id="projects-container">
+                <!-- Projects will be dynamically added here -->
             </div>
         </div>
 
-        <!-- Contact Page -->
-        <div id="contact" class="page">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 mb-4">
-                        <div class="card bg-dark border-primary h-100">
-                            <div class="card-body">
-                                <h3 class="mb-4">Contact Information</h3>
-                                <ul class="list-unstyled">
-                                    <li class="mb-3"><i class="bi bi-envelope me-2"></i>mandlenkosi.vundla@capaciti.org.za</li>
-                                    <li class="mb-3"><i class="bi bi-phone me-2"></i>+27 69 309 9649</li>
-                                    <li><i class="bi bi-geo-alt me-2"></i>Johannesburg, South Africa</li>
-                                </ul>
-                                
-                                <h5 class="mt-4 mb-3">Follow Me</h5>
-                                <div class="d-flex gap-3">
-                                    <a href="https://x.com/Mandlenkos47988" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-twitter-x"></i></a>
-                                    <a href="https://github.com/Vundla" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-github"></i></a>
-                                    <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" class="btn btn-outline-light rounded-circle"><i class="bi bi-linkedin"></i></a>
-                                </div>
-                            </div>
+        <!-- Contact Tab -->
+        <div id="contact" class="tab-content">
+            <div class="section-title">
+                <h2>Contact Me</h2>
+                <p>Get in touch for collaborations or opportunities</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <div class="contact-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Address</h4>
+                            <p>58 Plinlimmon Road, The Hill, Johannesburg, 2197</p>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="card bg-dark border-primary h-100">
-                            <div class="card-body">
-                                <h3 class="mb-4">Send Me a Message</h3>
-                                <form id="contactForm" class="contact-form">
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Your Name</label>
-                                        <input type="text" class="form-control" id="name" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" id="email" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="message" class="form-label">Message</label>
-                                        <textarea class="form-control" id="message" rows="5" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">Send Message</button>
-                                </form>
-                            </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Personal Email</h4>
+                            <p>vundlamandlenkosi0@gmail.com</p>
                         </div>
                     </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Work Email</h4>
+                            <p>mandlenkosi.vundla@capaciti.org.za</p>
+                        </div>
+                    </div>
+                    <div class="social-links" style="margin-top: 2rem; justify-content: flex-start;">
+                        <a href="https://github.com/Vundla" target="_blank" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="mailto:vundlamandlenkosi0@gmail.com" title="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Send Message</h3>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Your Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Subject">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Your Message"></textarea>
+                    </div>
+                    <button class="btn">Send Message</button>
+                </div>
+            </div>
+            <div class="map">
+                <!-- Map placeholder - you would integrate a real map API here -->
+                <div style="width: 100%; height: 100%; background: var(--dark-color); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                    <i class="fas fa-map-marked-alt" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                    <p>Map would be displayed here (58 Plinlimmon Road, The Hill, Johannesburg, 2197)</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Page Navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remove active class from all links
-                document.querySelectorAll('.nav-link').forEach(el => {
-                    el.classList.remove('active');
-                });
-                
-                // Add active class to clicked link
-                this.classList.add('active');
-                
-                // Hide all pages
-                document.querySelectorAll('.page').forEach(page => {
-                    page.classList.remove('active');
-                });
-                
-                // Show selected page
-                const pageId = this.getAttribute('data-page');
-                document.getElementById(pageId).classList.add('active');
-                
-                // Scroll to top
-                window.scrollTo(0, 0);
-            });
-        });
-        
-        // Profile Image Upload
-        function handleImageUpload(inputId, imageId) {
-            const input = document.getElementById(inputId);
-            const image = document.getElementById(imageId);
-            
-            input.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        image.src = event.target.result;
-                        localStorage.setItem(imageId, event.target.result);
-                        
-                        // Update all profile images if this is the main one
-                        if (inputId === 'imageUpload') {
-                            document.getElementById('aboutProfileImage').src = event.target.result;
-                            document.getElementById('resumeProfileImage').src = event.target.result;
-                            localStorage.setItem('aboutProfileImage', event.target.result);
-                            localStorage.setItem('resumeProfileImage', event.target.result);
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-        
-        // Set up image upload handlers
-        handleImageUpload('imageUpload', 'profileImage');
-        handleImageUpload('aboutImageUpload', 'aboutProfileImage');
-        handleImageUpload('resumeImageUpload', 'resumeProfileImage');
-        
-        // Load saved profile images
-        if (localStorage.getItem('profileImage')) {
-            document.getElementById('profileImage').src = localStorage.getItem('profileImage');
-            document.getElementById('aboutProfileImage').src = localStorage.getItem('profileImage');
-            document.getElementById('resumeProfileImage').src = localStorage.getItem('profileImage');
-        }
-        
-        // Projects Data
-        const projects = [
-            {
-                title: "AI Sentiment Analyzer",
-                description: "An application that analyzes sentiment in text using AI algorithms.",
-                github: "https://github.com/vundla/ai-sentiment-analyzer",
-                live: "https://vundla.github.io/ai-sentiment-analyzer/",
-                tags: ["AI", "NLP", "React"]
-            },
-            {
-                title: "Azanian AI Agent",
-                description: "Interactive AI agent for customer support and information retrieval.",
-                github: "https://github.com/yourusername/azanian-ai-agent2",
-                live: "https://landbot.online/v3/H-2934706-7M0LMF0MKRD9B5FG/index.html",
-                tags: ["Chatbot", "AI", "Landbot"]
-            },
-            {
-                title: "AI Resume Builder",
-                description: "Tool that helps create professional resumes using AI suggestions.",
-                github: "https://github.com/vundla/ai-resume-builder",
-                live: "https://vundla.github.io/ai-resume-builder/",
-                tags: ["AI", "Resume", "Productivity"]
-            },
-            {
-                title: "Generative AI Agent",
-                description: "Creative AI agent that generates text, images, and ideas.",
-                github: "https://github.com/vundla/My_Generative_AI_Project",
-                live: "https://vundla.github.io/My_Generative_AI_Project/",
-                tags: ["Generative AI", "Creative", "ML"]
-            },
-            {
-                title: "AI Study Assistant",
-                description: "Smart learning companion that helps with studying and research.",
-                github: "https://github.com/yourusername/ai-study-assistance",
-                live: "https://smart-learning-assistant-henna.vercel.app/",
-                tags: ["Education", "AI", "Learning"]
-            }
-        ];
-        
-        // Render Projects
-        const projectsContainer = document.querySelector('#projects .row');
-        projects.forEach(project => {
-            const projectCol = document.createElement('div');
-            projectCol.className = 'col';
-            
-            projectCol.innerHTML = `
-                <div class="card project-card bg-dark border-secondary h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">${project.title}</h5>
-                        <p class="card-text">${project.description}</p>
-                        <div class="d-flex flex-wrap gap-1 mb-3">
-                            ${project.tags.map(tag => `<span class="badge bg-primary">${tag}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent border-top-0">
-                        <div class="d-flex gap-2">
-                            <a href="${project.github}" target="_blank" class="btn btn-sm btn-outline-light flex-grow-1">
-                                <i class="bi bi-github"></i> Code
-                            </a>
-                            <a href="${project.live}" target="_blank" class="btn btn-sm btn-primary flex-grow-1">
-                                <i class="bi bi-box-arrow-up-right"></i> Live
-                            </a>
-                        </div>
-                    </div>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">M.Vundla <span>|</span> Software Engineer</div>
+                <p>Transforming ideas into digital reality</p>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#certificates">Certificates</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#contact">Contact</a>
                 </div>
-            `;
+                <p>&copy; 2023 Mandlenkosi Vundla. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate 35 certificate slots
+            generateCertificateSlots();
             
-            projectsContainer.appendChild(projectCol);
+            // Load stored data
+            loadStoredData();
+            
+            // Initialize tab navigation
+            initTabNavigation();
+            
+            // Initialize profile image upload
+            initProfileUpload();
+            
+            // Load saved theme
+            loadSavedTheme();
         });
-        
-        // Enhanced Certifications Data and Functionality
-        const buttonColors = {
-            aiBootcamp: [ 
-                '#ff7043', '#ec407a', '#ab47bc', '#5c6bc0', '#29b6f6', '#26a69a', '#9ccc65', '#ffee58', '#ffca28' 
-            ],
-            professionalDev: [ 
-                '#5c6bc0', '#ec407a', '#66bb6a', '#ffa726', '#42a5f5', '#7e57c2', '#26a69a',
-                '#d4e157', '#78909c', '#8d6e63', '#ab47bc', '#29b6f6', '#ef5350', '#9ccc65',
-                '#ffee58', '#ffca28', '#26c6da', '#ff7043', '#ce93d8', '#4db6ac', '#aed581' 
-            ],
-            yesProgram: [ 
-                '#ffa726', '#ffca28', '#ffee58', '#d4e157', '#9ccc65', '#66bb6a', '#26a69a' 
-            ],
-            cyberSecurity: [ 
-                '#5c6bc0', '#7e57c2', '#ab47bc', '#ec407a', '#78909c', '#8d6e63', '#212121' 
-            ],
-            foundation: [ 
-                '#42a5f5', '#29b6f6' 
-            ]
-        };
-        
-        const removeButtonColors = {
-            aiBootcamp: [ 
-                '#d32f2f', '#c2185b', '#7b1fa2', '#303f9f', '#0288d1', '#00796b', '#689f38', '#fdd835', '#ffb300' 
-            ],
-            professionalDev: [ 
-                '#303f9f', '#c2185b', '#388e3c', '#f57c00', '#1976d2', '#512da8', '#00796b',
-                '#afb42b', '#546e7a', '#5d4037', '#7b1fa2', '#0288d1', '#d32f2f', '#689f38',
-                '#fdd835', '#ffb300', '#0097a7', '#e64a19', '#8e24aa', '#00897b', '#558b2f' 
-            ],
-            yesProgram: [ 
-                '#f57c00', '#ffb300', '#fdd835', '#afb42b', '#689f38', '#388e3c', '#00796b' 
-            ],
-            cyberSecurity: [ 
-                '#303f9f', '#512da8', '#7b1fa2', '#c2185b', '#546e7a', '#5d4037', '#000000' 
-            ],
-            foundation: [ 
-                '#1976d2', '#0288d1' 
-            ]
-        };
-        
-        // Initialize IndexedDB
-        const dbName = "certificatesDB";
-        const dbVersion = 1;
-        const storeName = "certificates";
-        
-        // Initialize the database
-        function initDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName, dbVersion);
-                
-                request.onerror = event => {
-                    console.error("IndexedDB error:", event.target.error);
-                    reject("Error opening database");
-                };
-                
-                request.onsuccess = event => {
-                    console.log("Database opened successfully");
-                    resolve(event.target.result);
-                };
-                
-                request.onupgradeneeded = event => {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains(storeName)) {
-                        db.createObjectStore(storeName, { keyPath: "id" });
-                        console.log("Object store created");
-                    }
-                };
-            });
+
+        // Theme management
+        function changeTheme(themeName) {
+            document.body.className = `theme-${themeName}`;
+            localStorage.setItem('portfolioTheme', themeName);
+            showNotification(`Theme changed to ${themeName}`);
         }
         
-        // Save certificates to IndexedDB
-        async function saveCertificates(data) {
-            try {
-                const db = await initDB();
-                const transaction = db.transaction([storeName], "readwrite");
-                const store = transaction.objectStore(storeName);
-                
-                return new Promise((resolve, reject) => {
-                    // Save with a single key for simplicity
-                    const request = store.put({
-                        id: "userCertificates",
-                        data: data,
-                        lastUpdated: new Date().toISOString()
-                    });
-                    
-                    request.onsuccess = () => {
-                        console.log("Certificates saved to IndexedDB");
-                        showStorageStatus("success", "All changes saved successfully!");
-                        resolve(true);
-                    };
-                    
-                    request.onerror = event => {
-                        console.error("Error saving certificates:", event.target.error);
-                        showStorageStatus("error", "There was an issue saving your data. Your certificates might not persist between sessions.");
-                        reject(event.target.error);
-                    };
-                    
-                    transaction.oncomplete = () => {
-                        db.close();
-                    };
-                });
-            } catch (error) {
-                console.error("DB transaction error:", error);
-                showStorageStatus("error", "There was an issue saving your data. Your certificates might not persist between sessions.");
-                return false;
-            }
+        function changeThemeRandom() {
+            const themes = ['default', 'ruby', 'blue', 'green', 'orange'];
+            const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+            changeTheme(randomTheme);
         }
         
-        // Load certificates from IndexedDB
-        async function loadCertificates() {
-            try {
-                const db = await initDB();
-                const transaction = db.transaction([storeName], "readonly");
-                const store = transaction.objectStore(storeName);
-                
-                return new Promise((resolve, reject) => {
-                    const request = store.get("userCertificates");
-                    
-                    request.onsuccess = event => {
-                        const result = event.target.result;
-                        if (result) {
-                            console.log("Certificates loaded from IndexedDB");
-                            resolve(result.data);
-                        } else {
-                            console.log("No certificates found in IndexedDB");
-                            resolve(null);
-                        }
-                    };
-                    
-                    request.onerror = event => {
-                        console.error("Error loading certificates:", event.target.error);
-                        reject(event.target.error);
-                    };
-                    
-                    transaction.oncomplete = () => {
-                        db.close();
-                    };
-                });
-            } catch (error) {
-                console.error("DB transaction error:", error);
-                return null;
-            }
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('portfolioTheme') || 'ruby';
+            changeTheme(savedTheme);
         }
-        
-        // Show storage status message
-        function showStorageStatus(type, message) {
-            const statusContainer = document.getElementById('storageStatus');
-            let alertClass = '';
-            let icon = '';
-            
-            switch(type) {
-                case 'success':
-                    alertClass = 'alert-success';
-                    icon = '<i class="bi bi-check-circle me-2"></i>';
-                    break;
-                case 'error':
-                    alertClass = 'alert-danger';
-                    icon = '<i class="bi bi-exclamation-triangle me-2"></i>';
-                    break;
-                case 'loading':
-                    alertClass = 'alert-info';
-                    icon = '<i class="bi bi-cloud-arrow-up me-2"></i>';
-                    break;
-                case 'migrated':
-                    alertClass = 'alert-info';
-                    icon = '<i class="bi bi-arrow-repeat me-2"></i>';
-                    break;
-                default:
-                    alertClass = 'alert-info';
-            }
-            
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert ${alertClass} mb-3`;
-            alertDiv.innerHTML = icon + message;
-            
-            if (type === 'success') {
-                alertDiv.classList.add('fade-out');
-            }
-            
-            statusContainer.innerHTML = '';
-            statusContainer.appendChild(alertDiv);
-        }
-        
-        // Certificate state
-        let certificates = {
-            aiBootcamp: Array(9).fill(null),
-            professionalDev: Array(21).fill(null),
-            yesProgram: Array(7).fill(null),
-            cyberSecurity: Array(7).fill(null),
-            foundation: Array(2).fill(null)
-        };
-        
-        // Load certificates on page load
-        async function loadCertificatesData() {
-            try {
-                showStorageStatus("loading", "Loading your certificates...");
-                
-                // First try loading from IndexedDB
-                const dbData = await loadCertificates();
-                
-                if (dbData) {
-                    certificates = dbData;
-                    showStorageStatus("success", "Certificates loaded successfully!");
-                } else {
-                    // Fall back to localStorage if no IndexedDB data
-                    const savedCertificates = localStorage.getItem('portfolioCertificates');
-                    if (savedCertificates) {
-                        const parsedCerts = JSON.parse(savedCertificates);
-                        
-                        // Handle upgrade from 18 to 21 columns if needed
-                        if (parsedCerts.professionalDev && parsedCerts.professionalDev.length === 18) {
-                            parsedCerts.professionalDev = [...parsedCerts.professionalDev, null, null, null];
-                        }
-                        
-                        certificates = parsedCerts;
-                        console.log("Certificates loaded from localStorage");
-                        
-                        // Migrate from localStorage to IndexedDB
-                        await saveCertificates(parsedCerts);
-                        console.log("Certificates migrated from localStorage to IndexedDB");
-                        showStorageStatus("migrated", "Your certificates were migrated to improved storage.");
-                    } else {
-                        showStorageStatus("success", "Ready to add your certificates!");
-                    }
-                }
-            } catch (error) {
-                console.error("Error loading certificates:", error);
-                showStorageStatus("error", "Error loading certificates. Please refresh the page.");
-            }
-            
-            renderCertifications();
-        }
-        
-        // File upload handler
-        function handleFileUpload(section, index) {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = ".pdf,.doc,.docx,.jpg,.jpeg,.png";
-            input.style.display = 'none';
-            
-            input.addEventListener('change', function(e) {
+
+        // Initialize profile image upload
+        function initProfileUpload() {
+            const profileUpload = document.getElementById('profile-upload');
+            profileUpload.addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (!file) return;
                 
-                console.log(`Uploading file: ${file.name}, type: ${file.type}, size: ${file.size / (1024 * 1024).toFixed(2)} MB`);
-                
-                // Check file size - 10MB limit for IndexedDB
-                if (file.size > 10 * 1024 * 1024) {
-                    alert('File size exceeds 10MB. Please choose a smaller file or compress it.');
+                if (!file.type.match('image.*')) {
+                    showNotification('Please upload an image file', true);
                     return;
                 }
                 
                 const reader = new FileReader();
-                reader.onloadend = function() {
-                    let fileDataUrl = reader.result;
+                reader.onload = function(e) {
+                    const profileImage = document.getElementById('profile-image');
+                    profileImage.innerHTML = '';
+                    profileImage.style.backgroundImage = `url(${e.target.result})`;
+                    profileImage.style.backgroundSize = 'cover';
+                    profileImage.style.backgroundPosition = 'center';
                     
-                    // Set correct MIME type for PDF files
-                    let fileType = file.type;
-                    if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
-                        fileType = 'application/pdf';
-                        // Ensure correct MIME type in data URL
-                        if (!fileDataUrl.includes('data:application/pdf')) {
-                            fileDataUrl = fileDataUrl.replace(/^data:.*?;base64,/, 'data:application/pdf;base64,');
-                        }
-                    }
+                    // Save to localStorage
+                    localStorage.setItem('profileImage', e.target.result);
                     
-                    console.log(`File loaded, type: ${fileType}`);
-                    
-                    certificates[section][index] = {
-                        name: file.name,
-                        file: fileDataUrl,
-                        type: fileType,
-                        timestamp: new Date().getTime(),
-                        fileSize: file.size
-                    };
-                    
-                    showStorageStatus("loading", "Saving your certificates...");
-                    saveCertificates(certificates);
-                    renderCertifications();
+                    showNotification('Profile image updated successfully');
                 };
-                
-                reader.onerror = function(error) {
-                    console.error("Error reading file:", error);
-                    alert('Error reading file. Please try again.');
-                };
-                
                 reader.readAsDataURL(file);
             });
             
-            document.body.appendChild(input);
-            input.click();
-        }
-        
-        // Remove certificate
-        function handleRemoveCertificate(section, index) {
-            certificates[section][index] = null;
-            showStorageStatus("loading", "Saving your certificates...");
-            saveCertificates(certificates);
-            renderCertifications();
-        }
-        
-        // Title change handler
-        function handleTitleChange(section, index, value) {
-            if (!certificates[section][index]) {
-                certificates[section][index] = { name: value, file: null };
-            } else {
-                certificates[section][index].name = value;
-            }
-            
-            showStorageStatus("loading", "Saving your certificates...");
-            saveCertificates(certificates);
-        }
-        
-        // Function to open PDF in browser
-        function openPdfInBrowser(dataUrl) {
-            try {
-                console.log("Opening PDF with blob URL method");
-                
-                // Extract the base64 data part from the data URL
-                const base64Response = dataUrl.split(',')[1];
-                
-                // Convert base64 to binary
-                const binaryString = window.atob(base64Response);
-                const bytes = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
-                }
-                
-                // Create a blob with PDF MIME type
-                const blob = new Blob([bytes], { type: 'application/pdf' });
-                
-                // Create object URL from blob
-                const blobUrl = URL.createObjectURL(blob);
-                
-                // Open in new tab
-                window.open(blobUrl, '_blank');
-                
-                // Clean up URL object after a delay to ensure browser has time to open it
-                setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-            } catch (error) {
-                console.error("Error opening PDF:", error);
-                alert("There was an error opening the PDF. Please try again.");
+            // Load saved profile image
+            const savedImage = localStorage.getItem('profileImage');
+            if (savedImage) {
+                const profileImage = document.getElementById('profile-image');
+                profileImage.innerHTML = '';
+                profileImage.style.backgroundImage = `url(${savedImage})`;
+                profileImage.style.backgroundSize = 'cover';
+                profileImage.style.backgroundPosition = 'center';
             }
         }
-        
-        // Render certifications
-        function renderCertifications() {
-            const sections = [
-                { id: 'aiBootcampCerts', section: 'aiBootcamp', count: 9 },
-                { id: 'professionalDevCerts', section: 'professionalDev', count: 21 },
-                { id: 'yesProgramCerts', section: 'yesProgram', count: 7 },
-                { id: 'cyberSecurityCerts', section: 'cyberSecurity', count: 7 },
-                { id: 'foundationCerts', section: 'foundation', count: 2 }
-            ];
+
+        // Generate 35 certificate slots
+        function generateCertificateSlots() {
+            const container = document.getElementById('certificates-container');
+            container.innerHTML = '';
             
-            sections.forEach(({ id, section, count }) => {
-                const container = document.getElementById(id);
-                container.innerHTML = '';
-                
-                for (let i = 0; i < count; i++) {
-                    const cert = certificates[section][i];
-                    const col = document.createElement('div');
-                    col.className = 'col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4';
+            for (let i = 1; i <= 35; i++) {
+                const column = document.createElement('div');
+                column.className = 'upload-column';
+                column.innerHTML = `
+                    <div class="upload-column-number">${i}</div>
+                    <div class="certificate-placeholder" id="certificate-${i}">
+                        <p>No certificate uploaded</p>
+                        <button class="btn" onclick="selectSlot(${i})">Select This Slot</button>
+                    </div>
+                `;
+                container.appendChild(column);
+            }
+        }
+
+        // Initialize tab navigation
+        function initTabNavigation() {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
                     
-                    col.innerHTML = `
-                        <div class="cert-card h-100 shadow">
-                            <div class="card-body d-flex flex-column">
-                                <div class="cert-content flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center p-3">
-                                    ${cert && cert.file ? `
-                                        <div class="certificate-preview-container mb-3">
-                                            <div class="certificate-preview mb-3">
-                                                ${cert.file.startsWith('data:image') ? `
-                                                    <img src="${cert.file}" alt="Certificate" class="img-fluid rounded">
-                                                ` : `
-                                                    <div class="document-icon">
-                                                        <i class="bi bi-file-earmark-pdf fs-1"></i>
-                                                        <p class="mt-2">PDF Document</p>
-                                                        ${cert.fileSize ? `
-                                                            <small class="text-muted">
-                                                                ${(cert.fileSize / (1024 * 1024)).toFixed(2)} MB
-                                                            </small>
-                                                        ` : ''}
-                                                    </div>
-                                                `}
-                                            </div>
-                                            
-                                            ${cert.file.startsWith('data:image') ? `
-                                                <a href="${cert.file}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-light mt-2">
-                                                    <i class="bi bi-eye me-2"></i> View Image
-                                                </a>
-                                            ` : `
-                                                <div class="d-flex gap-2 justify-content-center w-100">
-                                                    <button class="btn btn-sm btn-outline-light mt-2" onclick="window.certOpenPdf('${cert.file}')">
-                                                        <i class="bi bi-eye me-2"></i> View PDF
-                                                    </button>
-                                                    <a href="${cert.file}" download="${cert.name || 'certificate'}.pdf" class="btn btn-sm btn-outline-primary mt-2">
-                                                        <i class="bi bi-download me-2"></i> Download
-                                                    </a>
-                                                </div>
-                                            `}
-                                        </div>
-                                    ` : `
-                                        <div class="cert-placeholder mb-3">
-                                            <i class="bi bi-file-earmark-plus display-1 text-muted"></i>
-                                            <p class="mt-2 text-muted">Empty Slot</p>
-                                        </div>
-                                    `}
-                                    
-                                    <input type="text" class="form-control bg-dark text-white border-secondary mt-2" 
-                                        placeholder="Enter Certificate Title" 
-                                        value="${(cert && cert.name) || ''}" 
-                                        onchange="window.certTitleChange('${section}', ${i}, this.value)">
-                                </div>
-                                
-                                <div class="button-group mt-3">
-                                    <button class="btn w-100 mb-2" 
-                                        style="background-color: ${buttonColors[section][i % buttonColors[section].length]};"
-                                        onclick="window.certUpload('${section}', ${i})">
-                                        ${cert && cert.file ? 'Replace Document' : 'Upload Document'}
-                                    </button>
-                                    
-                                    ${cert && cert.file ? `
-                                        <button class="btn w-100" 
-                                            style="background-color: ${removeButtonColors[section][i % removeButtonColors[section].length]};"
-                                            onclick="window.certRemove('${section}', ${i})">
-                                            Remove Document
-                                        </button>
-                                    ` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    // Update active tab
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
                     
-                    container.appendChild(col);
-                }
+                    // Show corresponding content
+                    const tabId = this.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                    document.getElementById(tabId).classList.add('active');
+                });
             });
         }
-        
-        // Expose functions to window for inline event handlers
-        window.certUpload = handleFileUpload;
-        window.certRemove = handleRemoveCertificate;
-        window.certTitleChange = handleTitleChange;
-        window.certOpenPdf = openPdfInBrowser;
-        
-        // Initialize certifications when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            if (document.getElementById('certifications')) {
-                loadCertificatesData();
+
+        // Show notification
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.remove('error');
+            
+            if (isError) {
+                notification.classList.add('error');
             }
-        });
-        
-        // Contact Form
-        document.getElementById('contactForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
             
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+            notification.classList.add('show');
             
-            // In a real app, you would send this data to a server
-            console.log('Form submitted:', { name, email, message });
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Select a certificate slot for upload
+        let selectedSlot = null;
+        function selectSlot(slotNumber) {
+            selectedSlot = slotNumber;
+            document.querySelectorAll('.upload-column').forEach(col => {
+                col.classList.remove('active');
+            });
+            document.querySelector(`#certificate-${slotNumber}`).parentElement.classList.add('active');
+            document.getElementById('selected-slot-info').textContent = `Selected slot: ${slotNumber}`;
+            showNotification(`Slot ${slotNumber} selected for upload`);
+        }
+
+        // Certificate upload functionality
+        function uploadCertificate() {
+            if (!selectedSlot) {
+                showNotification('Please select a slot first', true);
+                return;
+            }
             
-            // Show success message
-            alert('Thank you for your message! I will get back to you soon.');
+            const fileInput = document.getElementById('certificate-upload');
+            const file = fileInput.files[0];
             
-            // Reset form
-            this.reset();
-        });
+            if (!file) {
+                showNotification('Please select a PDF file to upload.', true);
+                return;
+            }
+            
+            if (file.type !== 'application/pdf') {
+                showNotification('Please upload a PDF file only.', true);
+                return;
+            }
+            
+            // Store file in localStorage
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const certificateData = {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    data: e.target.result,
+                    uploadDate: new Date().toISOString(),
+                    slot: selectedSlot
+                };
+                
+                // Save to localStorage
+                let certificates = JSON.parse(localStorage.getItem('certificates')) || {};
+                certificates[selectedSlot] = certificateData;
+                localStorage.setItem('certificates', JSON.stringify(certificates));
+                
+                // Update UI
+                updateCertificateSlot(selectedSlot, certificateData);
+                
+                // Reset selection
+                selectedSlot = null;
+                fileInput.value = '';
+                document.getElementById('selected-slot-info').textContent = 'No slot selected';
+                document.querySelectorAll('.upload-column').forEach(col => {
+                    col.classList.remove('active');
+                });
+                
+                showNotification(`Certificate uploaded successfully to slot ${selectedSlot}!`);
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        // Update certificate slot UI
+        function updateCertificateSlot(slotNumber, certificate) {
+            const slotElement = document.getElementById(`certificate-${slotNumber}`);
+            slotElement.innerHTML = `
+                <h3>${certificate.name}</h3>
+                <p>Uploaded: ${new Date(certificate.uploadDate).toLocaleDateString()}</p>
+                <p>Size: ${Math.round(certificate.size / 1024)} KB</p>
+                <div class="certificate-actions">
+                    <button class="btn" onclick="viewCertificate(${slotNumber})">View</button>
+                    <button class="btn btn-success" onclick="downloadCertificate(${slotNumber})">Download</button>
+                </div>
+            `;
+        }
+
+        // View certificate
+        function viewCertificate(slotNumber) {
+            const certificates = JSON.parse(localStorage.getItem('certificates')) || {};
+            const certificate = certificates[slotNumber];
+            
+            if (certificate) {
+                window.open(certificate.data, '_blank');
+            }
+        }
+
+        // Download certificate
+        function downloadCertificate(slotNumber) {
+            const certificates = JSON.parse(localStorage.getItem('certificates')) || {};
+            const certificate = certificates[slotNumber];
+            
+            if (certificate) {
+                const link = document.createElement('a');
+                link.href = certificate.data;
+                link.download = certificate.name;
+                link.click();
+            }
+        }
+
+        // Load stored data
+        function loadStoredData() {
+            // Load certificates
+            const certificates = JSON.parse(localStorage.getItem('certificates')) || {};
+            for (const slot in certificates) {
+                updateCertificateSlot(slot, certificates[slot]);
+            }
+            
+            // Load projects
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            projects.forEach(project => {
+                addProjectToUI(project);
+            });
+        }
+
+        // Project addition functionality
+        function addProject() {
+            const title = document.getElementById('project-title').value;
+            const link = document.getElementById('project-link').value;
+            const description = document.getElementById('project-desc').value;
+            const tags = document.getElementById('project-tags').value;
+            
+            if (!title || !link || !description) {
+                showNotification('Please fill in all required fields.', true);
+                return;
+            }
+            
+            const project = {
+                title,
+                link,
+                description,
+                tags: tags.split(',').map(tag => tag.trim()),
+                addDate: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            let projects = JSON.parse(localStorage.getItem('projects')) || [];
+            projects.push(project);
+            localStorage.setItem('projects', JSON.stringify(projects));
+            
+            // Update UI
+            addProjectToUI(project);
+            
+            // Clear form
+            document.getElementById('project-title').value = '';
+            document.getElementById('project-link').value = '';
+            document.getElementById('project-desc').value = '';
+            document.getElementById('project-tags').value = '';
+            
+            showNotification('Project added successfully!');
+        }
+
+        // Add project to UI
+        function addProjectToUI(project) {
+            const container = document.getElementById('projects-container');
+            
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            
+            let tagsHtml = '';
+            if (project.tags && project.tags.length > 0) {
+                tagsHtml = `<div class="project-tags">${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join('')}</div>`;
+            }
+            
+            card.innerHTML = `
+                <div class="project-img">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <div class="project-details">
+                    <h3>${project.title}</h3>
+                    <p>${project.description}</p>
+                    ${tagsHtml}
+                    <a href="${project.link}" target="_blank" class="btn">View Project</a>
+                </div>
+            `;
+            
+            container.appendChild(card);
+        }
     </script>
 </body>
 </html>
+
