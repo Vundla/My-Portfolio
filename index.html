@@ -28,6 +28,7 @@
             --text-primary: var(--text-light);
             --text-secondary: var(--text-muted);
             --bg-primary: var(--brand-dark);
+            --sidebar-width: 280px;
         }
 
         .theme-ruby {
@@ -89,86 +90,86 @@
             padding: 0 20px;
         }
         
-        header {
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
             background: var(--gradient);
             color: var(--text-light);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 2rem 1rem;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: var(--transition);
             box-shadow: var(--shadow);
         }
         
-        nav {
+        .sidebar-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .logo {
-            font-size: 1.8rem;
+        .sidebar-logo {
+            font-size: 1.5rem;
             font-weight: 700;
-            display: flex;
-            align-items: center;
         }
         
-        .logo span {
+        .sidebar-logo span {
             color: var(--accent-color);
         }
         
-        .nav-links {
-            display: flex;
+        .sidebar-nav {
             list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
             align-items: center;
-        }
-        
-        .nav-links li {
-            margin-left: 2rem;
-        }
-        
-        .nav-links a {
             color: var(--text-light);
             text-decoration: none;
-            font-weight: 500;
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
             transition: var(--transition);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            position: relative;
         }
         
-        .nav-links a:hover, .nav-links a.active {
+        .sidebar-nav a:hover, .sidebar-nav a.active {
             background-color: rgba(255, 255, 255, 0.1);
         }
         
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background-color: var(--accent-color);
-            transition: var(--transition);
-        }
-        
-        .nav-links a:hover::after, .nav-links a.active::after {
-            width: 80%;
-            left: 10%;
+        .sidebar-nav i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
         }
         
         .theme-selector {
-            display: flex;
-            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .theme-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 0.5rem;
+            margin-top: 1rem;
         }
         
         .theme-btn {
             background: rgba(255, 255, 255, 0.1);
             border: none;
             color: var(--text-light);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            padding: 0.5rem;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -178,18 +179,24 @@
         
         .theme-btn:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: rotate(30deg);
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            transition: var(--transition);
         }
         
         .hero {
-            padding: 5rem 0;
+            padding: 3rem 0;
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
             color: var(--text-light);
             text-align: center;
             position: relative;
+            border-radius: 10px;
+            margin-bottom: 2rem;
         }
         
         .profile {
@@ -248,7 +255,7 @@
         }
         
         .profile h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
             background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
             -webkit-background-clip: text;
@@ -256,7 +263,7 @@
         }
         
         .profile p {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             opacity: 0.9;
             margin-bottom: 1rem;
             color: var(--text-primary);
@@ -298,7 +305,7 @@
         
         .tab-content {
             display: none;
-            padding: 4rem 0;
+            padding: 2rem 0;
             min-height: 60vh;
         }
         
@@ -314,11 +321,11 @@
         
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
         
         .section-title h2 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             color: var(--text-primary);
             position: relative;
             display: inline-block;
@@ -345,19 +352,19 @@
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            gap: 2rem;
             align-items: center;
         }
         
-        .about-text h2, .skills h2, .certificates h2, .projects h2, .contact h2 {
-            font-size: 2rem;
+        .about-text h2, .skills h2, .certificates h2, .projects h2, .contact h2, .career-vision h2 {
+            font-size: 1.8rem;
             margin-bottom: 1.5rem;
             color: var(--text-primary);
             position: relative;
             padding-bottom: 0.5rem;
         }
         
-        .about-text h2:after, .skills h2:after, .certificates h2:after, .projects h2:after, .contact h2:after {
+        .about-text h2:after, .skills h2:after, .certificates h2:after, .projects h2:after, .contact h2:after, .career-vision h2:after {
             content: '';
             position: absolute;
             left: 0;
@@ -376,7 +383,7 @@
         
         .skill-card {
             background-color: var(--card-bg);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 10px;
             box-shadow: var(--card-shadow);
             transition: var(--transition);
@@ -399,7 +406,7 @@
         }
         
         .skill-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
         }
         
         .skill-card:hover::before {
@@ -407,7 +414,7 @@
         }
         
         .skill-card i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 1rem;
         }
@@ -422,15 +429,15 @@
         }
         
         .certificates-section {
-            margin-top: 3rem;
+            margin-top: 2rem;
         }
         
         .upload-area {
             background-color: var(--card-bg);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 10px;
             box-shadow: var(--card-shadow);
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             text-align: center;
             border: 2px dashed var(--text-muted);
             transition: var(--transition);
@@ -443,8 +450,8 @@
         .certificates-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
         
         .certificate-card {
@@ -462,17 +469,17 @@
         }
         
         .certificate-img {
-            height: 200px;
+            height: 180px;
             background: var(--gradient);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
+            font-size: 3.5rem;
             color: var(--text-light);
         }
         
         .certificate-details {
-            padding: 1.5rem;
+            padding: 1.2rem;
         }
         
         .certificate-actions {
@@ -483,9 +490,9 @@
         
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
         
         .project-card {
@@ -498,17 +505,17 @@
         }
         
         .project-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
         
         .project-img {
-            height: 200px;
+            height: 180px;
             background: var(--gradient);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
+            font-size: 3.5rem;
             color: var(--text-light);
             position: relative;
             overflow: hidden;
@@ -531,7 +538,7 @@
         }
         
         .project-details {
-            padding: 1.5rem;
+            padding: 1.2rem;
         }
         
         .project-tags {
@@ -552,12 +559,12 @@
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            gap: 2rem;
         }
         
         .contact-info {
             background-color: var(--card-bg);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 10px;
             box-shadow: var(--card-shadow);
         }
@@ -565,11 +572,11 @@
         .contact-detail {
             display: flex;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
         
         .contact-detail i {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--primary-color);
             margin-right: 1rem;
             width: 30px;
@@ -577,13 +584,13 @@
         
         .contact-form {
             background-color: var(--card-bg);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 10px;
             box-shadow: var(--card-shadow);
         }
         
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
         
         .form-group label {
@@ -611,7 +618,7 @@
         }
         
         textarea.form-control {
-            min-height: 150px;
+            min-height: 120px;
             resize: vertical;
         }
         
@@ -620,7 +627,7 @@
             background-color: var(--dark-color);
             border-radius: 10px;
             overflow: hidden;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             box-shadow: var(--card-shadow);
         }
         
@@ -628,7 +635,7 @@
             display: inline-block;
             background: var(--gradient);
             color: var(--text-light);
-            padding: 0.8rem 1.5rem;
+            padding: 0.7rem 1.2rem;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -652,14 +659,14 @@
         
         .upload-columns {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
         }
         
         .upload-column {
             background-color: var(--card-bg);
-            padding: 1.5rem;
+            padding: 1.2rem;
             border-radius: 10px;
             box-shadow: var(--card-shadow);
             text-align: center;
@@ -669,25 +676,34 @@
         }
         
         .upload-column:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
         
         .upload-column-number {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: var(--secondary-color);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
         
         .upload-column.active {
             border: 2px solid var(--secondary-color);
         }
         
+        .certificate-preview {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 0.8rem;
+            display: none;
+        }
+        
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             border-radius: 4px;
             color: var(--text-light);
             background-color: var(--success-color);
@@ -705,12 +721,119 @@
             background-color: var(--accent-color);
         }
         
+        /* PDF Viewer Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            position: relative;
+            margin: 5% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: var(--text-light);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+        }
+        
+        .pdf-viewer {
+            width: 100%;
+            height: 80vh;
+            border: none;
+            border-radius: 5px;
+        }
+        
+        /* Career Vision Section */
+        .career-vision {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('https://images.unsplash.com/photo-1535223289827-42f1e9919769?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 3rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .career-vision::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0.8;
+            z-index: 0;
+        }
+        
+        .career-vision-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .vision-statement {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+        
+        .vision-image {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .vision-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+        
+        .vision-item:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .vision-item i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
         footer {
             background-color: var(--dark-color);
             color: var(--text-light);
             text-align: center;
-            padding: 3rem 0;
-            margin-top: 3rem;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            border-radius: 10px;
         }
         
         .footer-content {
@@ -720,7 +843,7 @@
         }
         
         .footer-logo {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 1rem;
         }
@@ -731,8 +854,8 @@
         
         .footer-links {
             display: flex;
-            gap: 2rem;
-            margin: 1.5rem 0;
+            gap: 1.5rem;
+            margin: 1.2rem 0;
         }
         
         .footer-links a {
@@ -745,13 +868,31 @@
             color: var(--secondary-color);
         }
         
-        @media (max-width: 768px) {
-            .about-content, .contact-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
             }
             
-            .nav-links {
-                display: none;
+            .main-content {
+                margin-left: 220px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .about-content, .contact-grid {
+                grid-template-columns: 1fr;
             }
             
             .upload-columns {
@@ -759,46 +900,60 @@
             }
             
             .profile h1 {
-                font-size: 2.2rem;
+                font-size: 2rem;
             }
             
             .profile p {
-                font-size: 1.2rem;
+                font-size: 1rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+            
+            .theme-buttons {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
     </style>
 </head>
 <body class="theme-ruby">
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">M.Vundla <span>|</span> Software Engineer</div>
-                <ul class="nav-links">
-                    <li><a href="#about" class="nav-link active" data-tab="about">About Me</a></li>
-                    <li><a href="#certificates" class="nav-link" data-tab="certificates">Certificates</a></li>
-                    <li><a href="#projects" class="nav-link" data-tab="projects">Projects</a></li>
-                    <li><a href="#contact" class="nav-link" data-tab="contact">Contact</a></li>
-                    <li class="theme-selector">
-                        <button class="theme-btn" onclick="changeTheme('default')" title="Default Theme">
-                            <i class="fas fa-moon"></i>
-                        </button>
-                        <button class="theme-btn" onclick="changeTheme('ruby')" title="Ruby Theme">
-                            <i class="fas fa-gem"></i>
-                        </button>
-                        <button class="theme-btn" onclick="changeTheme('blue')" title="Blue Theme">
-                            <i class="fas fa-palette"></i>
-                        </button>
-                        <button class="theme-btn" onclick="changeThemeRandom()" title="Random Theme">
-                            <i class="fas fa-random"></i>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">M.Vundla <span>|</span> Dev</div>
         </div>
-    </header>
+        
+        <ul class="sidebar-nav">
+            <li><a href="#about" class="nav-link active" data-tab="about"><i class="fas fa-user"></i> About Me</a></li>
+            <li><a href="#certificates" class="nav-link" data-tab="certificates"><i class="fas fa-certificate"></i> Certificates</a></li>
+            <li><a href="#projects" class="nav-link" data-tab="projects"><i class="fas fa-laptop-code"></i> Projects</a></li>
+            <li><a href="#career-vision" class="nav-link" data-tab="career-vision"><i class="fas fa-binoculars"></i> Career Vision</a></li>
+            <li><a href="#contact" class="nav-link" data-tab="contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+        
+        <div class="theme-selector">
+            <h3>Theme Selector</h3>
+            <div class="theme-buttons">
+                <button class="theme-btn" onclick="changeTheme('default')" title="Default Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="theme-btn" onclick="changeTheme('ruby')" title="Ruby Theme">
+                    <i class="fas fa-gem"></i>
+                </button>
+                <button class="theme-btn" onclick="changeTheme('blue')" title="Blue Theme">
+                    <i class="fas fa-palette"></i>
+                </button>
+                <button class="theme-btn" onclick="changeThemeRandom()" title="Random Theme">
+                    <i class="fas fa-random"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
 
-    <section class="hero">
-        <div class="container">
+    <main class="main-content">
+        <section class="hero">
             <div class="profile">
                 <div class="profile-img-container">
                     <div class="profile-img" id="profile-image">
@@ -824,10 +979,8 @@
                     </a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <main class="container">
         <!-- About Tab -->
         <div id="about" class="tab-content active">
             <div class="section-title">
@@ -893,6 +1046,16 @@
                             <h3>Vue.js</h3>
                             <p>Progressive JavaScript framework</p>
                         </div>
+                        <div class="skill-card">
+                            <i class="fab fa-html5"></i>
+                            <h3>HTML & CSS</h3>
+                            <p>Web structure and styling</p>
+                        </div>
+                        <div class="skill-card">
+                            <i class="fab fa-css3-alt"></i>
+                            <h3>Vanilla JS</h3>
+                            <p>Pure JavaScript without frameworks</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -944,6 +1107,54 @@
             
             <div class="projects-grid" id="projects-container">
                 <!-- Projects will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Career Vision Tab -->
+        <div id="career-vision" class="tab-content">
+            <div class="section-title">
+                <h2>Career Vision Statement</h2>
+                <p>My mission for Africa's technological future</p>
+            </div>
+            
+            <div class="career-vision">
+                <div class="career-vision-content">
+                    <div class="vision-statement">
+                        <h2>Career Vision Statement</h2>
+                        <p>I am building my career around the belief that Africa can and must lead in the digital era. My mission is to develop AI applications that enhance Africa's growth, strengthen the cyber defense capabilities of the African Union, and train defense systems in advanced strategic applications. I aim to encourage governments across the continent to invest in cyber drones, robust AI systems, and the digitalisation of economies so that Africa stands resilient in a rapidly evolving world.</p>
+                        
+                        <p>As a growing software engineer with a specialization in backend development, databases, and containerized applications, I have already sharpened my ability to integrate multiple backend systems within one application. My training at UVU Africa's CapaCiTi program has shaped me into a professional developer who not only understands technology but also recognizes its role in solving critical challenges facing our continent. I have also explored cybersecurity, gaining a deep appreciation for how essential it is that developers ensure all systems remain secure against evolving threats. My hands-on learning includes using Python hooks to make AI systems more robust and scalable.</p>
+                        
+                        <p>Beyond cyber defense, I plan to contribute to Africa's fintech revolution, introducing technologies that expand financial access and inclusion across the continent. I also envision a digital public sector, where governance is transparent, efficient, and future-ready.</p>
+                        
+                        <p>Long-term, I want to help position South Africa—and Africa as a whole—as a global powerhouse in technology. This includes championing the development of a semiconductor industry, sending African students to Taiwan to master semiconductor manufacturing, and bringing those skills back home to industrialize our nations. Africa already holds many of the critical minerals needed for semiconductors and electric vehicles—such as cobalt from the Democratic Republic of Congo, lithium from Zimbabwe, manganese from South Africa, and rare earth elements from Tanzania and Burundi. By investing in local processing and innovation, Africa can move from being a raw materials exporter to a global supplier of high-value technology components.</p>
+                        
+                        <p>My ultimate vision is for a powerful Africa—free from international debt, industrialized, digitally empowered, and recognized as a global contributor to the digital world.</p>
+                    </div>
+                    
+                    <div class="vision-image">
+                        <div class="vision-item">
+                            <i class="fas fa-robot"></i>
+                            <h3>AI Systems</h3>
+                            <p>Developing robust AI applications for Africa's growth</p>
+                        </div>
+                        <div class="vision-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Cyber Defense</h3>
+                            <p>Strengthening Africa's cybersecurity capabilities</p>
+                        </div>
+                        <div class="vision-item">
+                            <i class="fas fa-drone"></i>
+                            <h3>Cyber Drones</h3>
+                            <p>Advanced drone technology for defense and development</p>
+                        </div>
+                        <div class="vision-item">
+                            <i class="fas fa-car-battery"></i>
+                            <h3>Electric Vehicles</h3>
+                            <p>Promoting EV technology with African resources</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1003,7 +1214,7 @@
                     <div class="form-group">
                         <textarea class="form-control" placeholder="Your Message"></textarea>
                     </div>
-                    <button class="btn">Send Message</button>
+                    <button class="btn" onclick="sendMessage()">Send Message</button>
                 </div>
             </div>
             <div class="map">
@@ -1016,6 +1227,14 @@
         </div>
     </main>
 
+    <!-- PDF Viewer Modal -->
+    <div id="pdf-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <iframe id="pdf-viewer" class="pdf-viewer" src=""></iframe>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -1025,6 +1244,7 @@
                     <a href="#about">About</a>
                     <a href="#certificates">Certificates</a>
                     <a href="#projects">Projects</a>
+                    <a href="#career-vision">Career Vision</a>
                     <a href="#contact">Contact</a>
                 </div>
                 <p>&copy; 2023 Mandlenkosi Vundla. All rights reserved.</p>
@@ -1035,317 +1255,443 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Generate 35 certificate slots
-            generateCertificateSlots();
+        // Enhanced JavaScript with robust functionality
+        class PortfolioApp {
+            constructor() {
+                this.selectedSlot = null;
+                this.init();
+            }
             
-            // Load stored data
-            loadStoredData();
+            init() {
+                this.generateCertificateSlots();
+                this.loadStoredData();
+                this.initTabNavigation();
+                this.initProfileUpload();
+                this.loadSavedTheme();
+                this.setupEventListeners();
+            }
             
-            // Initialize tab navigation
-            initTabNavigation();
+            setupEventListeners() {
+                // Close modal when clicking outside
+                window.addEventListener('click', (event) => {
+                    const modal = document.getElementById('pdf-modal');
+                    if (event.target === modal) {
+                        this.closeModal();
+                    }
+                });
+                
+                // Handle form submission
+                const contactForm = document.querySelector('.contact-form');
+                if (contactForm) {
+                    contactForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.sendMessage();
+                    });
+                }
+            }
+            
+            // Theme management
+            changeTheme(themeName) {
+                document.body.className = `theme-${themeName}`;
+                localStorage.setItem('portfolioTheme', themeName);
+                this.showNotification(`Theme changed to ${themeName}`);
+            }
+            
+            changeThemeRandom() {
+                const themes = ['default', 'ruby', 'blue', 'green', 'orange'];
+                const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+                this.changeTheme(randomTheme);
+            }
+            
+            loadSavedTheme() {
+                const savedTheme = localStorage.getItem('portfolioTheme') || 'ruby';
+                this.changeTheme(savedTheme);
+            }
             
             // Initialize profile image upload
-            initProfileUpload();
-            
-            // Load saved theme
-            loadSavedTheme();
-        });
-
-        // Theme management
-        function changeTheme(themeName) {
-            document.body.className = `theme-${themeName}`;
-            localStorage.setItem('portfolioTheme', themeName);
-            showNotification(`Theme changed to ${themeName}`);
-        }
-        
-        function changeThemeRandom() {
-            const themes = ['default', 'ruby', 'blue', 'green', 'orange'];
-            const randomTheme = themes[Math.floor(Math.random() * themes.length)];
-            changeTheme(randomTheme);
-        }
-        
-        function loadSavedTheme() {
-            const savedTheme = localStorage.getItem('portfolioTheme') || 'ruby';
-            changeTheme(savedTheme);
-        }
-
-        // Initialize profile image upload
-        function initProfileUpload() {
-            const profileUpload = document.getElementById('profile-upload');
-            profileUpload.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
+            initProfileUpload() {
+                const profileUpload = document.getElementById('profile-upload');
+                profileUpload.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    if (!file.type.match('image.*')) {
+                        this.showNotification('Please upload an image file', true);
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const profileImage = document.getElementById('profile-image');
+                        profileImage.innerHTML = '';
+                        profileImage.style.backgroundImage = `url(${e.target.result})`;
+                        profileImage.style.backgroundSize = 'cover';
+                        profileImage.style.backgroundPosition = 'center';
+                        
+                        // Save to localStorage
+                        localStorage.setItem('profileImage', e.target.result);
+                        
+                        this.showNotification('Profile image updated successfully');
+                    };
+                    reader.readAsDataURL(file);
+                });
                 
-                if (!file.type.match('image.*')) {
-                    showNotification('Please upload an image file', true);
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
+                // Load saved profile image
+                const savedImage = localStorage.getItem('profileImage');
+                if (savedImage) {
                     const profileImage = document.getElementById('profile-image');
                     profileImage.innerHTML = '';
-                    profileImage.style.backgroundImage = `url(${e.target.result})`;
+                    profileImage.style.backgroundImage = `url(${savedImage})`;
                     profileImage.style.backgroundSize = 'cover';
                     profileImage.style.backgroundPosition = 'center';
-                    
-                    // Save to localStorage
-                    localStorage.setItem('profileImage', e.target.result);
-                    
-                    showNotification('Profile image updated successfully');
-                };
-                reader.readAsDataURL(file);
-            });
-            
-            // Load saved profile image
-            const savedImage = localStorage.getItem('profileImage');
-            if (savedImage) {
-                const profileImage = document.getElementById('profile-image');
-                profileImage.innerHTML = '';
-                profileImage.style.backgroundImage = `url(${savedImage})`;
-                profileImage.style.backgroundSize = 'cover';
-                profileImage.style.backgroundPosition = 'center';
+                }
             }
-        }
-
-        // Generate 35 certificate slots
-        function generateCertificateSlots() {
-            const container = document.getElementById('certificates-container');
-            container.innerHTML = '';
             
-            for (let i = 1; i <= 35; i++) {
-                const column = document.createElement('div');
-                column.className = 'upload-column';
-                column.innerHTML = `
-                    <div class="upload-column-number">${i}</div>
-                    <div class="certificate-placeholder" id="certificate-${i}">
-                        <p>No certificate uploaded</p>
-                        <button class="btn" onclick="selectSlot(${i})">Select This Slot</button>
-                    </div>
-                `;
-                container.appendChild(column);
+            // Generate 35 certificate slots
+            generateCertificateSlots() {
+                const container = document.getElementById('certificates-container');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                for (let i = 1; i <= 35; i++) {
+                    const column = document.createElement('div');
+                    column.className = 'upload-column';
+                    column.innerHTML = `
+                        <div class="upload-column-number">${i}</div>
+                        <div class="certificate-placeholder" id="certificate-${i}">
+                            <p>No certificate uploaded</p>
+                            <button class="btn" onclick="app.selectSlot(${i})">Select This Slot</button>
+                        </div>
+                    `;
+                    container.appendChild(column);
+                }
             }
-        }
-
-        // Initialize tab navigation
-        function initTabNavigation() {
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Update active tab
-                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Show corresponding content
-                    const tabId = this.getAttribute('data-tab');
-                    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-                    document.getElementById(tabId).classList.add('active');
+            
+            // Initialize tab navigation
+            initTabNavigation() {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        // Update active tab
+                        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                        link.classList.add('active');
+                        
+                        // Show corresponding content
+                        const tabId = link.getAttribute('data-tab');
+                        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                        document.getElementById(tabId).classList.add('active');
+                    });
                 });
-            });
-        }
-
-        // Show notification
-        function showNotification(message, isError = false) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.classList.remove('error');
-            
-            if (isError) {
-                notification.classList.add('error');
             }
             
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Select a certificate slot for upload
-        let selectedSlot = null;
-        function selectSlot(slotNumber) {
-            selectedSlot = slotNumber;
-            document.querySelectorAll('.upload-column').forEach(col => {
-                col.classList.remove('active');
-            });
-            document.querySelector(`#certificate-${slotNumber}`).parentElement.classList.add('active');
-            document.getElementById('selected-slot-info').textContent = `Selected slot: ${slotNumber}`;
-            showNotification(`Slot ${slotNumber} selected for upload`);
-        }
-
-        // Certificate upload functionality
-        function uploadCertificate() {
-            if (!selectedSlot) {
-                showNotification('Please select a slot first', true);
-                return;
-            }
-            
-            const fileInput = document.getElementById('certificate-upload');
-            const file = fileInput.files[0];
-            
-            if (!file) {
-                showNotification('Please select a PDF file to upload.', true);
-                return;
-            }
-            
-            if (file.type !== 'application/pdf') {
-                showNotification('Please upload a PDF file only.', true);
-                return;
-            }
-            
-            // Store file in localStorage
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const certificateData = {
-                    name: file.name,
-                    type: file.type,
-                    size: file.size,
-                    data: e.target.result,
-                    uploadDate: new Date().toISOString(),
-                    slot: selectedSlot
-                };
+            // Show notification
+            showNotification(message, isError = false) {
+                const notification = document.getElementById('notification');
+                if (!notification) return;
                 
-                // Save to localStorage
-                let certificates = JSON.parse(localStorage.getItem('certificates')) || {};
-                certificates[selectedSlot] = certificateData;
-                localStorage.setItem('certificates', JSON.stringify(certificates));
+                notification.textContent = message;
+                notification.classList.remove('error');
                 
-                // Update UI
-                updateCertificateSlot(selectedSlot, certificateData);
+                if (isError) {
+                    notification.classList.add('error');
+                }
                 
-                // Reset selection
-                selectedSlot = null;
-                fileInput.value = '';
-                document.getElementById('selected-slot-info').textContent = 'No slot selected';
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Select a certificate slot for upload
+            selectSlot(slotNumber) {
+                this.selectedSlot = slotNumber;
                 document.querySelectorAll('.upload-column').forEach(col => {
                     col.classList.remove('active');
                 });
                 
-                showNotification(`Certificate uploaded successfully to slot ${selectedSlot}!`);
-            };
+                const selectedElement = document.querySelector(`#certificate-${slotNumber}`);
+                if (selectedElement) {
+                    selectedElement.parentElement.classList.add('active');
+                }
+                
+                const slotInfo = document.getElementById('selected-slot-info');
+                if (slotInfo) {
+                    slotInfo.textContent = `Selected slot: ${slotNumber}`;
+                }
+                
+                this.showNotification(`Slot ${slotNumber} selected for upload`);
+            }
             
-            reader.readAsDataURL(file);
+            // Certificate upload functionality
+            uploadCertificate() {
+                if (!this.selectedSlot) {
+                    this.showNotification('Please select a slot first', true);
+                    return;
+                }
+                
+                const fileInput = document.getElementById('certificate-upload');
+                const file = fileInput.files[0];
+                
+                if (!file) {
+                    this.showNotification('Please select a PDF file to upload.', true);
+                    return;
+                }
+                
+                if (file.type !== 'application/pdf') {
+                    this.showNotification('Please upload a PDF file only.', true);
+                    return;
+                }
+                
+                // Store file in localStorage
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const certificateData = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: e.target.result,
+                        uploadDate: new Date().toISOString(),
+                        slot: this.selectedSlot
+                    };
+                    
+                    // Save to localStorage
+                    let certificates = JSON.parse(localStorage.getItem('certificates')) || {};
+                    certificates[this.selectedSlot] = certificateData;
+                    localStorage.setItem('certificates', JSON.stringify(certificates));
+                    
+                    // Update UI
+                    this.updateCertificateSlot(this.selectedSlot, certificateData);
+                    
+                    // Reset selection
+                    this.selectedSlot = null;
+                    fileInput.value = '';
+                    
+                    const slotInfo = document.getElementById('selected-slot-info');
+                    if (slotInfo) {
+                        slotInfo.textContent = 'No slot selected';
+                    }
+                    
+                    document.querySelectorAll('.upload-column').forEach(col => {
+                        col.classList.remove('active');
+                    });
+                    
+                    this.showNotification(`Certificate uploaded successfully to slot ${this.selectedSlot}!`);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            // Update certificate slot UI
+            updateCertificateSlot(slotNumber, certificate) {
+                const slotElement = document.getElementById(`certificate-${slotNumber}`);
+                if (!slotElement) return;
+                
+                // Create a thumbnail for the PDF
+                const thumbnailUrl = certificate.data;
+                
+                slotElement.innerHTML = `
+                    <img src="${thumbnailUrl}" class="certificate-preview" id="preview-${slotNumber}">
+                    <h3>${certificate.name}</h3>
+                    <p>Uploaded: ${new Date(certificate.uploadDate).toLocaleDateString()}</p>
+                    <p>Size: ${Math.round(certificate.size / 1024)} KB</p>
+                    <div class="certificate-actions">
+                        <button class="btn" onclick="app.viewCertificate(${slotNumber})">View</button>
+                        <button class="btn btn-success" onclick="app.downloadCertificate(${slotNumber})">Download</button>
+                    </div>
+                `;
+                
+                // Show the preview image
+                const preview = document.getElementById(`preview-${slotNumber}`);
+                if (preview) {
+                    preview.style.display = 'block';
+                }
+            }
+            
+            // View certificate in modal
+            viewCertificate(slotNumber) {
+                const certificates = JSON.parse(localStorage.getItem('certificates')) || {};
+                const certificate = certificates[slotNumber];
+                
+                if (certificate) {
+                    const modal = document.getElementById('pdf-modal');
+                    const pdfViewer = document.getElementById('pdf-viewer');
+                    
+                    if (pdfViewer) {
+                        pdfViewer.src = certificate.data;
+                    }
+                    
+                    if (modal) {
+                        modal.style.display = 'block';
+                    }
+                }
+            }
+            
+            // Close modal
+            closeModal() {
+                const modal = document.getElementById('pdf-modal');
+                const pdfViewer = document.getElementById('pdf-viewer');
+                
+                if (pdfViewer) {
+                    pdfViewer.src = '';
+                }
+                
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            }
+            
+            // Download certificate
+            downloadCertificate(slotNumber) {
+                const certificates = JSON.parse(localStorage.getItem('certificates')) || {};
+                const certificate = certificates[slotNumber];
+                
+                if (certificate) {
+                    const link = document.createElement('a');
+                    link.href = certificate.data;
+                    link.download = certificate.name;
+                    link.click();
+                }
+            }
+            
+            // Load stored data
+            loadStoredData() {
+                // Load certificates
+                const certificates = JSON.parse(localStorage.getItem('certificates')) || {};
+                for (const slot in certificates) {
+                    this.updateCertificateSlot(slot, certificates[slot]);
+                }
+                
+                // Load projects
+                const projects = JSON.parse(localStorage.getItem('projects')) || [];
+                projects.forEach(project => {
+                    this.addProjectToUI(project);
+                });
+            }
+            
+            // Project addition functionality
+            addProject() {
+                const title = document.getElementById('project-title');
+                const link = document.getElementById('project-link');
+                const description = document.getElementById('project-desc');
+                const tags = document.getElementById('project-tags');
+                
+                if (!title || !link || !description) {
+                    this.showNotification('Please fill in all required fields.', true);
+                    return;
+                }
+                
+                if (!title.value || !link.value || !description.value) {
+                    this.showNotification('Please fill in all required fields.', true);
+                    return;
+                }
+                
+                const project = {
+                    title: title.value,
+                    link: link.value,
+                    description: description.value,
+                    tags: tags.value.split(',').map(tag => tag.trim()),
+                    addDate: new Date().toISOString()
+                };
+                
+                // Save to localStorage
+                let projects = JSON.parse(localStorage.getItem('projects')) || [];
+                projects.push(project);
+                localStorage.setItem('projects', JSON.stringify(projects));
+                
+                // Update UI
+                this.addProjectToUI(project);
+                
+                // Clear form
+                title.value = '';
+                link.value = '';
+                description.value = '';
+                tags.value = '';
+                
+                this.showNotification('Project added successfully!');
+            }
+            
+            // Add project to UI
+            addProjectToUI(project) {
+                const container = document.getElementById('projects-container');
+                if (!container) return;
+                
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                
+                let tagsHtml = '';
+                if (project.tags && project.tags.length > 0) {
+                    tagsHtml = `<div class="project-tags">${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join('')}</div>`;
+                }
+                
+                card.innerHTML = `
+                    <div class="project-img">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="project-details">
+                        <h3>${project.title}</h3>
+                        <p>${project.description}</p>
+                        ${tagsHtml}
+                        <a href="${project.link}" target="_blank" class="btn">View Project</a>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            }
+            
+            // Send message functionality
+            sendMessage() {
+                this.showNotification('Message sent successfully! (This is a demo)');
+                
+                // Clear form
+                const form = document.querySelector('.contact-form');
+                if (form) {
+                    form.reset();
+                }
+            }
         }
 
-        // Update certificate slot UI
-        function updateCertificateSlot(slotNumber, certificate) {
-            const slotElement = document.getElementById(`certificate-${slotNumber}`);
-            slotElement.innerHTML = `
-                <h3>${certificate.name}</h3>
-                <p>Uploaded: ${new Date(certificate.uploadDate).toLocaleDateString()}</p>
-                <p>Size: ${Math.round(certificate.size / 1024)} KB</p>
-                <div class="certificate-actions">
-                    <button class="btn" onclick="viewCertificate(${slotNumber})">View</button>
-                    <button class="btn btn-success" onclick="downloadCertificate(${slotNumber})">Download</button>
-                </div>
-            `;
-        }
+        // Initialize the application
+        const app = new PortfolioApp();
 
-        // View certificate
+        // Make functions available globally for onclick attributes
+        function changeTheme(themeName) {
+            app.changeTheme(themeName);
+        }
+        
+        function changeThemeRandom() {
+            app.changeThemeRandom();
+        }
+        
+        function uploadCertificate() {
+            app.uploadCertificate();
+        }
+        
+        function selectSlot(slotNumber) {
+            app.selectSlot(slotNumber);
+        }
+        
         function viewCertificate(slotNumber) {
-            const certificates = JSON.parse(localStorage.getItem('certificates')) || {};
-            const certificate = certificates[slotNumber];
-            
-            if (certificate) {
-                window.open(certificate.data, '_blank');
-            }
+            app.viewCertificate(slotNumber);
         }
-
-        // Download certificate
+        
         function downloadCertificate(slotNumber) {
-            const certificates = JSON.parse(localStorage.getItem('certificates')) || {};
-            const certificate = certificates[slotNumber];
-            
-            if (certificate) {
-                const link = document.createElement('a');
-                link.href = certificate.data;
-                link.download = certificate.name;
-                link.click();
-            }
+            app.downloadCertificate(slotNumber);
         }
-
-        // Load stored data
-        function loadStoredData() {
-            // Load certificates
-            const certificates = JSON.parse(localStorage.getItem('certificates')) || {};
-            for (const slot in certificates) {
-                updateCertificateSlot(slot, certificates[slot]);
-            }
-            
-            // Load projects
-            const projects = JSON.parse(localStorage.getItem('projects')) || [];
-            projects.forEach(project => {
-                addProjectToUI(project);
-            });
+        
+        function closeModal() {
+            app.closeModal();
         }
-
-        // Project addition functionality
+        
         function addProject() {
-            const title = document.getElementById('project-title').value;
-            const link = document.getElementById('project-link').value;
-            const description = document.getElementById('project-desc').value;
-            const tags = document.getElementById('project-tags').value;
-            
-            if (!title || !link || !description) {
-                showNotification('Please fill in all required fields.', true);
-                return;
-            }
-            
-            const project = {
-                title,
-                link,
-                description,
-                tags: tags.split(',').map(tag => tag.trim()),
-                addDate: new Date().toISOString()
-            };
-            
-            // Save to localStorage
-            let projects = JSON.parse(localStorage.getItem('projects')) || [];
-            projects.push(project);
-            localStorage.setItem('projects', JSON.stringify(projects));
-            
-            // Update UI
-            addProjectToUI(project);
-            
-            // Clear form
-            document.getElementById('project-title').value = '';
-            document.getElementById('project-link').value = '';
-            document.getElementById('project-desc').value = '';
-            document.getElementById('project-tags').value = '';
-            
-            showNotification('Project added successfully!');
+            app.addProject();
         }
-
-        // Add project to UI
-        function addProjectToUI(project) {
-            const container = document.getElementById('projects-container');
-            
-            const card = document.createElement('div');
-            card.className = 'project-card';
-            
-            let tagsHtml = '';
-            if (project.tags && project.tags.length > 0) {
-                tagsHtml = `<div class="project-tags">${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join('')}</div>`;
-            }
-            
-            card.innerHTML = `
-                <div class="project-img">
-                    <i class="fas fa-laptop-code"></i>
-                </div>
-                <div class="project-details">
-                    <h3>${project.title}</h3>
-                    <p>${project.description}</p>
-                    ${tagsHtml}
-                    <a href="${project.link}" target="_blank" class="btn">View Project</a>
-                </div>
-            `;
-            
-            container.appendChild(card);
+        
+        function sendMessage() {
+            app.sendMessage();
         }
     </script>
 </body>
 </html>
-
