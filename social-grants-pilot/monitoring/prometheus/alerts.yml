@@ -1,0 +1,341 @@
+groups:
+  - name: socialgrants.rules
+    interval: 30s
+    rules:
+      # API Health and Availability
+      - alert: SocialGrantsAPIDown
+        expr: up{job="socialgrants-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: api
+          compliance: popia
+        annotations:
+          summary: "Social Grants API is down"
+          description: "The Social Grants API has been down for more than 1 minute. This affects citizen applications and caseworker operations."
+          runbook_url: "https://runbooks.socialgrants.gov.za/api-down"
+
+      - alert: SocialGrantsAPIHighLatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="socialgrants-api"}[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: api
+        annotations:
+          summary: "High API latency detected"
+          description: "95th percentile latency is {{ $value }}s for the last 5 minutes"
+
+      - alert: SocialGrantsAPIHighErrorRate
+        expr: rate(http_requests_total{job="socialgrants-api",status=~"5.."}[5m]) / rate(http_requests_total{job="socialgrants-api"}[5m]) > 0.05
+        for: 3m
+        labels:
+          severity: critical
+          service: api
+        annotations:
+          summary: "High API error rate"
+          description: "API error rate is {{ $value | humanizePercentage }} over the last 5 minutes"
+
+      # Database Health
+      - alert: PostgreSQLDown
+        expr: up{job="postgres-exporter"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: database
+          compliance: popia
+        annotations:
+          summary: "PostgreSQL database is down"
+          description: "PostgreSQL database is unreachable. This will cause complete system failure."
+          runbook_url: "https://runbooks.socialgrants.gov.za/database-down"
+
+      - alert: PostgreSQLHighConnections
+        expr: pg_stat_database_numbackends / pg_settings_max_connections * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "High PostgreSQL connection usage"
+          description: "PostgreSQL is using {{ $value }}% of available connections"
+
+      - alert: PostgreSQLSlowQueries
+        expr: rate(pg_stat_database_tup_returned[5m]) / rate(pg_stat_database_tup_fetched[5m]) < 0.1
+        for: 10m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "PostgreSQL slow queries detected"
+          description: "Database query efficiency is degraded. Query optimization may be needed."
+
+      - alert: PostgreSQLReplicationLag
+        expr: pg_stat_replication_sent_location - pg_stat_replication_flush_location > 1024*1024*10
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "PostgreSQL replication lag detected"
+          description: "Replication lag is {{ $value | humanizeBytes }}"
+
+      # Redis Health
+      - alert: RedisDown
+        expr: up{job="redis-exporter"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: cache
+        annotations:
+          summary: "Redis is down"
+          description: "Redis cache is unreachable. This will impact session management and performance."
+
+      - alert: RedisHighMemoryUsage
+        expr: redis_memory_used_bytes / redis_memory_max_bytes * 100 > 90
+        for: 5m
+        labels:
+          severity: warning
+          service: cache
+        annotations:
+          summary: "Redis high memory usage"
+          description: "Redis memory usage is {{ $value }}%"
+
+      # Application Metrics
+      - alert: HighCitizenApplicationVolume
+        expr: rate(citizen_applications_submitted_total[1h]) > 1000
+        for: 10m
+        labels:
+          severity: info
+          service: business
+        annotations:
+          summary: "High volume of citizen applications"
+          description: "{{ $value }} applications submitted in the last hour. Consider scaling resources."
+
+      - alert: ApplicationProcessingDelay
+        expr: histogram_quantile(0.95, rate(application_processing_duration_seconds_bucket[1h])) > 86400
+        for: 30m
+        labels:
+          severity: warning
+          service: business
+          compliance: popia
+        annotations:
+          summary: "Application processing delays detected"
+          description: "95th percentile processing time is {{ $value | humanizeDuration }}. This may violate POPIA response time requirements."
+
+      - alert: FailedPaymentAlerts
+        expr: rate(payment_failures_total[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: critical
+          service: payment
+        annotations:
+          summary: "Payment failures detected"
+          description: "{{ $value }} payment failures per second in the last 5 minutes"
+
+      # Security Alerts
+      - alert: SuspiciousLoginActivity
+        expr: rate(failed_login_attempts_total[5m]) > 10
+        for: 1m
+        labels:
+          severity: warning
+          service: security
+          compliance: popia
+        annotations:
+          summary: "Suspicious login activity detected"
+          description: "{{ $value }} failed login attempts per second. Possible brute force attack."
+
+      - alert: UnauthorizedAPIAccess
+        expr: rate(http_requests_total{status="401"}[5m]) > 5
+        for: 2m
+        labels:
+          severity: warning
+          service: security
+        annotations:
+          summary: "High number of unauthorized API requests"
+          description: "{{ $value }} unauthorized requests per second"
+
+      - alert: PrivilegeEscalationAttempt
+        expr: increase(privilege_escalation_attempts_total[5m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+          service: security
+          compliance: popia
+        annotations:
+          summary: "Privilege escalation attempt detected"
+          description: "{{ $value }} privilege escalation attempts in the last 5 minutes"
+
+      # Infrastructure Alerts
+      - alert: HighCPUUsage
+        expr: 100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: infrastructure
+        annotations:
+          summary: "High CPU usage on nodes"
+          description: "CPU usage is {{ $value }}% across cluster nodes"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 10m
+        labels:
+          severity: warning
+          service: infrastructure
+        annotations:
+          summary: "High memory usage on nodes"
+          description: "Memory usage is {{ $value }}% on node {{ $labels.instance }}"
+
+      - alert: DiskSpaceLow
+        expr: (1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+          service: infrastructure
+        annotations:
+          summary: "Low disk space"
+          description: "Disk usage is {{ $value }}% on {{ $labels.instance }}:{{ $labels.mountpoint }}"
+
+      # Keycloak Alerts
+      - alert: KeycloakDown
+        expr: up{job="keycloak"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: auth
+        annotations:
+          summary: "Keycloak authentication service is down"
+          description: "Keycloak is unreachable. Users cannot authenticate."
+
+      - alert: KeycloakHighResponseTime
+        expr: histogram_quantile(0.95, rate(keycloak_request_duration_bucket[5m])) > 5
+        for: 5m
+        labels:
+          severity: warning
+          service: auth
+        annotations:
+          summary: "Keycloak high response time"
+          description: "95th percentile response time is {{ $value }}s"
+
+      # Compliance and Audit Alerts
+      - alert: AuditLogDeliveryFailure
+        expr: increase(audit_log_delivery_failures_total[5m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+          service: audit
+          compliance: popia
+        annotations:
+          summary: "Audit log delivery failure"
+          description: "{{ $value }} audit log delivery failures. This violates POPIA compliance requirements."
+
+      - alert: EncryptionKeyRotationDue
+        expr: time() - encryption_key_last_rotation_timestamp > 7776000  # 90 days
+        for: 1h
+        labels:
+          severity: warning
+          service: security
+          compliance: popia
+        annotations:
+          summary: "Encryption key rotation due"
+          description: "Encryption keys have not been rotated for 90 days. Consider rotating for security compliance."
+
+      - alert: DataRetentionViolation
+        expr: increase(data_retention_violations_total[1h]) > 0
+        for: 0m
+        labels:
+          severity: critical
+          service: compliance
+          compliance: popia
+        annotations:
+          summary: "Data retention policy violation"
+          description: "{{ $value }} data retention violations detected. This violates POPIA requirements."
+
+      # Business KPI Alerts
+      - alert: LowApplicationApprovalRate
+        expr: (rate(applications_approved_total[24h]) / rate(applications_processed_total[24h])) * 100 < 70
+        for: 1h
+        labels:
+          severity: info
+          service: business
+        annotations:
+          summary: "Low application approval rate"
+          description: "Application approval rate is {{ $value }}% over the last 24 hours"
+
+      - alert: HighCaseworkerWorkload
+        expr: avg(caseworker_assigned_applications) > 50
+        for: 30m
+        labels:
+          severity: warning
+          service: business
+        annotations:
+          summary: "High caseworker workload"
+          description: "Average caseworker workload is {{ $value }} applications"
+
+      # External Service Alerts
+      - alert: SMSServiceDown
+        expr: up{job="sms-gateway"} == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: external
+        annotations:
+          summary: "SMS service is down"
+          description: "SMS gateway is unreachable. Citizens will not receive SMS notifications."
+
+      - alert: USSDServiceDown
+        expr: up{job="ussd-gateway"} == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: external
+        annotations:
+          summary: "USSD service is down"
+          description: "USSD gateway is unreachable. Feature phone users cannot access the system."
+
+      - alert: PaymentGatewayDown
+        expr: up{job="payment-gateway"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: external
+        annotations:
+          summary: "Payment gateway is down"
+          description: "Payment processing is unavailable. This will delay grant payments."
+
+  # Recording Rules for Performance Optimization
+  - name: socialgrants.recording.rules
+    interval: 30s
+    rules:
+      # API Request Rate
+      - record: api:request_rate_5m
+        expr: rate(http_requests_total{job="socialgrants-api"}[5m])
+
+      # API Error Rate
+      - record: api:error_rate_5m
+        expr: rate(http_requests_total{job="socialgrants-api",status=~"5.."}[5m])
+
+      # API Success Rate
+      - record: api:success_rate_5m
+        expr: rate(http_requests_total{job="socialgrants-api",status=~"2.."}[5m])
+
+      # Database Connection Pool Usage
+      - record: db:connection_pool_usage
+        expr: pg_stat_database_numbackends / pg_settings_max_connections * 100
+
+      # Application Processing Metrics
+      - record: business:application_processing_rate_1h
+        expr: rate(applications_processed_total[1h])
+
+      - record: business:application_approval_rate_24h
+        expr: rate(applications_approved_total[24h]) / rate(applications_processed_total[24h]) * 100
+
+      # System Resource Usage
+      - record: system:cpu_usage_avg
+        expr: 100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+
+      - record: system:memory_usage_avg
+        expr: (1 - (avg(node_memory_MemAvailable_bytes) / avg(node_memory_MemTotal_bytes))) * 100
+
+      # Payment Success Rate
+      - record: payment:success_rate_1h
+        expr: rate(payments_successful_total[1h]) / rate(payments_total[1h]) * 100

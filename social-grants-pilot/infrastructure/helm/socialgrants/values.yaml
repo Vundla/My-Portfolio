@@ -1,0 +1,539 @@
+# Default values for Social Grants Pilot System
+# This is a YAML-formatted file.
+
+# Global settings
+global:
+  imageRegistry: "ghcr.io"
+  imagePullSecrets:
+    - name: github-registry-secret
+  storageClass: "gp3"
+
+# Environment configuration
+environment: "staging"  # staging, production
+region: "af-south-1"
+
+# Application configuration
+app:
+  name: socialgrants
+  version: "1.0.0"
+  
+# Image configuration
+image:
+  registry: ghcr.io
+  repository: vundla/my-portfolio
+  
+  api:
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  
+  web:
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  
+  worker:
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+# API Service configuration
+api:
+  name: socialgrants-api
+  replicaCount: 3
+  
+  image:
+    repository: socialgrants/api
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  
+  service:
+    type: ClusterIP
+    port: 3000
+    targetPort: 3000
+    annotations: {}
+  
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+  
+  env:
+    NODE_ENV: production
+    LOG_LEVEL: info
+    API_PORT: 3000
+    CORS_ORIGIN: "*"
+    RATE_LIMIT_WINDOW_MS: 900000  # 15 minutes
+    RATE_LIMIT_MAX_REQUESTS: 100
+  
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 3000
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+# Web Frontend configuration
+web:
+  name: socialgrants-web
+  replicaCount: 3
+  
+  image:
+    repository: socialgrants/web
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 3000
+  
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 8
+    targetCPUUtilizationPercentage: 70
+  
+  env:
+    NODE_ENV: production
+    API_URL: http://socialgrants-api:3000
+    PUBLIC_URL: https://socialgrants.gov.za
+
+# Background Worker configuration
+worker:
+  name: socialgrants-worker
+  replicaCount: 2
+  
+  image:
+    repository: socialgrants/worker
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 6
+    targetCPUUtilizationPercentage: 80
+
+# Database configuration
+database:
+  enabled: true
+  host: "postgres-postgresql"
+  port: 5432
+  name: "socialgrants"
+  username: "socialgrants"
+  
+  # External database configuration (if not using in-cluster)
+  external:
+    enabled: false
+    host: ""
+    port: 5432
+    name: ""
+    username: ""
+    
+  ssl:
+    enabled: true
+    mode: require
+  
+  # Connection pooling
+  pool:
+    min: 5
+    max: 20
+    idle_timeout: 10000
+    acquire_timeout: 60000
+
+# Redis configuration
+redis:
+  enabled: true
+  host: "redis-master"
+  port: 6379
+  
+  # External Redis configuration
+  external:
+    enabled: false
+    host: ""
+    port: 6379
+  
+  # Redis Sentinel configuration
+  sentinel:
+    enabled: false
+    hosts: []
+    name: "mymaster"
+
+# Keycloak configuration
+keycloak:
+  enabled: true
+  host: "keycloak"
+  port: 8080
+  realm: "socialgrants"
+  
+  # External Keycloak configuration
+  external:
+    enabled: false
+    host: ""
+    port: 8080
+    realm: ""
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: "nginx"
+  
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+  
+  hosts:
+    - host: socialgrants.gov.za
+      paths:
+        - path: /
+          pathType: Prefix
+          service: socialgrants-web
+        - path: /api
+          pathType: Prefix
+          service: socialgrants-api
+    
+    - host: api.socialgrants.gov.za
+      paths:
+        - path: /
+          pathType: Prefix
+          service: socialgrants-api
+    
+    - host: admin.socialgrants.gov.za
+      paths:
+        - path: /
+          pathType: Prefix
+          service: socialgrants-admin
+  
+  tls:
+    - secretName: socialgrants-tls
+      hosts:
+        - socialgrants.gov.za
+        - api.socialgrants.gov.za
+        - admin.socialgrants.gov.za
+
+# Service Account configuration
+serviceAccount:
+  create: true
+  annotations: {}
+  name: "socialgrants"
+
+# Pod Security Context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+  runAsGroup: 1001
+  fsGroup: 1001
+  seccompProfile:
+    type: RuntimeDefault
+
+# Security Context
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1001
+  capabilities:
+    drop:
+      - ALL
+
+# Node selector and tolerations
+nodeSelector: {}
+tolerations: []
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - socialgrants
+          topologyKey: kubernetes.io/hostname
+
+# Persistent Volume Claims
+persistence:
+  enabled: true
+  storageClass: "gp3"
+  
+  uploads:
+    size: 50Gi
+    mountPath: /app/uploads
+  
+  logs:
+    size: 10Gi
+    mountPath: /app/logs
+
+# ConfigMaps and Secrets
+config:
+  # Application configuration
+  app:
+    name: "Social Grants System"
+    version: "1.0.0"
+    maintenance_mode: false
+    max_file_upload_size: "10MB"
+    session_timeout: 1800  # 30 minutes
+    
+  # Security configuration
+  security:
+    bcrypt_rounds: 12
+    jwt_expiry: 3600  # 1 hour
+    mfa_enabled: true
+    password_min_length: 8
+    
+  # POPIA compliance
+  compliance:
+    data_retention_days: 2555  # 7 years
+    audit_log_retention_days: 2555
+    consent_required: true
+    right_to_deletion: true
+
+# Secrets (values will be provided via external secret management)
+secrets:
+  database:
+    password: ""
+  
+  redis:
+    password: ""
+  
+  keycloak:
+    client_secret: ""
+  
+  encryption:
+    key: ""
+    salt: ""
+  
+  jwt:
+    secret: ""
+  
+  session:
+    secret: ""
+
+# External services configuration
+external:
+  sms:
+    enabled: true
+    provider: "clickatell"  # or "twilio"
+    api_url: ""
+    
+  ussd:
+    enabled: true
+    provider: "ussd_gateway"
+    service_code: "*134*7777#"
+    
+  payment:
+    enabled: true
+    provider: "postbank"  # South African payment provider
+    sandbox: true
+
+# Monitoring configuration
+monitoring:
+  enabled: true
+  
+  prometheus:
+    enabled: true
+    scrapeInterval: 30s
+    
+  grafana:
+    enabled: true
+    adminPassword: ""
+  
+  alerts:
+    enabled: true
+    slack_webhook: ""
+    
+  metrics:
+    enabled: true
+    port: 9090
+
+# Logging configuration
+logging:
+  enabled: true
+  level: "info"
+  format: "json"
+  
+  # Log aggregation
+  fluentd:
+    enabled: true
+    elasticsearch_host: ""
+  
+  # Structured logging
+  structured: true
+  correlation_id: true
+
+# Backup configuration
+backup:
+  enabled: true
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  retention: "30d"
+  
+  s3:
+    bucket: ""
+    region: "af-south-1"
+    
+  encryption:
+    enabled: true
+
+# Network Policies
+networkPolicy:
+  enabled: true
+  
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: nginx-ingress
+      ports:
+        - protocol: TCP
+          port: 3000
+  
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: database
+      ports:
+        - protocol: TCP
+          port: 5432
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: redis
+      ports:
+        - protocol: TCP
+          port: 6379
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+# Resource Quotas
+resourceQuota:
+  enabled: true
+  hard:
+    requests.cpu: "10"
+    requests.memory: 20Gi
+    limits.cpu: "20"
+    limits.memory: 40Gi
+    persistentvolumeclaims: "10"
+
+# Dependency configurations
+postgresql:
+  enabled: true
+  auth:
+    database: socialgrants
+    username: socialgrants
+    password: ""
+  
+  primary:
+    persistence:
+      enabled: true
+      size: 100Gi
+      storageClass: "gp3"
+    
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 4Gi
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+  
+  metrics:
+    enabled: true
+  
+  postgresqlConfiguration:
+    log_statement: "mod"
+    log_min_duration_statement: 1000
+    shared_preload_libraries: "pg_stat_statements"
+
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: ""
+  
+  architecture: replication
+  
+  master:
+    persistence:
+      enabled: true
+      size: 20Gi
+      storageClass: "gp3"
+    
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 1Gi
+  
+  replica:
+    replicaCount: 2
+    persistence:
+      enabled: true
+      size: 20Gi
+      storageClass: "gp3"
+
+keycloak:
+  enabled: true
+  
+  auth:
+    adminUser: admin
+    adminPassword: ""
+  
+  postgresql:
+    enabled: true
+  
+  ingress:
+    enabled: true
+    hostname: auth.socialgrants.gov.za
+    tls: true
+  
+  extraEnvVars:
+    - name: KC_HOSTNAME
+      value: auth.socialgrants.gov.za
+    - name: KC_PROXY
+      value: edge

@@ -1,0 +1,162 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Social Grants System - Executive Dashboard",
+    "description": "High-level overview of the South African Social Grants pilot system for executives and government officials",
+    "tags": ["social-grants", "government", "executive", "popia"],
+    "style": "dark",
+    "timezone": "Africa/Johannesburg",
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "hideControls": false,
+    "links": [
+      {
+        "title": "Technical Dashboard",
+        "url": "/d/socialgrants-technical",
+        "type": "dashboards"
+      },
+      {
+        "title": "Security Dashboard",
+        "url": "/d/socialgrants-security",
+        "type": "dashboards"
+      },
+      {
+        "title": "Compliance Dashboard",
+        "url": "/d/socialgrants-compliance",
+        "type": "dashboards"
+      }
+    ],
+    "refresh": "5m",
+    "schemaVersion": 36,
+    "time": {
+      "from": "now-24h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"],
+      "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
+    },
+    "templating": {
+      "list": [
+        {
+          "name": "province",
+          "type": "query",
+          "query": "label_values(province)",
+          "refresh": 1,
+          "includeAll": true,
+          "allValue": ".*",
+          "multi": true,
+          "current": {
+            "value": "All",
+            "text": "All"
+          },
+          "options": []
+        },
+        {
+          "name": "interval",
+          "type": "interval",
+          "query": "1m,5m,10m,30m,1h,6h,12h,1d,7d",
+          "refresh": 2,
+          "current": {
+            "value": "5m",
+            "text": "5m"
+          }
+        }
+      ]
+    },
+    "annotations": {
+      "list": [
+        {
+          "name": "Deployments",
+          "enable": true,
+          "iconColor": "green",
+          "datasource": "prometheus",
+          "expr": "increase(deployment_timestamp[1m])",
+          "titleFormat": "Deployment",
+          "textFormat": "New version deployed"
+        },
+        {
+          "name": "Incidents",
+          "enable": true,
+          "iconColor": "red",
+          "datasource": "prometheus",
+          "expr": "ALERTS{alertstate=\"firing\",severity=\"critical\"}",
+          "titleFormat": "Critical Alert",
+          "textFormat": "{{ $labels.alertname }}"
+        }
+      ]
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "System Status Overview",
+        "type": "stat",
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "up{job=\"socialgrants-api\"}",
+            "legendFormat": "API Status",
+            "refId": "A"
+          },
+          {
+            "expr": "up{job=\"postgres-exporter\"}",
+            "legendFormat": "Database Status",
+            "refId": "B"
+          },
+          {
+            "expr": "up{job=\"keycloak\"}",
+            "legendFormat": "Authentication Status",
+            "refId": "C"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "text": "DOWN",
+                    "color": "red"
+                  },
+                  "1": {
+                    "text": "UP",
+                    "color": "green"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        },
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"],
+            "fields": ""
+          },
+          "orientation": "horizontal",
+          "textMode": "value_and_name",
+          "colorMode": "background"
+        }
+      }
+    ]
+  }
+}

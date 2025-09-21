@@ -1,0 +1,702 @@
+name: CI/CD Pipeline for Social Grants System
+
+on:
+  push:
+    branches: 
+      - main
+      - develop
+      - 'release/*'
+  pull_request:
+    branches: 
+      - main
+      - develop
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  PROJECT_NAME: socialgrants
+  REGISTRY: ghcr.io
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  JAVA_VERSION: '17'
+
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  # Security and Code Quality Checks
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint:security
+
+      - name: Run Snyk vulnerability scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Run CodeQL analysis
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript, python, java
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v3
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # Secrets scanning
+  secrets-scan:
+    name: Secrets Detection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --debug --only-verified
+
+  # Unit and Integration Tests
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    needs: [security-scan]
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: socialgrants_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Run database migrations
+        run: npm run migrate:test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/socialgrants_test
+
+      - name: Run unit tests
+        run: npm run test:unit
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/socialgrants_test
+          REDIS_URL: redis://localhost:6379
+
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/socialgrants_test
+          REDIS_URL: redis://localhost:6379
+
+      - name: Run Python tests
+        run: pytest tests/ --cov=src/ --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml,./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+  # Build and Package
+  build:
+    name: Build and Package
+    runs-on: ubuntu-latest
+    needs: [test, secrets-scan]
+    
+    outputs:
+      api-image: ${{ steps.meta.outputs.api-tags }}
+      web-image: ${{ steps.meta.outputs.web-tags }}
+      mobile-image: ${{ steps.meta.outputs.mobile-tags }}
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate version
+        id: version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          elif [[ $GITHUB_REF == refs/heads/main ]]; then
+            VERSION="latest"
+          else
+            VERSION="pr-${{ github.event.number }}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for API
+        id: meta-api
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/api
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Extract metadata for Web
+        id: meta-web
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/web
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/api
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta-api.outputs.tags }}
+          labels: ${{ steps.meta-api.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            VERSION=${{ steps.version.outputs.version }}
+            BUILD_DATE=${{ github.event.head_commit.timestamp }}
+            VCS_REF=${{ github.sha }}
+
+      - name: Build and push Web image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/web
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta-web.outputs.tags }}
+          labels: ${{ steps.meta-web.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            VERSION=${{ steps.version.outputs.version }}
+            BUILD_DATE=${{ github.event.head_commit.timestamp }}
+            VCS_REF=${{ github.sha }}
+
+      - name: Run Trivy vulnerability scanner on API image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.meta-api.outputs.tags }}
+          format: 'sarif'
+          output: 'trivy-api-results.sarif'
+
+      - name: Upload API Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-api-results.sarif'
+
+  # Infrastructure as Code
+  infrastructure:
+    name: Infrastructure Validation
+    runs-on: ubuntu-latest
+    needs: [security-scan]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive infrastructure/terraform/
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+        working-directory: infrastructure/terraform/
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: infrastructure/terraform/
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: infrastructure/terraform/
+          framework: terraform
+          output_format: sarif
+          output_file_path: reports/checkov.sarif
+
+      - name: Upload Checkov scan results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: reports/checkov.sarif
+
+      - name: Run TFSec
+        uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          working_directory: infrastructure/terraform/
+          format: sarif
+          soft_fail: true
+
+  # Deploy to Staging
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build, infrastructure]
+    if: github.ref == 'refs/heads/develop' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
+    environment: staging
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_STAGING }}
+          aws-region: af-south-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: infrastructure/terraform/
+        env:
+          TF_VAR_environment: staging
+
+      - name: Terraform Plan
+        run: terraform plan -var="environment=staging" -out=tfplan
+        working-directory: infrastructure/terraform/
+
+      - name: Terraform Apply
+        run: terraform apply tfplan
+        working-directory: infrastructure/terraform/
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.28.0'
+
+      - name: Configure kubectl
+        run: |
+          aws eks update-kubeconfig --region af-south-1 --name socialgrants-staging-eks
+
+      - name: Deploy to Kubernetes
+        run: |
+          helm upgrade --install socialgrants ./infrastructure/helm/socialgrants \
+            --namespace socialgrants-staging \
+            --create-namespace \
+            --set environment=staging \
+            --set image.api.tag=${{ needs.build.outputs.version }} \
+            --set image.web.tag=${{ needs.build.outputs.version }} \
+            --wait
+
+      - name: Run smoke tests
+        run: |
+          kubectl run smoke-test --image=curlimages/curl:latest --rm -i --restart=Never -- \
+            curl -f http://socialgrants-api.socialgrants-staging.svc.cluster.local/health
+
+  # Deploy to Production
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build, infrastructure, deploy-staging]
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production')
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PRODUCTION }}
+          aws-region: af-south-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: infrastructure/terraform/
+        env:
+          TF_VAR_environment: production
+
+      - name: Terraform Plan
+        run: terraform plan -var="environment=production" -out=tfplan
+        working-directory: infrastructure/terraform/
+
+      - name: Terraform Apply
+        run: terraform apply tfplan
+        working-directory: infrastructure/terraform/
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.28.0'
+
+      - name: Configure kubectl
+        run: |
+          aws eks update-kubeconfig --region af-south-1 --name socialgrants-production-eks
+
+      - name: Blue-Green Deployment
+        run: |
+          # Deploy to green environment
+          helm upgrade --install socialgrants-green ./infrastructure/helm/socialgrants \
+            --namespace socialgrants-production \
+            --set environment=production \
+            --set deployment.color=green \
+            --set image.api.tag=${{ needs.build.outputs.version }} \
+            --set image.web.tag=${{ needs.build.outputs.version }} \
+            --wait
+
+          # Run health checks
+          kubectl wait --for=condition=ready pod -l app=socialgrants,color=green -n socialgrants-production --timeout=300s
+
+          # Switch traffic to green
+          kubectl patch service socialgrants-api -n socialgrants-production -p '{"spec":{"selector":{"color":"green"}}}'
+          kubectl patch service socialgrants-web -n socialgrants-production -p '{"spec":{"selector":{"color":"green"}}}'
+
+          # Wait for traffic switch
+          sleep 30
+
+          # Remove blue deployment
+          helm uninstall socialgrants-blue -n socialgrants-production || true
+
+          # Rename green to blue for next deployment
+          helm upgrade socialgrants ./infrastructure/helm/socialgrants \
+            --namespace socialgrants-production \
+            --set deployment.color=blue \
+            --reuse-values
+
+      - name: Run production smoke tests
+        run: |
+          kubectl run smoke-test-prod --image=curlimages/curl:latest --rm -i --restart=Never -- \
+            curl -f https://api.socialgrants.gov.za/health
+
+      - name: Notify deployment success
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          channel: '#deployments'
+          text: "✅ Social Grants System v${{ needs.build.outputs.version }} deployed to production successfully!"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Performance and Load Testing
+  performance-test:
+    name: Performance Testing
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: github.ref == 'refs/heads/develop'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup K6
+        run: |
+          sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+
+      - name: Run load tests
+        run: |
+          k6 run tests/performance/load-test.js \
+            --env BASE_URL=https://staging.socialgrants.gov.za
+
+      - name: Upload performance results
+        uses: actions/upload-artifact@v3
+        with:
+          name: performance-results
+          path: performance-results.json
+
+  # Security Penetration Testing
+  penetration-test:
+    name: Penetration Testing
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: github.ref == 'refs/heads/develop'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.10.0
+        with:
+          target: 'https://staging.socialgrants.gov.za'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+
+      - name: Run OWASP ZAP Full Scan
+        uses: zaproxy/action-full-scan@v0.8.0
+        with:
+          target: 'https://staging.socialgrants.gov.za'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+
+  # Accessibility Testing
+  accessibility-test:
+    name: Accessibility Testing
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: github.ref == 'refs/heads/develop'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install axe-core
+        run: npm install -g @axe-core/cli
+
+      - name: Run accessibility tests
+        run: |
+          axe https://staging.socialgrants.gov.za \
+            --include wcag2a,wcag2aa,wcag21aa \
+            --reporter json \
+            --output accessibility-results.json
+
+      - name: Upload accessibility results
+        uses: actions/upload-artifact@v3
+        with:
+          name: accessibility-results
+          path: accessibility-results.json
+
+  # Database Migration Validation
+  migration-validation:
+    name: Database Migration Validation
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '[migration]') || github.ref == 'refs/heads/main'
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: socialgrants_migration_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test forward migration
+        run: npm run migrate:test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/socialgrants_migration_test
+
+      - name: Seed test data
+        run: npm run seed:test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/socialgrants_migration_test
+
+      - name: Test rollback migration
+        run: npm run migrate:rollback:test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/socialgrants_migration_test
+
+      - name: Test forward migration again
+        run: npm run migrate:test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/socialgrants_migration_test
+
+  # Compliance and Audit
+  compliance-audit:
+    name: Compliance Audit
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, '[audit]')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run POPIA compliance check
+        run: |
+          python scripts/compliance/popia_check.py \
+            --config compliance/popia-config.yaml \
+            --output popia-report.json
+
+      - name: Run GDPR compliance check
+        run: |
+          python scripts/compliance/gdpr_check.py \
+            --config compliance/gdpr-config.yaml \
+            --output gdpr-report.json
+
+      - name: Generate compliance report
+        run: |
+          python scripts/compliance/generate_report.py \
+            --popia popia-report.json \
+            --gdpr gdpr-report.json \
+            --output compliance-report.html
+
+      - name: Upload compliance reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: compliance-reports
+          path: |
+            popia-report.json
+            gdpr-report.json
+            compliance-report.html
+
+  # Notification and Cleanup
+  notify-completion:
+    name: Notify Completion
+    runs-on: ubuntu-latest
+    needs: [deploy-production, performance-test, penetration-test, accessibility-test]
+    if: always()
+    
+    steps:
+      - name: Notify Teams
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#social-grants-ci-cd'
+          text: |
+            🚀 **Social Grants CI/CD Pipeline Completed**
+            
+            **Branch:** ${{ github.ref }}
+            **Commit:** ${{ github.sha }}
+            **Author:** ${{ github.actor }}
+            
+            **Results:**
+            - Security Scan: ${{ needs.security-scan.result }}
+            - Tests: ${{ needs.test.result }}
+            - Build: ${{ needs.build.result }}
+            - Staging Deploy: ${{ needs.deploy-staging.result }}
+            - Production Deploy: ${{ needs.deploy-production.result }}
+            - Performance Test: ${{ needs.performance-test.result }}
+            
+            **Links:**
+            - [Pipeline](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            - [Staging](https://staging.socialgrants.gov.za)
+            - [Production](https://socialgrants.gov.za)
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

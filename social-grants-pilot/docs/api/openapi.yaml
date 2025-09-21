@@ -1,0 +1,1174 @@
+openapi: 3.0.3
+info:
+  title: South Africa Social Grants API
+  description: |
+    Comprehensive API for the South African Social Grants pilot system.
+    This API supports citizens, caseworkers, and DSD staff with secure, 
+    POPIA-compliant grant management functionality.
+    
+    ## Authentication
+    All endpoints require OAuth 2.0 with OIDC authentication via Keycloak.
+    
+    ## Rate Limiting
+    - Citizens: 100 requests/minute
+    - Caseworkers: 500 requests/minute
+    - DSD Staff: 1000 requests/minute
+    
+    ## Data Protection
+    All personal data is encrypted and handled in compliance with POPIA.
+  version: 1.0.0
+  contact:
+    name: DSD Technical Support
+    email: tech-support@socialgrants.gov.za
+    url: https://www.gov.za/socialgrants
+  license:
+    name: Proprietary
+    url: https://www.gov.za/socialgrants/license
+
+servers:
+  - url: https://api.socialgrants.gov.za/v1
+    description: Production server
+  - url: https://staging-api.socialgrants.gov.za/v1
+    description: Staging server
+  - url: http://localhost:3000/api/v1
+    description: Development server
+
+security:
+  - oauth2: []
+  - bearerAuth: []
+
+paths:
+  # Authentication Endpoints
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: Authenticate user and return access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - identifier
+                - password
+              properties:
+                identifier:
+                  type: string
+                  description: ID number, email, or phone number
+                  example: "8001010000087"
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                mfaCode:
+                  type: string
+                  description: Multi-factor authentication code
+                  example: "123456"
+      responses:
+        '200':
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh access token
+      description: Refresh an expired access token using refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refreshToken
+              properties:
+                refreshToken:
+                  type: string
+                  format: jwt
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # Citizen Endpoints
+  /citizens/profile:
+    get:
+      tags:
+        - Citizens
+      summary: Get citizen profile
+      description: Retrieve the authenticated citizen's profile information
+      security:
+        - oauth2: [citizen:read]
+      responses:
+        '200':
+          description: Citizen profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CitizenProfile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    put:
+      tags:
+        - Citizens
+      summary: Update citizen profile
+      description: Update the authenticated citizen's profile information
+      security:
+        - oauth2: [citizen:write]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CitizenProfileUpdate'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CitizenProfile'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /citizens/applications:
+    get:
+      tags:
+        - Grant Applications
+      summary: Get citizen's grant applications
+      description: Retrieve all grant applications for the authenticated citizen
+      security:
+        - oauth2: [citizen:read]
+      parameters:
+        - name: status
+          in: query
+          description: Filter by application status
+          schema:
+            $ref: '#/components/schemas/ApplicationStatus'
+        - name: type
+          in: query
+          description: Filter by grant type
+          schema:
+            $ref: '#/components/schemas/GrantType'
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Applications retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GrantApplication'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+    post:
+      tags:
+        - Grant Applications
+      summary: Submit new grant application
+      description: Submit a new grant application with required documents
+      security:
+        - oauth2: [citizen:write]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - grantType
+                - personalDetails
+              properties:
+                grantType:
+                  $ref: '#/components/schemas/GrantType'
+                personalDetails:
+                  $ref: '#/components/schemas/PersonalDetails'
+                documents:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                dependents:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Dependent'
+      responses:
+        '201':
+          description: Application submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GrantApplication'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /citizens/applications/{applicationId}:
+    get:
+      tags:
+        - Grant Applications
+      summary: Get specific grant application
+      description: Retrieve details of a specific grant application
+      security:
+        - oauth2: [citizen:read]
+      parameters:
+        - name: applicationId
+          in: path
+          required: true
+          description: Unique application identifier
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Application details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GrantApplicationDetail'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # Caseworker Endpoints
+  /caseworkers/dashboard:
+    get:
+      tags:
+        - Caseworkers
+      summary: Get caseworker dashboard
+      description: Retrieve dashboard with assigned applications and workload statistics
+      security:
+        - oauth2: [caseworker:read]
+      responses:
+        '200':
+          description: Dashboard data retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseworkerDashboard'
+
+  /caseworkers/applications:
+    get:
+      tags:
+        - Caseworkers
+      summary: Get assigned applications
+      description: Retrieve applications assigned to the caseworker
+      security:
+        - oauth2: [caseworker:read]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/ApplicationStatus'
+        - name: priority
+          in: query
+          schema:
+            type: string
+            enum: [low, medium, high, urgent]
+        - name: assignedDate
+          in: query
+          description: Filter by assignment date (ISO 8601)
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Assigned applications retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CaseworkerApplication'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  /caseworkers/applications/{applicationId}/review:
+    put:
+      tags:
+        - Caseworkers
+      summary: Review grant application
+      description: Submit review decision for a grant application
+      security:
+        - oauth2: [caseworker:write]
+      parameters:
+        - name: applicationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationReview'
+      responses:
+        '200':
+          description: Review submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GrantApplicationDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # DSD Staff Endpoints
+  /admin/users:
+    get:
+      tags:
+        - Administration
+      summary: Get system users
+      description: Retrieve all system users with filtering options
+      security:
+        - oauth2: [admin:read]
+      parameters:
+        - name: role
+          in: query
+          schema:
+            type: string
+            enum: [citizen, caseworker, admin, super_admin]
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, suspended, inactive]
+        - name: search
+          in: query
+          description: Search by name, email, or ID number
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SystemUser'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  /admin/reports/statistics:
+    get:
+      tags:
+        - Reporting
+      summary: Get system statistics
+      description: Retrieve comprehensive system statistics and metrics
+      security:
+        - oauth2: [admin:read]
+      parameters:
+        - name: dateFrom
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: province
+          in: query
+          schema:
+            type: string
+            enum: [EC, FS, GP, KZN, LP, MP, NC, NW, WC]
+      responses:
+        '200':
+          description: Statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemStatistics'
+
+  # USSD/SMS Endpoints
+  /ussd/session:
+    post:
+      tags:
+        - Alternative Access
+      summary: Handle USSD session
+      description: Process USSD interactions for feature phone users
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - sessionId
+                - phoneNumber
+                - text
+              properties:
+                sessionId:
+                  type: string
+                phoneNumber:
+                  type: string
+                  pattern: '^(\+27|0)[0-9]{9}$'
+                text:
+                  type: string
+                networkCode:
+                  type: string
+      responses:
+        '200':
+          description: USSD response
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: USSD response text
+
+  /sms/webhook:
+    post:
+      tags:
+        - Alternative Access
+      summary: Handle SMS webhook
+      description: Process incoming SMS messages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - from
+                - to
+                - text
+              properties:
+                from:
+                  type: string
+                  pattern: '^(\+27|0)[0-9]{9}$'
+                to:
+                  type: string
+                text:
+                  type: string
+                timestamp:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: SMS processed successfully
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.socialgrants.gov.za/auth/realms/socialgrants/protocol/openid-connect/auth
+          tokenUrl: https://auth.socialgrants.gov.za/auth/realms/socialgrants/protocol/openid-connect/token
+          scopes:
+            citizen:read: Read citizen data
+            citizen:write: Write citizen data
+            caseworker:read: Read caseworker data
+            caseworker:write: Write caseworker data
+            admin:read: Read admin data
+            admin:write: Write admin data
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    AuthResponse:
+      type: object
+      required:
+        - accessToken
+        - refreshToken
+        - tokenType
+        - expiresIn
+      properties:
+        accessToken:
+          type: string
+          format: jwt
+        refreshToken:
+          type: string
+          format: jwt
+        tokenType:
+          type: string
+          enum: [Bearer]
+        expiresIn:
+          type: integer
+          description: Token expiry time in seconds
+        user:
+          $ref: '#/components/schemas/UserInfo'
+
+    UserInfo:
+      type: object
+      required:
+        - id
+        - role
+        - permissions
+      properties:
+        id:
+          type: string
+          format: uuid
+        role:
+          type: string
+          enum: [citizen, caseworker, admin, super_admin]
+        permissions:
+          type: array
+          items:
+            type: string
+        profile:
+          type: object
+          properties:
+            firstName:
+              type: string
+            lastName:
+              type: string
+            email:
+              type: string
+              format: email
+
+    CitizenProfile:
+      type: object
+      required:
+        - id
+        - idNumber
+        - firstName
+        - lastName
+        - dateOfBirth
+      properties:
+        id:
+          type: string
+          format: uuid
+        idNumber:
+          type: string
+          pattern: '^[0-9]{13}$'
+          description: 13-digit SA ID number
+        firstName:
+          type: string
+          maxLength: 50
+        lastName:
+          type: string
+          maxLength: 50
+        dateOfBirth:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+          pattern: '^(\+27|0)[0-9]{9}$'
+        address:
+          $ref: '#/components/schemas/Address'
+        bankDetails:
+          $ref: '#/components/schemas/BankDetails'
+        languagePreference:
+          type: string
+          enum: [en, af, zu, xh]
+          default: en
+        isVerified:
+          type: boolean
+          description: Whether citizen identity is verified
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CitizenProfileUpdate:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+          pattern: '^(\+27|0)[0-9]{9}$'
+        address:
+          $ref: '#/components/schemas/Address'
+        bankDetails:
+          $ref: '#/components/schemas/BankDetails'
+        languagePreference:
+          type: string
+          enum: [en, af, zu, xh]
+
+    Address:
+      type: object
+      required:
+        - street
+        - suburb
+        - city
+        - province
+        - postalCode
+      properties:
+        street:
+          type: string
+          maxLength: 100
+        suburb:
+          type: string
+          maxLength: 50
+        city:
+          type: string
+          maxLength: 50
+        province:
+          type: string
+          enum: [EC, FS, GP, KZN, LP, MP, NC, NW, WC]
+        postalCode:
+          type: string
+          pattern: '^[0-9]{4}$'
+
+    BankDetails:
+      type: object
+      required:
+        - accountHolder
+        - bankName
+        - accountNumber
+        - branchCode
+      properties:
+        accountHolder:
+          type: string
+          maxLength: 50
+        bankName:
+          type: string
+          maxLength: 50
+        accountNumber:
+          type: string
+          pattern: '^[0-9]{8,12}$'
+        branchCode:
+          type: string
+          pattern: '^[0-9]{6}$'
+        accountType:
+          type: string
+          enum: [current, savings]
+          default: savings
+
+    GrantType:
+      type: string
+      enum: 
+        - old_age_pension
+        - disability_grant
+        - child_support_grant
+        - foster_child_grant
+        - care_dependency_grant
+        - grant_in_aid
+        - social_relief_of_distress
+      description: |
+        Available grant types:
+        - old_age_pension: Old Age Pension (60+ years)
+        - disability_grant: Disability Grant
+        - child_support_grant: Child Support Grant (0-18 years)
+        - foster_child_grant: Foster Child Grant
+        - care_dependency_grant: Care Dependency Grant
+        - grant_in_aid: Grant-in-Aid
+        - social_relief_of_distress: Social Relief of Distress
+
+    ApplicationStatus:
+      type: string
+      enum:
+        - draft
+        - submitted
+        - under_review
+        - documents_required
+        - approved
+        - rejected
+        - payment_pending
+        - active
+        - suspended
+        - closed
+      description: |
+        Application lifecycle statuses:
+        - draft: Application being prepared by citizen
+        - submitted: Application submitted for review
+        - under_review: Being reviewed by caseworker
+        - documents_required: Additional documents needed
+        - approved: Application approved for payment
+        - rejected: Application rejected
+        - payment_pending: Approved but payment not yet processed
+        - active: Grant currently being paid
+        - suspended: Grant temporarily suspended
+        - closed: Grant permanently closed
+
+    PersonalDetails:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - idNumber
+        - dateOfBirth
+      properties:
+        firstName:
+          type: string
+          maxLength: 50
+        lastName:
+          type: string
+          maxLength: 50
+        idNumber:
+          type: string
+          pattern: '^[0-9]{13}$'
+        dateOfBirth:
+          type: string
+          format: date
+        maritalStatus:
+          type: string
+          enum: [single, married, divorced, widowed]
+        employmentStatus:
+          type: string
+          enum: [unemployed, employed, self_employed, retired, student]
+        monthlyIncome:
+          type: number
+          minimum: 0
+          description: Monthly income in ZAR
+
+    Dependent:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - idNumber
+        - dateOfBirth
+        - relationship
+      properties:
+        firstName:
+          type: string
+          maxLength: 50
+        lastName:
+          type: string
+          maxLength: 50
+        idNumber:
+          type: string
+          pattern: '^[0-9]{13}$'
+        dateOfBirth:
+          type: string
+          format: date
+        relationship:
+          type: string
+          enum: [child, grandchild, foster_child, other]
+        hasDisability:
+          type: boolean
+          default: false
+
+    GrantApplication:
+      type: object
+      required:
+        - id
+        - grantType
+        - status
+        - submittedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        grantType:
+          $ref: '#/components/schemas/GrantType'
+        status:
+          $ref: '#/components/schemas/ApplicationStatus'
+        submittedAt:
+          type: string
+          format: date-time
+        reviewedAt:
+          type: string
+          format: date-time
+        reviewedBy:
+          type: string
+          description: Caseworker ID who reviewed
+        approvedAmount:
+          type: number
+          minimum: 0
+          description: Approved grant amount in ZAR
+        nextPaymentDate:
+          type: string
+          format: date
+        notes:
+          type: string
+          maxLength: 1000
+
+    GrantApplicationDetail:
+      allOf:
+        - $ref: '#/components/schemas/GrantApplication'
+        - type: object
+          properties:
+            personalDetails:
+              $ref: '#/components/schemas/PersonalDetails'
+            dependents:
+              type: array
+              items:
+                $ref: '#/components/schemas/Dependent'
+            documents:
+              type: array
+              items:
+                $ref: '#/components/schemas/Document'
+            reviewHistory:
+              type: array
+              items:
+                $ref: '#/components/schemas/ReviewEntry'
+            auditTrail:
+              type: array
+              items:
+                $ref: '#/components/schemas/AuditEntry'
+
+    Document:
+      type: object
+      required:
+        - id
+        - type
+        - filename
+        - uploadedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [id_document, proof_of_income, bank_statement, medical_certificate, birth_certificate, death_certificate, other]
+        filename:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+          description: File size in bytes
+        uploadedAt:
+          type: string
+          format: date-time
+        verifiedAt:
+          type: string
+          format: date-time
+        verifiedBy:
+          type: string
+          description: Caseworker ID who verified
+
+    ApplicationReview:
+      type: object
+      required:
+        - decision
+        - notes
+      properties:
+        decision:
+          type: string
+          enum: [approve, reject, request_documents]
+        notes:
+          type: string
+          maxLength: 1000
+          description: Reviewer notes and comments
+        approvedAmount:
+          type: number
+          minimum: 0
+          description: Approved amount if decision is approve
+        documentsRequired:
+          type: array
+          items:
+            type: string
+          description: List of required documents if decision is request_documents
+
+    ReviewEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        reviewedAt:
+          type: string
+          format: date-time
+        reviewedBy:
+          type: string
+        decision:
+          type: string
+          enum: [approve, reject, request_documents]
+        notes:
+          type: string
+        approvedAmount:
+          type: number
+
+    AuditEntry:
+      type: object
+      required:
+        - id
+        - action
+        - timestamp
+        - userId
+      properties:
+        id:
+          type: string
+          format: uuid
+        action:
+          type: string
+          description: Action performed
+        timestamp:
+          type: string
+          format: date-time
+        userId:
+          type: string
+          format: uuid
+        userRole:
+          type: string
+        ipAddress:
+          type: string
+          format: ipv4
+        details:
+          type: object
+          description: Additional action details
+
+    CaseworkerDashboard:
+      type: object
+      properties:
+        assignedApplications:
+          type: integer
+          description: Number of assigned applications
+        pendingReviews:
+          type: integer
+          description: Number of pending reviews
+        completedToday:
+          type: integer
+          description: Applications completed today
+        averageProcessingTime:
+          type: number
+          description: Average processing time in hours
+        recentApplications:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaseworkerApplication'
+          maxItems: 10
+
+    CaseworkerApplication:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        citizenName:
+          type: string
+        grantType:
+          $ref: '#/components/schemas/GrantType'
+        status:
+          $ref: '#/components/schemas/ApplicationStatus'
+        submittedAt:
+          type: string
+          format: date-time
+        assignedAt:
+          type: string
+          format: date-time
+        priority:
+          type: string
+          enum: [low, medium, high, urgent]
+        daysSinceSubmission:
+          type: integer
+
+    SystemUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [citizen, caseworker, admin, super_admin]
+        status:
+          type: string
+          enum: [active, suspended, inactive]
+        lastLoginAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+
+    SystemStatistics:
+      type: object
+      properties:
+        totalApplications:
+          type: integer
+        applicationsThisMonth:
+          type: integer
+        approvalRate:
+          type: number
+          description: Approval rate as percentage
+        averageProcessingTime:
+          type: number
+          description: Average processing time in days
+        totalPayments:
+          type: number
+          description: Total payments made in ZAR
+        grantTypeBreakdown:
+          type: object
+          additionalProperties:
+            type: integer
+        provinceBreakdown:
+          type: object
+          additionalProperties:
+            type: integer
+        statusBreakdown:
+          type: object
+          additionalProperties:
+            type: integer
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        total:
+          type: integer
+          minimum: 0
+        pages:
+          type: integer
+          minimum: 0
+
+    Error:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          description: Additional error details
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+          description: Request trace ID for debugging
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "VALIDATION_ERROR"
+            message: "Invalid input data"
+            details:
+              field: "idNumber"
+              reason: "Must be exactly 13 digits"
+            timestamp: "2025-01-01T12:00:00Z"
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "UNAUTHORIZED"
+            message: "Authentication required"
+            timestamp: "2025-01-01T12:00:00Z"
+
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "FORBIDDEN"
+            message: "Insufficient permissions"
+            timestamp: "2025-01-01T12:00:00Z"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "NOT_FOUND"
+            message: "Application not found"
+            timestamp: "2025-01-01T12:00:00Z"
+
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "RATE_LIMITED"
+            message: "Too many requests. Please try again later."
+            timestamp: "2025-01-01T12:00:00Z"
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retry
+          schema:
+            type: integer
+
+tags:
+  - name: Authentication
+    description: User authentication and session management
+  - name: Citizens
+    description: Citizen profile and account management
+  - name: Grant Applications
+    description: Grant application lifecycle management
+  - name: Caseworkers
+    description: Caseworker tools and workflows
+  - name: Administration
+    description: System administration endpoints
+  - name: Reporting
+    description: Analytics and reporting endpoints
+  - name: Alternative Access
+    description: USSD and SMS endpoints for feature phones

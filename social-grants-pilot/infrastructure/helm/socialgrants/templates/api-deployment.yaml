@@ -1,0 +1,202 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "socialgrants.fullname" . }}-api
+  labels:
+    {{- include "socialgrants.api.labels" . | nindent 4 }}
+  annotations:
+    {{- include "socialgrants.complianceAnnotations" . | nindent 4 }}
+spec:
+  {{- if not .Values.api.autoscaling.enabled }}
+  replicas: {{ .Values.api.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "socialgrants.api.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- include "socialgrants.complianceAnnotations" . | nindent 8 }}
+      labels:
+        {{- include "socialgrants.api.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- include "socialgrants.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ include "socialgrants.serviceAccountName" . }}
+      securityContext:
+        {{- include "socialgrants.podSecurityContext" . | nindent 8 }}
+      containers:
+        - name: api
+          securityContext:
+            {{- include "socialgrants.securityContext" . | nindent 12 }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}/api:{{ .Values.image.api.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.api.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.api.service.targetPort }}
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.api.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.api.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.api.resources | nindent 12 }}
+          env:
+            {{- include "socialgrants.commonEnv" . | nindent 12 }}
+            - name: NODE_ENV
+              value: {{ .Values.api.env.NODE_ENV | quote }}
+            - name: LOG_LEVEL
+              value: {{ .Values.api.env.LOG_LEVEL | quote }}
+            - name: API_PORT
+              value: {{ .Values.api.env.API_PORT | quote }}
+            - name: CORS_ORIGIN
+              value: {{ .Values.api.env.CORS_ORIGIN | quote }}
+            - name: RATE_LIMIT_WINDOW_MS
+              value: {{ .Values.api.env.RATE_LIMIT_WINDOW_MS | quote }}
+            - name: RATE_LIMIT_MAX_REQUESTS
+              value: {{ .Values.api.env.RATE_LIMIT_MAX_REQUESTS | quote }}
+            - name: APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "socialgrants.fullname" . }}-config
+                  key: app-name
+            - name: APP_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "socialgrants.fullname" . }}-config
+                  key: app-version
+            - name: MAINTENANCE_MODE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "socialgrants.fullname" . }}-config
+                  key: maintenance-mode
+            - name: MAX_FILE_UPLOAD_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "socialgrants.fullname" . }}-config
+                  key: max-file-upload-size
+            - name: SESSION_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "socialgrants.fullname" . }}-config
+                  key: session-timeout
+            - name: BCRYPT_ROUNDS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "socialgrants.fullname" . }}-config
+                  key: bcrypt-rounds
+            - name: JWT_EXPIRY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "socialgrants.fullname" . }}-config
+                  key: jwt-expiry
+            - name: MFA_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "socialgrants.fullname" . }}-config
+                  key: mfa-enabled
+            - name: PASSWORD_MIN_LENGTH
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "socialgrants.fullname" . }}-config
+                  key: password-min-length
+            - name: DATA_RETENTION_DAYS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "socialgrants.fullname" . }}-config
+                  key: data-retention-days
+            {{- if .Values.external.sms.enabled }}
+            - name: SMS_PROVIDER
+              value: {{ .Values.external.sms.provider | quote }}
+            - name: SMS_API_URL
+              value: {{ .Values.external.sms.api_url | quote }}
+            {{- end }}
+            {{- if .Values.external.ussd.enabled }}
+            - name: USSD_PROVIDER
+              value: {{ .Values.external.ussd.provider | quote }}
+            - name: USSD_SERVICE_CODE
+              value: {{ .Values.external.ussd.service_code | quote }}
+            {{- end }}
+            {{- if .Values.external.payment.enabled }}
+            - name: PAYMENT_PROVIDER
+              value: {{ .Values.external.payment.provider | quote }}
+            - name: PAYMENT_SANDBOX
+              value: {{ .Values.external.payment.sandbox | quote }}
+            {{- end }}
+          volumeMounts:
+            {{- include "socialgrants.commonVolumeMounts" . | nindent 12 }}
+      volumes:
+        {{- include "socialgrants.commonVolumes" . | nindent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "socialgrants.fullname" . }}-api
+  labels:
+    {{- include "socialgrants.api.labels" . | nindent 4 }}
+  {{- with .Values.api.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.api.service.type }}
+  ports:
+    - port: {{ .Values.api.service.port }}
+      targetPort: {{ .Values.api.service.targetPort }}
+      protocol: TCP
+      name: http
+    - port: 9090
+      targetPort: 9090
+      protocol: TCP
+      name: metrics
+  selector:
+    {{- include "socialgrants.api.selectorLabels" . | nindent 4 }}
+---
+{{- if .Values.api.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "socialgrants.fullname" . }}-api
+  labels:
+    {{- include "socialgrants.api.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "socialgrants.fullname" . }}-api
+  minReplicas: {{ .Values.api.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.api.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.api.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.api.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.api.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.api.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}
