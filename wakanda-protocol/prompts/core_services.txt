@@ -1,0 +1,31 @@
+For each major citizen service (National ID, social grants, business registry, driver's licence, tax filing, healthcare records, education records), provide comprehensive digitalisation blueprints including:
+
+1. **Service Analysis**:
+   - Current process mapping and pain points
+   - Stakeholder ecosystem (citizens, officials, third parties)
+   - Legal and regulatory requirements
+   - Volume and transaction patterns
+
+2. **Digital Transformation Design**:
+   - End-to-end user experience flows (mobile-first)
+   - Backend API architecture and microservices design
+   - Authentication systems (digital ID options + eKYC)
+   - Offline/low-bandwidth modes for rural access
+   - Accessibility compliance (WCAG 2.1 AA standards)
+   - Multi-language support (11 official languages)
+
+3. **Technical Specifications**:
+   - Sample API definitions (OpenAPI/Swagger format)
+   - Database schemas and data models
+   - Integration patterns with existing systems
+   - Security controls and encryption standards
+   - Fraud detection and prevention mechanisms
+
+4. **Implementation Plan**:
+   - Pilot program design and success metrics
+   - Phased rollout strategy across provinces
+   - Change management for government staff
+   - Citizen education and adoption campaigns
+   - Monitoring and evaluation frameworks
+
+Prioritize services with highest citizen impact and provide detailed cost-benefit analysis for each transformation initiative.

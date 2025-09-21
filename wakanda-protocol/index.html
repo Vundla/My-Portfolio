@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wakanda Protocol - AI Digital Government Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8B5CF6;
+            --dark-bg: #0A0F1F;
+            --card-bg: #1E293B;
+            --text-light: #E2E8F0;
+            --text-muted: #94A3B8;
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #3B82F6);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #E2E8F0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .features {
+            padding: 4rem 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .modules {
+            background: var(--card-bg);
+            padding: 4rem 0;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .module-item {
+            background: var(--dark-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .module-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .demo {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #7C3AED;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .status {
+            background: var(--card-bg);
+            padding: 3rem 0;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .status-item {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .status-item .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-item .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer {
+            background: var(--dark-bg);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .demo-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-rocket"></i> Wakanda Protocol</h1>
+            <p>AI-Powered Digital Government Generator for South African Public Sector Transformation</p>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 1rem;">🌍 Transforming Africa's Digital Future</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+                Comprehensive AI system generating detailed digitalization strategies, policy documents, and investment analysis for South African government modernization.
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>AI Policy Generation</h3>
+                    <p>Generates 2000+ word comprehensive policy documents using OpenRouter API with South African legal and regulatory context.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-gem"></i>
+                    <h3>Mineral Investment ML</h3>
+                    <p>Machine learning model analyzing 11 key factors to score mineral investment opportunities across African markets.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>POPIA Compliance</h3>
+                    <p>Built-in privacy protection and POPIA compliance frameworks for secure government data handling.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>API Integration</h3>
+                    <p>Ready-to-use clients for OpenRouter, Alpha Vantage, Weather APIs, and Mastercard payment infrastructure.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Digital Inclusion</h3>
+                    <p>Accessibility-first design with multi-language support and rural connectivity considerations.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-server"></i>
+                    <h3>FastAPI Service</h3>
+                    <p>Production-ready RESTful API with Docker deployment, monitoring, and automatic documentation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="modules">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem;">📋 Policy Generation Modules</h2>
+            
+            <div class="modules-grid">
+                <div class="module-item">
+                    <h4><i class="fas fa-landmark"></i> Assessment & Policy</h4>
+                    <p>National Digital Government Strategy with institutional arrangements, procurement reforms, and governance frameworks.</p>
+                </div>
+                
+                <div class="module-item">
+                    <h4><i class="fas fa-id-card"></i> Core Services</h4>
+                    <p>Digitalization blueprints for ID, social grants, business registry, licenses, and citizen-facing services.</p>
+                </div>
+                
+                <div class="module-item">
+                    <h4><i class="fas fa-cloud"></i> Infrastructure</h4>
+                    <p>Connectivity strategy, cloud architecture, cybersecurity controls, and SA Connect integration plans.</p>
+                </div>
+                
+                <div class="module-item">
+                    <h4><i class="fas fa-lock"></i> Data & Privacy</h4>
+                    <p>POPIA-compliant data governance, encryption standards, identity management, and security operations.</p>
+                </div>
+                
+                <div class="module-item">
+                    <h4><i class="fas fa-graduation-cap"></i> Skills Development</h4>
+                    <p>12-24 month capacity building programs, training curricula, and public servant digital transformation.</p>
+                </div>
+                
+                <div class="module-item">
+                    <h4><i class="fas fa-universal-access"></i> Inclusion & Accessibility</h4>
+                    <p>Disability-friendly design, assistive technology procurement, and barrier reduction strategies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="demo">
+        <div class="container">
+            <h2>🚀 Experience the AI Generator</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">
+                Test the system's capabilities with live policy generation and investment analysis
+            </p>
+            
+            <div class="demo-buttons">
+                <button class="btn btn-primary" onclick="window.open('http://localhost:8000/docs', '_blank')">
+                    <i class="fas fa-play"></i> Live API Documentation
+                </button>
+                <a href="README.md" class="btn btn-secondary">
+                    <i class="fas fa-book"></i> Technical Documentation
+                </a>
+                <button class="btn btn-secondary" onclick="showSampleOutput()">
+                    <i class="fas fa-file-text"></i> View Sample Output
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="status">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 1rem;">📊 System Capabilities</h2>
+            
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="icon" style="color: var(--success-color);"><i class="fas fa-check-circle"></i></div>
+                    <div class="value">6</div>
+                    <div>Policy Modules</div>
+                </div>
+                
+                <div class="status-item">
+                    <div class="icon" style="color: var(--primary-color);"><i class="fas fa-brain"></i></div>
+                    <div class="value">2000+</div>
+                    <div>Words Generated</div>
+                </div>
+                
+                <div class="status-item">
+                    <div class="icon" style="color: var(--warning-color);"><i class="fas fa-chart-line"></i></div>
+                    <div class="value">85%</div>
+                    <div>ML Model Accuracy</div>
+                </div>
+                
+                <div class="status-item">
+                    <div class="icon" style="color: var(--success-color);"><i class="fas fa-globe-africa"></i></div>
+                    <div class="value">54</div>
+                    <div>African Countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Mandlenkosi Vundla - Wakanda Protocol. Built for Africa's Digital Transformation.</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="../index.html"><i class="fas fa-arrow-left"></i> Back to Portfolio</a> | 
+                <a href="https://github.com/Vundla/My-Portfolio" target="_blank"><i class="fab fa-github"></i> View Source</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function showSampleOutput() {
+            const sampleWindow = window.open('', '_blank', 'width=800,height=600');
+            sampleWindow.document.write(`
+                <html>
+                <head>
+                    <title>Sample AI Policy Output</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+                        h1, h2 { color: #8B5CF6; }
+                        .metadata { background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>🏛️ Sample AI Generated Policy</h1>
+                    <div class="metadata">
+                        <strong>Module:</strong> Assessment & Policy<br>
+                        <strong>Generated:</strong> ${new Date().toISOString()}<br>
+                        <strong>Word Count:</strong> 912 words<br>
+                        <strong>Character Count:</strong> 7,289 characters
+                    </div>
+                    <h2>NATIONAL DIGITAL GOVERNMENT POLICY FOR SOUTH AFRICA</h2>
+                    <h3>Executive Summary</h3>
+                    <p>This comprehensive Digital Government Policy establishes South Africa as a continental leader in public sector digitalization, leveraging emerging technologies to deliver citizen-centric services while ensuring data sovereignty, privacy protection under POPIA, and digital inclusion. The policy addresses institutional coordination between DPSA, SITA, and DCDT, establishes governance frameworks for AI and data, and provides a roadmap for transforming government service delivery through secure, accessible, and interoperable digital platforms.</p>
+                    
+                    <h3>1. VISION AND STRATEGIC OBJECTIVES</h3>
+                    <h4>Vision Statement</h4>
+                    <p>To establish a digital-first government that delivers seamless, accessible, and secure services to all South Africans, promoting economic growth, social inclusion, and democratic participation through innovative technology solutions.</p>
+                    
+                    <h4>Strategic Objectives</h4>
+                    <ol>
+                        <li><strong>Citizen-Centric Service Design</strong>: Redesign all government services around citizen needs and journeys</li>
+                        <li><strong>Digital Inclusion</strong>: Ensure equitable access to digital services across all communities</li>
+                        <li><strong>Data-Driven Decision Making</strong>: Leverage data analytics for evidence-based policy</li>
+                        <li><strong>Institutional Transformation</strong>: Build digital capabilities within the public sector</li>
+                        <li><strong>Economic Enablement</strong>: Use digital government as economic catalyst</li>
+                    </ol>
+                    
+                    <p><em>This is a sample of the comprehensive policy documents generated by the Wakanda Protocol AI system. The full output would contain detailed implementation plans, technical specifications, compliance checklists, and actionable recommendations tailored to South African context.</em></p>
+                </body>
+                </html>
+            `);
+        }
+
+        // Check if API is running
+        async function checkAPIStatus() {
+            try {
+                const response = await fetch('http://localhost:8000/health');
+                if (response.ok) {
+                    console.log('✅ Wakanda Protocol API is running');
+                } else {
+                    console.log('⚠️ API not responding');
+                }
+            } catch (error) {
+                console.log('ℹ️ To run the API: cd wakanda-protocol && python generator.py');
+            }
+        }
+
+        checkAPIStatus();
+    </script>
+</body>
+</html>
