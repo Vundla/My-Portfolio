@@ -33,7 +33,9 @@ The portfolio includes:
 - **Interactive Navigation** – Smooth scrolling and easy navigation between sections.  
 - **Project Showcase** – Displays projects with demo links, live previews, and videos.  
 - **Professional Layout** – Clean UI with dark theme aesthetics.  
-- **Contact Section** – Users can reach out via email or external links.  
+- **Contact Section** – Users can reach out via email or external links.
+- **Government Digital Transformation** – Comprehensive blueprints for public sector modernization.
+- **POPIA Compliance** – Privacy impact assessments and data protection frameworks.
 
 ---
 
@@ -42,6 +44,8 @@ The portfolio includes:
 - **Frameworks/Libraries:** Optional React for interactivity  
 - **Fonts & Styling:** Google Fonts (Orbitron, Rajdhani), CSS variables  
 - **Deployment:** GitHub Pages / Vercel  
+- **Government Tech:** Azure Cloud, Keycloak OIDC, Terraform Infrastructure
+- **Compliance:** POPIA Privacy Framework, WCAG 2.1 AA Accessibility
 
 ---
 
@@ -50,6 +54,7 @@ Here are some highlighted projects in the portfolio:
 
 | Project Name | Description | Link |
 | ------------ | ----------- | ---- |
+| **Social Grants Digital Pilot** | Comprehensive digital transformation blueprint for South Africa's social grants system with POPIA compliance, accessibility standards, and implementation plans | [Technical Blueprint](social-grants-pilot.md) |
 | **AI Study Buddy** | Interactive learning assistant leveraging AI to guide students | [Live Demo](https://smart-learning-assistant-henna.vercel.app/) |
 | **AI Resume Builder** | Web tool to generate professional AI-assisted resumes | [Live Demo](https://vundla.github.io/ai-resume-builder/) |
 | **AI Sentiment Analyzer** | Analyzes text sentiment using AI models | [Live Demo](https://vundla.github.io/ai-sentiment-analyzer/) |
