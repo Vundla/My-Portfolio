@@ -1,0 +1,134 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: social_grants_dev
+      POSTGRES_USER: sg_user
+      POSTGRES_PASSWORD: sg_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docs/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+
+  # Redis Cache
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass redis_password
+
+  # Keycloak Identity Provider
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin_password
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/social_grants_dev
+      KC_DB_USERNAME: sg_user
+      KC_DB_PASSWORD: sg_password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    command: start-dev
+
+  # API Gateway
+  api-gateway:
+    build: ./src/api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+      - KEYCLOAK_URL=http://keycloak:8080
+    depends_on:
+      - postgres
+      - redis
+      - keycloak
+
+  # Citizen Service
+  citizen-service:
+    build: ./src/services/citizen
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+    depends_on:
+      - postgres
+      - redis
+
+  # Payment Service
+  payment-service:
+    build: ./src/services/payment
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - PAYMENT_ENV=sandbox
+    depends_on:
+      - postgres
+
+  # SMS Service
+  sms-service:
+    build: ./src/services/sms
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - SMS_PROVIDER=sandbox
+    depends_on:
+      - postgres
+
+  # USSD Service
+  ussd-service:
+    build: ./src/services/ussd
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+    depends_on:
+      - postgres
+      - redis
+
+  # Web Frontend
+  web-frontend:
+    build: ./src/web
+    ports:
+      - "3005:3005"
+    environment:
+      - REACT_APP_API_URL=http://localhost:3000
+      - REACT_APP_KEYCLOAK_URL=http://localhost:8080
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3010:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  postgres_data:
+  grafana_data:
