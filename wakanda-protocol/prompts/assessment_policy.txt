@@ -1,0 +1,24 @@
+Act as a digital governance advisor. Produce a comprehensive national Digital Government Policy for South Africa including:
+
+1. Vision and strategic objectives for digital transformation
+2. Institutional arrangements (DPSA, SITA, DCDT coordination)
+3. Procurement reforms for digital services
+4. Interoperability standards and frameworks
+5. Data governance board structure and mandate
+6. Ethics board for AI and algorithmic decision-making
+7. Funding vehicles and budget allocation strategies
+8. Legislative changes required (amendments to existing laws)
+9. Implementation timeline with clear milestones
+10. Compliance checklist referencing POPIA and the DPSA Draft Digital Government Policy Framework
+
+Include specific recommendations for:
+- Digital-first service delivery principles
+- Citizen-centric design requirements
+- Open data and transparency mandates
+- Cybersecurity governance frameworks
+- Skills development and change management
+- Performance measurement and accountability
+- Inter-governmental coordination mechanisms
+- Public-private partnership guidelines
+
+Provide sample policy language, implementation roadmaps, and governance structures that can be immediately adopted by the South African government.

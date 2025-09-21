@@ -1,0 +1,45 @@
+Describe comprehensive POPIA-compliant data lifecycle management for government digital services:
+
+1. **Data Governance Framework**:
+   - Data classification and sensitivity levels
+   - Data ownership and stewardship roles
+   - Data quality and metadata management
+   - Cross-border data transfer protocols
+   - Retention and disposal policies
+
+2. **Privacy and Compliance**:
+   - POPIA compliance implementation guide
+   - Privacy impact assessments (PIA) templates
+   - Consent management systems
+   - Data subject rights automation
+   - Breach notification procedures
+
+3. **Security Architecture**:
+   - End-to-end encryption standards (AES-256)
+   - Key management systems (KMS/HSM)
+   - Multi-factor authentication (MFA)
+   - Role-based access control (RBAC)
+   - Audit logging and monitoring
+
+4. **Identity and Access Management**:
+   - Single Sign-On (SSO) implementation
+   - Federation with external identity providers
+   - Privileged access management (PAM)
+   - Identity governance and administration
+   - Zero trust identity verification
+
+5. **Security Operations**:
+   - Security Operations Center (SOC) playbooks
+   - Incident response procedures
+   - Vulnerability management
+   - Penetration testing programs
+   - Security awareness training
+
+6. **API Security**:
+   - OAuth 2.0 and OpenID Connect
+   - API rate limiting and throttling
+   - Input validation and sanitization
+   - SQL injection and XSS prevention
+   - API security testing and monitoring
+
+Provide sample policies, implementation templates, and security controls that align with international best practices while meeting South African regulatory requirements.
