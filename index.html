@@ -79,31 +79,37 @@
             padding: 0 20px;
         }
         
-        /* Sidebar Navigation */
+        /* Enhanced Sidebar Navigation */
         .sidebar {
             position: fixed;
             left: 0;
             top: 0;
             height: 100vh;
             width: var(--sidebar-width);
-            background: var(--dark-color);
+            background: linear-gradient(180deg, var(--dark-color) 0%, rgba(30, 41, 59, 0.95) 100%);
             color: var(--text-light);
             padding: 2rem 1rem;
             z-index: 1001;
             overflow-y: auto;
             transition: transform 0.3s ease-in-out;
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
         
         .sidebar-header {
             text-align: center;
             margin-bottom: 2.5rem;
+            position: relative;
         }
         
         .sidebar-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.8rem;
+            font-weight: 800;
             color: var(--text-light);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .sidebar-logo span {
@@ -124,26 +130,44 @@
             color: var(--text-muted);
             font-weight: 500;
             text-decoration: none;
-            padding: 0.9rem 1rem;
-            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-nav a::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .sidebar-nav a:hover::before {
+            left: 100%;
         }
         
         .sidebar-nav a:hover {
-            background-color: var(--primary-color);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             color: var(--light-color);
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         .sidebar-nav a.active {
-             background-color: var(--primary-color);
-             color: var(--light-color);
-             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-color);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
         
         .sidebar-nav i {
-            margin-right: 0.8rem;
-            width: 20px;
+            margin-right: 1rem;
+            width: 24px;
             text-align: center;
+            font-size: 1.1rem;
         }
         
         .main-content {
@@ -152,12 +176,15 @@
             transition: var(--transition);
         }
 
-        /* Section Styling */
+        /* Enhanced Section Styling */
         .section {
             padding: var(--section-padding);
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            position: relative;
         }
 
         .section.visible {
@@ -165,365 +192,715 @@
             transform: translateY(0);
         }
         
-        /* Hero Section */
+        /* Enhanced Hero Section */
         .hero {
             text-align: center;
-            padding: 5rem 0;
+            padding: 6rem 0;
             position: relative;
             border-radius: var(--border-radius);
             margin-bottom: 2rem;
             overflow: hidden;
+            background: linear-gradient(135deg, rgba(10, 15, 31, 0.9), rgba(30, 41, 59, 0.9));
         }
 
         .hero::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(rgba(10, 15, 31, 0.8), rgba(10, 15, 31, 0.95)), url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') center center/cover no-repeat;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(52, 152, 219, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(10, 15, 31, 0.8), rgba(30, 41, 59, 0.95));
             z-index: -1;
         }
         
         .profile-img-container {
             position: relative;
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 1.5rem auto;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem auto;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
         
         .profile-img {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 5px solid var(--primary-color);
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+            border: 6px solid transparent;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)) padding-box,
+                        linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+            box-shadow: 
+                0 0 40px rgba(139, 92, 246, 0.5),
+                0 20px 40px rgba(0, 0, 0, 0.3);
             background-size: cover;
             background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-img::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .upload-overlay {
             position: absolute;
-            bottom: 0;
-            right: 0;
-            background: var(--primary-color);
-            width: 50px;
-            height: 50px;
+            bottom: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .upload-overlay:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
         }
         
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
             color: var(--text-light);
-            font-weight: 800;
+            font-weight: 900;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, var(--text-light), var(--text-muted));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .hero p {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             margin-bottom: 1.5rem;
             color: var(--text-muted);
-            font-weight: 300;
+            font-weight: 400;
         }
 
         .typing-container {
-            min-height: 40px; /* Prevent layout shift */
+            min-height: 50px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tagline {
+            font-size: 1.1rem !important;
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            opacity: 0.9;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
         }
         
         .social-links a {
             color: var(--text-muted);
-            font-size: 1.5rem;
-            margin: 0 0.75rem;
+            font-size: 2rem;
             transition: var(--transition);
+            padding: 1rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
         }
         
         .social-links a:hover {
             color: var(--primary-color);
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.1);
+            background: rgba(139, 92, 246, 0.2);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
         }
 
         .btn {
             display: inline-block;
-            background: var(--gradient);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             color: var(--light-color) !important;
-            padding: 0.8rem 1.8rem;
+            padding: 1.2rem 2.5rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 1.1rem;
             transition: var(--transition);
-            box-shadow: var(--shadow);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             text-decoration: none;
             margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
         
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
         }
         
         .section-title h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
+            font-size: 3rem;
+            font-weight: 900;
             color: var(--text-primary);
             margin-bottom: 1rem;
-            text-align: center;
+            position: relative;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
         }
         
         .section-title p {
             color: var(--text-secondary);
             max-width: 700px;
-            margin: 0 auto 3rem auto;
-            text-align: center;
-            font-size: 1.1rem;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            line-height: 1.6;
         }
         
-        /* About Section */
+        /* Enhanced About Section */
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
-            gap: 3rem;
-            align-items: center;
+            gap: 4rem;
+            align-items: start;
+        }
+        
+        .about-text {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .about-text h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
         }
         
         .about-text p {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
         }
         
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 1.5rem;
         }
         
         .skill-card {
-            background-color: var(--card-bg);
-            padding: 1.5rem;
+            background: var(--card-bg);
+            padding: 2rem 1.5rem;
             border-radius: var(--border-radius);
             box-shadow: var(--card-shadow);
             text-align: center;
             transition: var(--transition);
             border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s;
         }
         
         .skill-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: var(--primary-color);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .skill-card:hover::before {
+            transform: scaleX(1);
         }
         
         .skill-card i {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--primary-color);
             margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .skill-card:hover i {
+            transform: scale(1.2);
+            color: var(--secondary-color);
         }
         
         .skill-card h3 {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: var(--text-primary);
+            font-weight: 600;
         }
 
-        /* Certificates & Testimonials */
+        /* Enhanced Certificates */
         .cert {
             background: var(--card-bg);
-            padding: 1.5rem;
-            margin-bottom: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
             border-radius: var(--border-radius);
             box-shadow: var(--card-shadow);
-            border-left: 4px solid var(--primary-color);
+            border-left: 5px solid var(--primary-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cert::before {
+            content: '';
+            position: absolute;
+            top: 0; right: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            transition: right 0.5s;
+        }
+
+        .cert:hover::before {
+            right: 100%;
+        }
+
+        .cert:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .cert h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .cert p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .cert a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 1rem;
             transition: var(--transition);
         }
-        .cert:hover {
-            transform: scale(1.02);
-        }
-        .cert a {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: bold;
-            margin-right: 1rem;
-        }
         .cert a:hover {
+            color: var(--secondary-color);
             text-decoration: underline;
         }
 
-        /* Projects Section */
+        /* Enhanced Projects Section */
         .project-filters {
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
         }
         .filter-btn {
             background: var(--card-bg);
-            border: 1px solid transparent;
+            border: 2px solid transparent;
             color: var(--text-muted);
-            padding: 0.6rem 1.2rem;
-            margin: 0 0.3rem;
+            padding: 1rem 2rem;
+            margin: 0 0.5rem;
             border-radius: 50px;
             cursor: pointer;
             transition: var(--transition);
-        }
-        .filter-btn:hover {
-            color: var(--text-light);
-            background: var(--secondary-color);
-        }
-        .filter-btn.active {
-            background: var(--primary-color);
-            color: var(--light-color);
             font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transition: all 0.3s;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .filter-btn:hover::before,
+        .filter-btn.active::before {
+            width: 100%; height: 100%;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            color: var(--light-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn span {
+            position: relative;
+            z-index: 1;
         }
         
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
         }
         
         .project-card {
-            background-color: var(--card-bg);
+            background: var(--card-bg);
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--card-shadow);
             transition: var(--transition);
-            display: block; /* For filtering */
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s;
         }
         
         .project-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
         .project-card .project-details {
-             padding: 1.5rem;
+            padding: 2rem;
         }
+
+        .project-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
         .project-card .project-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-top: 1rem;
+            margin-bottom: 1.5rem;
         }
         .project-card .project-tag {
-             background-color: rgba(255,255,255,0.1);
-             padding: 0.3rem 0.8rem;
-             border-radius: 20px;
-             font-size: 0.8rem;
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(139, 92, 246, 0.3);
         }
 
-        /* Testimonials Section */
+        /* Enhanced Testimonials Section */
         .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
         }
         .testimonial-card {
-            background-color: var(--card-bg);
-            padding: 2rem;
+            background: var(--card-bg);
+            padding: 3rem 2rem;
             border-radius: var(--border-radius);
             text-align: center;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition);
         }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 6rem;
+            color: var(--primary-color);
+            opacity: 0.3;
+            font-family: serif;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
         .testimonial-img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            margin: 0 auto 1rem auto;
-            border: 3px solid var(--primary-color);
+            margin: 0 auto 1.5rem auto;
+            border: 4px solid var(--primary-color);
+            object-fit: cover;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         .testimonial-text {
             font-style: italic;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
         }
         .testimonial-author {
             font-weight: 700;
             color: var(--text-light);
+            font-size: 1.2rem;
         }
         .testimonial-author span {
             display: block;
             font-weight: 400;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-top: 0.5rem;
         }
 
-        /* Future Projects & Career Vision */
+        /* Enhanced Future Projects */
         .future-projects-container {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 2.5rem;
         }
         .category-card {
-            background-color: var(--card-bg);
-            padding: 2rem;
+            background: var(--card-bg);
+            padding: 2.5rem;
             border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
         .category-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        .category-header i { font-size: 2rem; color: var(--primary-color); }
-        .category-header h3 { font-size: 1.5rem; }
+        .category-header i { 
+            font-size: 2.5rem; 
+            color: var(--primary-color);
+            background: rgba(139, 92, 246, 0.1);
+            padding: 1rem;
+            border-radius: 50%;
+        }
+        .category-header h3 { 
+            font-size: 1.8rem;
+            color: var(--text-primary);
+        }
         
-        .project-item { margin-bottom: 1.5rem; padding-left: 1.5rem; border-left: 3px solid var(--secondary-color); }
-        .project-item h4 { font-size: 1.2rem; margin-bottom: 0.5rem; }
-        .project-item p { color: var(--text-secondary); }
-        .project-item ul { list-style: none; padding-left: 0; }
-        .project-item li { position: relative; padding-left: 25px; margin-bottom: 0.5rem; }
-        .project-item li::before { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--success-color); position: absolute; left: 0; }
+        .project-item { 
+            margin-bottom: 2rem; 
+            padding-left: 2rem; 
+            border-left: 3px solid var(--secondary-color);
+            background: rgba(52, 152, 219, 0.05);
+            padding: 1.5rem 1.5rem 1.5rem 2rem;
+            border-radius: 8px;
+        }
+        .project-item h4 { 
+            font-size: 1.4rem; 
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .project-item p { 
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .project-item ul { 
+            list-style: none; 
+            padding-left: 0; 
+        }
+        .project-item li { 
+            position: relative; 
+            padding-left: 35px; 
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+        .project-item li::before { 
+            content: '\f058'; 
+            font-family: 'Font Awesome 6 Free'; 
+            font-weight: 900; 
+            color: var(--success-color); 
+            position: absolute; 
+            left: 0;
+            font-size: 1.2rem;
+        }
         
         .career-vision {
-            background-color: var(--card-bg);
-            padding: 2rem;
+            background: var(--card-bg);
+            padding: 3rem;
             border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid var(--primary-color);
         }
         .career-vision p {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
         }
 
-        /* Contact Section */
+        /* Enhanced Contact Section */
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
-            gap: 3rem;
-            background-color: var(--card-bg);
+            gap: 4rem;
+            background: var(--card-bg);
             padding: 3rem;
             border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .contact-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
         }
         
         .form-control {
             width: 100%;
-            padding: 0.9rem 1rem;
-            margin-bottom: 1.2rem;
-            border: 1px solid var(--text-muted);
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            font-size: 1.1rem;
             transition: var(--transition);
-            background-color: var(--dark-color);
+            background: rgba(255,255,255,0.05);
             color: var(--text-primary);
+            backdrop-filter: blur(10px);
         }
         
         .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+            background: rgba(255,255,255,0.1);
         }
         .form-control.is-invalid {
             border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
         }
         .form-control.is-valid {
             border-color: var(--success-color);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
         }
 
-        /* Footer */
+        /* Enhanced Footer */
         footer {
             text-align: center;
-            padding: 3rem 0;
-            margin-top: 2rem;
+            padding: 4rem 0;
+            margin-top: 4rem;
+            background: linear-gradient(135deg, var(--dark-color), var(--card-bg));
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        footer p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* Notification System */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--success-color), #27ae60);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease-in-out;
+            z-index: 2000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: linear-gradient(45deg, var(--accent-color), #c0392b);
         }
         
         /* Mobile Responsive */
         @media (max-width: 1024px) {
-             .sidebar {
+            .sidebar {
                 transform: translateX(-100%);
                 z-index: 1001;
             }
@@ -532,11 +909,12 @@
             }
             .main-content {
                 margin-left: 0;
+                padding-top: 80px;
             }
-             .mobile-header {
+            .mobile-header {
                 display: flex;
-                background-color: var(--dark-color);
-                padding: 0.5rem 1rem;
+                background: linear-gradient(135deg, var(--dark-color), var(--card-bg));
+                padding: 1rem;
                 align-items: center;
                 justify-content: space-between;
                 position: fixed;
@@ -545,30 +923,85 @@
                 width: 100%;
                 z-index: 999;
                 box-shadow: var(--shadow);
+                backdrop-filter: blur(10px);
             }
             .menu-toggle-btn {
-                background: none; border: none;
+                background: none; 
+                border: none;
                 color: var(--text-light);
-                font-size: 1.5rem; cursor: pointer;
+                font-size: 1.8rem; 
+                cursor: pointer;
+                padding: 0.5rem;
+                border-radius: 8px;
+                transition: var(--transition);
+            }
+            .menu-toggle-btn:hover {
+                background: rgba(255,255,255,0.1);
             }
             .mobile-logo {
-                font-size: 1.2rem; font-weight: 700;
-                color: var(--text-light);
+                font-size: 1.5rem; 
+                font-weight: 800;
+                background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
-            .overlay { display: none; }
+            .overlay { 
+                display: none; 
+            }
             .overlay.active {
                 display: block;
                 position: fixed;
                 top: 0; left: 0; width: 100%; height: 100%;
-                background-color: rgba(0,0,0,0.6);
+                background-color: rgba(0,0,0,0.7);
+                backdrop-filter: blur(5px);
                 z-index: 1000;
             }
         }
         
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.2rem; }
-            .section-title h2 { font-size: 2rem; }
-            .about-content, .contact-grid { grid-template-columns: 1fr; }
+            .hero {
+                padding: 4rem 0;
+            }
+            .hero h1 { 
+                font-size: 2.5rem; 
+            }
+            .section-title h2 { 
+                font-size: 2.2rem; 
+            }
+            .about-content, .contact-grid { 
+                grid-template-columns: 1fr; 
+                gap: 2rem;
+            }
+            .skills-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .social-links {
+                gap: 1rem;
+            }
+            .social-links a {
+                font-size: 1.5rem;
+                padding: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 1rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .profile-img-container {
+                width: 150px;
+                height: 150px;
+            }
+            .section {
+                padding: 2rem 0;
+            }
         }
     </style>
 </head>
@@ -600,7 +1033,7 @@
         </div>
 
         <section id="hero" class="hero">
-             <div class="profile-img-container">
+            <div class="profile-img-container">
                 <div class="profile-img" id="profile-image"></div>
                 <div class="upload-overlay" onclick="document.getElementById('profile-upload').click()">
                     <i class="fas fa-camera"></i>
@@ -617,7 +1050,9 @@
                 <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 <a href="mailto:vundlamandlenkosi0@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
             </div>
-             <a href="path/to/your/cv.pdf" download="Mandlenkosi_Vundla_CV.pdf" class="btn">Download CV</a>
+            <a href="#" onclick="downloadCV()" class="btn">
+                <i class="fas fa-download"></i> Download CV
+            </a>
         </section>
 
         <section id="about" class="section tab-content active">
@@ -627,26 +1062,26 @@
             </div>
             <div class="about-content">
                 <div class="about-text">
-                    <h3>My Journey</h3>
+                    <h3><i class="fas fa-rocket"></i> My Journey</h3>
                     <p>I am a passionate Software Engineer specializing in backend development with a strong foundation in computer science principles. Currently, I'm expanding my skills as a Software Development Trainee at UVU AFRICA CAPACITI.</p>
                     <p>My journey began with a focus on creating efficient, scalable, and secure server-side applications. I believe robust backend systems are the foundation of any successful digital product.</p>
                     <p>At CAPACITI, I've worked with a diverse technology stack including HTML, CSS, JavaScript, TypeScript, React, Angular, Python, and Node.js. I've also gained experience with containerization using Docker and Podman.</p>
                 </div>
                 <div class="skills">
-                    <h3>My Skills</h3>
+                    <h3><i class="fas fa-tools"></i> My Skills</h3>
                     <div class="skills-grid">
-                        <div class="skill-card"> <i class="fab fa-html5"></i> <h3>HTML</h3> </div>
-                        <div class="skill-card"> <i class="fab fa-css3-alt"></i> <h3>CSS</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-html5"></i> <h3>HTML5</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-css3-alt"></i> <h3>CSS3</h3> </div>
                         <div class="skill-card"> <i class="fab fa-js"></i> <h3>JavaScript</h3> </div>
                         <div class="skill-card"> <i class="fas fa-code"></i> <h3>TypeScript</h3> </div>
-                        <div class="skill-card"> <i class="fab fa-node-js"></i> <h3>Express.js</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-node-js"></i> <h3>Node.js</h3> </div>
                         <div class="skill-card"> <i class="fab fa-python"></i> <h3>Python</h3> </div>
-                        <div class="skill-card"> <i class="fas fa-database"></i> <h3>Databases</h3> </div>
-                        <div class="skill-card"> <i class="fab fa-docker"></i> <h3>Container</h3> </div>
+                        <div class="skill-card"> <i class="fas fa-database"></i> <h3>Database</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-docker"></i> <h3>Docker</h3> </div>
                         <div class="skill-card"> <i class="fab fa-react"></i> <h3>React</h3> </div>
                         <div class="skill-card"> <i class="fab fa-angular"></i> <h3>Angular</h3> </div>
-                        <div class="skill-card"> <i class="fas fa-code-branch"></i> <h3>Git</h3> </div>
-                        <div class="skill-card"> <i class="fas fa-terminal"></i> <h3>Vim</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-git-alt"></i> <h3>Git</h3> </div>
+                        <div class="skill-card"> <i class="fas fa-terminal"></i> <h3>Linux</h3> </div>
                     </div>
                 </div>
             </div>
@@ -655,46 +1090,44 @@
         <section id="projects" class="section tab-content">
             <div class="section-title">
                 <h2>My Projects</h2>
-                <p>A showcase of my work. Use the filters to browse by technology.</p>
+                <p>A showcase of my professional work and technical expertise.</p>
             </div>
-             <div class="project-filters">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="AI">AI</button>
-                <button class="filter-btn" data-filter="Web App">Web App</button>
-                <button class="filter-btn" data-filter="Productivity">Productivity</button>
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all"><span>All Projects</span></button>
+                <button class="filter-btn" data-filter="AI"><span>AI & Machine Learning</span></button>
+                <button class="filter-btn" data-filter="Web App"><span>Web Applications</span></button>
+                <button class="filter-btn" data-filter="Productivity"><span>Productivity Tools</span></button>
             </div>
             <div class="projects-grid" id="projects-container"></div>
         </section>
 
         <section id="certificates" class="section tab-content">
             <div class="section-title">
-                <h2>My Certificates</h2>
-                <p>A list of my professional certifications and qualifications.</p>
+                <h2>Professional Certifications</h2>
+                <p>Continuous learning and professional development achievements.</p>
             </div>
-            <div class="static-certs-container">
-                 </div>
+            <div class="static-certs-container"></div>
         </section>
 
         <section id="testimonials" class="section tab-content">
             <div class="section-title">
-                <h2>Testimonials</h2>
-                <p>What my peers and mentors say about my work.</p>
+                <h2>Professional Testimonials</h2>
+                <p>What my mentors and colleagues say about my work and potential.</p>
             </div>
             <div class="testimonials-grid">
                 <div class="testimonial-card">
-                    <img src="https://i.pravatar.cc/80?u=a" alt="Testimonial Author 1" class="testimonial-img">
-                    <p class="testimonial-text">"Mandlenkosi is a dedicated and sharp developer. His ability to tackle complex backend challenges is impressive and he was a valuable asset to our team."</p>
-                    <p class="testimonial-author">Jane Doe<span>Senior Engineer, TechCorp</span></p>
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAH0AfQDASIAAhEBAxEB/8QAHQAAAQUBAQEBAAAAAAAAAAAAAwECBAUGBwAICf/EAE4QAAEDAwIEAwQGBgcFBgMBAAEAAgMEBRESITExQVETImFxgZGhBzKxwdHwFEJSYuHxFSMzcoKSshZDU4LS..." alt="Oarabile Mogase" class="testimonial-img">
+                    <p class="testimonial-text">"Mandlenkosi demonstrates exceptional technical acumen and professional maturity that sets him apart as a future leader in software engineering. His dedication to mastering complex backend systems and his strategic thinking about Africa's technological future make him an invaluable asset to any development team. His ability to integrate multiple technologies while maintaining clean, scalable code architecture is truly impressive."</p>
+                    <p class="testimonial-author">Oarabile Mogase
+                        <span>Professional Development Mentor | CAPACITI</span>
+                    </p>
                 </div>
                 <div class="testimonial-card">
-                    <img src="https://i.pravatar.cc/80?u=b" alt="Testimonial Author 2" class="testimonial-img">
-                    <p class="testimonial-text">"Working with Mandlenkosi was a pleasure. He is a great communicator and has a deep understanding of software architecture and best practices."</p>
-                    <p class="testimonial-author">John Smith<span>Project Manager, Innovate LLC</span></p>
-                </div>
-                 <div class="testimonial-card">
-                    <img src="https://i.pravatar.cc/80?u=c" alt="Testimonial Author 3" class="testimonial-img">
-                    <p class="testimonial-text">"His passion for technology and his vision for Africa's digital future are inspiring. He is a forward-thinker with strong technical skills to back it up."</p>
-                    <p class="testimonial-author">Emily White<span>Mentor, UVU AFRICA</span></p>
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAH0AfQDASIAAhEBAxEB/8QAHQAAAQUBAQEBAAAAAAAAAAAAAwECBAUGBwAICf/EAE4QAAEDAwIEAwQGBgcFBgMBAAEAAgMEBRESITExQVETImFxgZGhBzKxwdHwFUJSYuHxFSMzcoKSshZDU4LS..." alt="Nonhlanhla Mndebele" class="testimonial-img">
+                    <p class="testimonial-text">"As Mandlenkosi's Tech Mentor at CAPACITI, I've witnessed his remarkable growth from a promising student to a confident developer. His passion for backend development, combined with his curiosity about AI and cybersecurity, positions him perfectly for the evolving tech landscape. Mandlenkosi consistently delivers high-quality code and demonstrates excellent problem-solving skills. His vision for leveraging technology to advance Africa's digital transformation is both inspiring and achievable."</p>
+                    <p class="testimonial-author">Nonhlanhla Mndebele
+                        <span>Tech Mentor | UVU AFRICA CAPACITI</span>
+                    </p>
                 </div>
             </div>
         </section>
@@ -702,30 +1135,54 @@
         <section id="future-projects" class="section tab-content">
             <div class="section-title">
                 <h2>Future Projects: AI, Cyber & FinTech for Africa</h2>
-                <p>These projects reimagine NATO-inspired technology for African realities: low-bandwidth, community-first, and socially accountable.</p>
+                <p>Revolutionary projects reimagining technology for African realities: low-bandwidth, community-first, and socially accountable.</p>
             </div>
             <div class="future-projects-container">
                 <div class="category-card">
-                    <div class="category-header"><i class="fas fa-shield-halved"></i><h3>Category 1: National Security & Civil Response</h3></div>
+                    <div class="category-header">
+                        <i class="fas fa-shield-halved"></i>
+                        <h3>National Security & Civil Response</h3>
+                    </div>
                     <div class="project-item">
-                        <h4>Pan-African Resilient C2+AI (Community-aware Command, Control & Civil Response)</h4>
+                        <h4>🌍 Pan-African Resilient C2+AI (Community-aware Command, Control & Civil Response)</h4>
                         <p>A public-good service for African states, regional blocs, and NGOs to manage crises like floods, riots, and public health emergencies with trusted, real-time situational awareness.</p>
                         <ul>
-                            <li><strong>Low-Bandwidth UX:</strong> Uses SMS/USSD for reports from rural areas without smartphones.</li>
-                            <li><strong>Data Sovereignty:</strong> Federated learning keeps sensitive data within national borders.</li>
-                            <li><strong>Community-Sourced Data:</strong> Integrates reports from farmers, cheap IoT sensors, and community radio.</li>
-                            <li><strong>Explainable AI:</strong> Provides simple, human-readable reasons for every alert to build trust.</li>
+                            <li><strong>Low-Bandwidth UX:</strong> Uses SMS/USSD for reports from rural areas without smartphones</li>
+                            <li><strong>Data Sovereignty:</strong> Federated learning keeps sensitive data within national borders</li>
+                            <li><strong>Community-Sourced Data:</strong> Integrates reports from farmers, IoT sensors, and community radio</li>
+                            <li><strong>Explainable AI:</strong> Provides human-readable reasons for every alert to build trust</li>
                         </ul>
                     </div>
                 </div>
                 <div class="category-card">
-                    <div class="category-header"><i class="fas fa-briefcase"></i><h3>Category 2: Economic & Workforce Development</h3></div>
+                    <div class="category-header">
+                        <i class="fas fa-briefcase"></i>
+                        <h3>Economic & Workforce Development</h3>
+                    </div>
                     <div class="project-item">
-                        <h4>African Cyber Range + Skills Marketplace</h4>
-                        <p>A distributed cyber-training platform that turns theater-style drills into an affordable, continuous workforce program tailored to African infrastructure and threats.</p>
-                         <ul>
-                            <li><strong>Mobile Micro-Labs:</strong> Gamified training modules accessible on Android devices.</li>
-                            <li><strong>Regional Threat Library:</strong> Simulates real-world African cyber threats like SIM-swap fraud.</li>
+                        <h4>🛡️ African Cyber Range + Skills Marketplace</h4>
+                        <p>A distributed cyber-training platform that transforms theater-style drills into an affordable, continuous workforce program tailored to African infrastructure and threats.</p>
+                        <ul>
+                            <li><strong>Mobile Micro-Labs:</strong> Gamified training modules accessible on Android devices</li>
+                            <li><strong>Regional Threat Library:</strong> Simulates real-world African cyber threats like SIM-swap fraud</li>
+                            <li><strong>Skills Certification:</strong> Blockchain-verified credentials for cybersecurity professionals</li>
+                            <li><strong>Community Defense:</strong> Training local defenders for small businesses and organizations</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-header">
+                        <i class="fas fa-microchip"></i>
+                        <h3>Technology Infrastructure</h3>
+                    </div>
+                    <div class="project-item">
+                        <h4>💎 African Semiconductor Initiative</h4>
+                        <p>Leveraging Africa's mineral wealth to build a complete semiconductor supply chain, from raw materials to finished chips.</p>
+                        <ul>
+                            <li><strong>Mineral Processing:</strong> Local refinement of cobalt, lithium, and rare earth elements</li>
+                            <li><strong>Skills Transfer:</strong> Partnership programs with Taiwan and South Korea</li>
+                            <li><strong>Regional Hubs:</strong> Manufacturing centers in mineral-rich regions</li>
+                            <li><strong>Innovation Labs:</strong> R&D facilities for African-specific chip designs</li>
                         </ul>
                     </div>
                 </div>
@@ -735,273 +1192,1288 @@
         <section id="career-vision" class="section tab-content">
             <div class="section-title">
                 <h2>Career Vision Statement</h2>
-                <p>My mission for Africa's technological future</p>
+                <p>My mission for Africa's technological future and global digital leadership.</p>
             </div>
             <div class="career-vision">
-                <p>I am building my career around the belief that Africa can and must lead in the digital era. My mission is to develop AI applications that enhance Africa's growth, strengthen the cyber defense capabilities of the African Union, and train defense systems in advanced strategic applications. I aim to encourage governments across the continent to invest in cyber drones, robust AI systems, and the digitalisation of economies so that Africa stands resilient in a rapidly evolving world.</p>
-                <p>As a growing software engineer with a specialization in backend development, databases, and containerized applications, I have already sharpened my ability to integrate multiple backend systems within one application. My training at UVU Africa's CapaCiTi program has shaped me into a professional developer who not only understands technology but also recognizes its role in solving critical challenges facing our continent. I have also explored cybersecurity, gaining a deep appreciation for how essential it is that developers ensure all systems remain secure against evolving threats. My hands-on learning includes using Python hooks to make AI systems more robust and scalable.</p>
-                <p>Beyond cyber defense, I plan to contribute to Africa's fintech revolution, introducing technologies that expand financial access and inclusion across the continent. I also envision a digital public sector, where governance is transparent, efficient, and future-ready.</p>
-                <p>Long-term, I want to help position South Africa—and Africa as a whole—as a global powerhouse in technology. This includes championing the development of a semiconductor industry, sending African students to Taiwan to master semiconductor manufacturing, and bringing those skills back home to industrialize our nations. Africa already holds many of the critical minerals needed for semiconductors and electric vehicles—such as cobalt from the Democratic Republic of Congo, lithium from Zimbabwe, manganese from South Africa, and rare earth elements from Tanzania and Burundi. By investing in local processing and innovation, Africa can move from being a raw materials exporter to a global supplier of high-value technology components.</p>
-                <p>My ultimate vision is for a powerful Africa—free from international debt, industrialized, digitally empowered, and recognized as a global contributor to the digital world.</p>
+                <p><strong>🚀 Building Africa's Digital Future:</strong> I am building my career around the belief that Africa can and must lead in the digital era. My mission is to develop AI applications that enhance Africa's growth, strengthen the cyber defense capabilities of the African Union, and train defense systems in advanced strategic applications.</p>
+                
+                <p><strong>💻 Technical Excellence:</strong> As a growing software engineer with specialization in backend development, databases, and containerized applications, I have already sharpened my ability to integrate multiple backend systems within one application. My training at UVU Africa's CAPACITI program has shaped me into a professional developer who not only understands technology but also recognizes its role in solving critical challenges facing our continent.</p>
+                
+                <p><strong>🔐 Cybersecurity Focus:</strong> I have explored cybersecurity extensively, gaining deep appreciation for how essential it is that developers ensure all systems remain secure against evolving threats. My hands-on learning includes using Python hooks to make AI systems more robust and scalable, preparing me to defend Africa's digital infrastructure.</p>
+                
+                <p><strong>💰 FinTech Innovation:</strong> Beyond cyber defense, I plan to contribute to Africa's fintech revolution, introducing technologies that expand financial access and inclusion across the continent. I envision a digital public sector where governance is transparent, efficient, and future-ready.</p>
+                
+                <p><strong>🏭 Industrial Transformation:</strong> Long-term, I want to help position South Africa—and Africa as a whole—as a global powerhouse in technology. This includes championing the development of a semiconductor industry, sending African students to Taiwan to master semiconductor manufacturing, and bringing those skills back home to industrialize our nations.</p>
+                
+                <p><strong>⚡ Resource Advantage:</strong> Africa already holds many critical minerals needed for semiconductors and electric vehicles—cobalt from DRC, lithium from Zimbabwe, manganese from South Africa, and rare earth elements from Tanzania and Burundi. By investing in local processing and innovation, Africa can move from raw materials exporter to global supplier of high-value technology components.</p>
+                
+                <p><strong>🌍 Ultimate Vision:</strong> My ultimate vision is for a powerful Africa—free from international debt, industrialized, digitally empowered, and recognized as a global contributor to the digital world. Through strategic technology development and international partnerships, we can transform Africa into the world's next great technological superpower.</p>
             </div>
         </section>
         
         <section id="contact" class="section tab-content">
-             <div class="section-title">
-                <h2>Contact Me</h2>
-                <p>Get in touch for collaborations or opportunities.</p>
+            <div class="section-title">
+                <h2>Let's Connect</h2>
+                <p>Ready to collaborate on Africa's digital transformation? Let's build the future together.</p>
             </div>
             <div class="contact-grid">
                 <div class="contact-info">
-                    <h3>Get In Touch</h3>
-                    <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious vision. Feel free to reach out.</p>
-                    <div class="social-links" style="margin-top: 2rem; justify-content: flex-start; gap: 1.5rem;">
-                         <a href="https://github.com/Vundla" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                    <h3><i class="fas fa-handshake"></i> Get In Touch</h3>
+                    <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious vision for Africa's technological future. Whether you're interested in backend development, AI applications, cybersecurity solutions, or continental-scale digital transformation, let's connect.</p>
+                    <div class="social-links" style="justify-content: flex-start; gap: 1.5rem;">
+                        <a href="https://github.com/Vundla" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
                         <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                         <a href="mailto:vundlamandlenkosi0@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
                     </div>
                 </div>
                 <form id="contact-form" class="contact-form" novalidate>
-                    <div class="form-group"><input type="text" id="name" class="form-control" placeholder="Your Name" required></div>
-                    <div class="form-group"><input type="email" id="email" class="form-control" placeholder="Your Email" required></div>
-                    <div class="form-group"><textarea id="message" class="form-control" placeholder="Your Message" rows="5" required></textarea></div>
-                    <button type="submit" class="btn">Send Message</button>
+                    <div class="form-group">
+                        <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" class="form-control" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" class="form-control" placeholder="Your Message - Tell me about your project or opportunity" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
                 </form>
             </div>
         </section>
-
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 Mandlenkosi Vundla. All rights reserved.</p>
+            <p>&copy; 2025 Mandlenkosi Vundla. Building Africa's Digital Future. All rights reserved.</p>
         </div>
     </footer>
 
     <div class="notification" id="notification"></div>
 
     <script>
-        // --- DATA ---
-        const defaultProfileImage = `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAH0AfsDASIAAhEBAxEB/8QAHQAAAQUBAQEBAAAAAAAAAAAAAwECBAUGBwAICf/EAE8QAAEDAwIEAwQGBgcFBwQDAAEAAgMEBRESIQYxQVETImFxgZEyobEHFEJSscHR4fAjM1JicoKSFkNTshV0s+LxNENEg5QmNlRjc5T/xAAaAQEAAwEBAQAAAAAAAAAAAAAAAQIDBAUG/8QALBEAAgICAgICAwEAAgIDAQEAAAECESExAxJBUTIEEyJhE3EjQoGRsUKh8P/aAAwDAQACEQMRAD8A8qAXYc4LQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQAuwALQA...`;
-
-        const defaultProjects = [
-            { title: 'AI Study Buddy', link: '#', description: 'An intelligent learning assistant to help students.', tags: ['AI', 'React'] },
-            { title: 'Cinverse', link: '#', description: 'A platform for immersive cinematic experiences.', tags: ['Web App', 'Multimedia'] },
-            { title: 'AI Sentiment Analyzer', link: '#', description: 'A web tool that uses AI to analyze text sentiment.', tags: ['AI', 'JavaScript'] },
-            { title: 'Azanian AI Agent', link: '#', description: 'A conversational AI agent to handle user queries.', tags: ['AI', 'Chatbot'] },
-            { title: 'Zitholele', link: '#', description: 'A locator application to find traditional healers.', tags: ['Web App', 'Geolocation'] },
-            { title: 'Todo App', link: '#', description: 'A professional to-do list application to manage tasks.', tags: ['Productivity', 'Web App'] }
-        ];
-
-        const defaultCertificates = [
-            { name: "Career Essentials in Cybersecurity", issuer: "Microsoft and LinkedIn", data: null },
-            { name: "AI For Everyone", issuer: "DeepLearning.AI", data: null },
-            { name: "Generative AI for Everyone", issuer: "DeepLearning.AI", data: null },
-            { name: "Introduction to Generative AI", issuer: "Google Cloud", data: null },
-            { name: "Write Professional Emails in English", issuer: "Georgia Institute of Technology", data: null },
-            { name: "Active Listening: Enhancing Communication Skills", issuer: "Coursera Instructor Network", data: null },
-            { name: "Emotional Intelligence", issuer: "Arizona State University", data: null },
-            { name: "Introduction to Personal Branding", issuer: "University of Virginia", data: null },
-            { name: "Psychology of the Self", issuer: "American Psychological Association", data: null },
-            { name: "Positive Psychology: Resilience Skills", issuer: "University of Pennsylvania", data: null },
-            { name: "Work Smarter, Not Harder: Time Management", issuer: "University of California, Irvine", data: null },
-            { name: "AI Essentials", issuer: "Intel", data: null },
-            { name: "Grit and Growth Mindset", issuer: "Arizona State University", data: null },
-            { name: "Solving Problems with Creative and Critical Thinking", issuer: "IBM", data: null },
-            { name: "Leading with Impact: Team Dynamics, Strategy and Ethics", issuer: "Coursera Instructor Network", data: null },
-            { name: "Developing Interpersonal Skills", issuer: "IBM", data: null },
-            { name: "Introduction to Responsible AI", issuer: "Google Cloud", data: null },
-            { name: "Verbal Communications and Presentation Skills", issuer: "Starweaver", data: null }
-        ];
-
-        // --- APP INITIALIZATION ---
-        document.addEventListener('DOMContentLoaded', () => {
-            initApp();
-            initInteractiveFeatures();
-        });
-
-        function initApp() {
-            loadProfilePicture();
-            loadProjects();
-            loadCertificates();
-            initTabNavigation();
-            initMobileMenu();
+        // --- EMBEDDED IMAGES DATA ---
+        const profileImageData = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAH0AfQDASIAAhEBAxEB/8QAHQAAAQUBAQEBAAAAAAAAAAAAAwECBAUGBwAICf/EAE4QAAEDAwIEAwQGBgcFBgMBAAEAAgMEBRESITExQVETImFxgZGhBzKxwdHwFUJSYuHxFSMzcoKSshZDU4LS4jRUY5OjwxckJGRzdEX/xAAbAQEAAwEBAQEAAAAAAAAAAAAAAQIDBAUG/8QALBEAAgICAgICAwEAAgIDAQEAAAECAxEhEjFBURMUIjIFYXEjobHB8JHR/9oADAMBAAIRAxEAPwD2Uaq4IQam4IQak4Iq4KbjhCrj6gBXHxAnBFXEJwRVxxwRV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AFXvQBV70AVe9AF<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The professional portfolio of Mandlenkosi Vundla, a Backend Specialist and Software Development Trainee specializing in AI, cybersecurity, and scalable digital solutions for Africa.">
+    <meta name="keywords" content="Mandlenkosi Vundla, Software Engineer, Backend Developer, Python, JavaScript, AI, Cybersecurity, Portfolio">
+    <title>Mandlenkosi Vundla - Software Engineer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <style>
+        :root {
+            --brand-dark: #0A0F1F;
+            --brand-card: #1E293B;
+            --brand-purple: #8B5CF6;
+            --brand-purple-hover: #7C3AED;
+            --text-light: #E2E8F0;
+            --text-muted: #94A3B8;
+            --primary-color: var(--brand-purple);
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #f8f9fa;
+            --dark-color: var(--brand-dark);
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease-in-out;
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-bg: var(--brand-card);
+            --text-primary: var(--text-light);
+            --text-secondary: var(--text-muted);
+            --bg-primary: var(--brand-dark);
+            --sidebar-width: 280px;
+            --section-padding: 4rem 0;
+            --border-radius: 12px;
         }
 
-        function initInteractiveFeatures() {
-            new Typed('#typing-text', {
-                strings: ['Backend Specialist', 'Software Development Trainee', 'AI & Cyber Security Enthusiast'],
-                typeSpeed: 50, backSpeed: 30, backDelay: 2000, loop: true
-            });
+        .theme-ruby {
+            --primary-color: #a11d25;
+            --secondary-color: #c94049;
+            --accent-color: #d10010;
+            --dark-color: #2b0e0e;
+            --text-light: #ffffff;
+            --text-muted: #cccccc;
+            --card-bg: #3a0f0f;
+            --bg-primary: #1f0a0a;
+        }
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('visible');
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.section').forEach(section => observer.observe(section));
-
-            const filterContainer = document.querySelector('.project-filters');
-            if (filterContainer) {
-                filterContainer.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('filter-btn')) {
-                        filterContainer.querySelector('.active').classList.remove('active');
-                        e.target.classList.add('active');
-                        const filter = e.target.getAttribute('data-filter');
-                        document.querySelectorAll('.project-card').forEach(card => {
-                            const tags = card.getAttribute('data-tags').split(',');
-                            card.style.display = (filter === 'all' || tags.includes(filter)) ? 'block' : 'none';
-                        });
-                    }
-                });
-            }
-
-            const form = document.getElementById('contact-form');
-            form.addEventListener('submit', handleFormSubmit);
-            
-            const profileUpload = document.getElementById('profile-upload');
-            profileUpload.addEventListener('change', handleProfileUpload);
+        html {
+            scroll-behavior: smooth;
         }
         
-        // --- CORE LOGIC ---
-        function loadProfilePicture() {
-             document.getElementById('profile-image').style.backgroundImage = `url(${localStorage.getItem('profileImage') || defaultProfileImage})`;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            overflow-x: hidden;
+            transition: var(--transition);
         }
 
-        function handleProfileUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const imageUrl = event.target.result;
-                try {
-                    localStorage.setItem('profileImage', imageUrl);
-                    loadProfilePicture();
-                    showNotification('Profile picture updated!');
-                } catch (error) {
-                    showNotification('Could not save image. Storage might be full.', true);
-                }
-            };
-            reader.readAsDataURL(file);
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Enhanced Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--dark-color) 0%, rgba(30, 41, 59, 0.95) 100%);
+            color: var(--text-light);
+            padding: 2rem 1rem;
+            z-index: 1001;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        
+        .sidebar-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-light);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .sidebar-logo span {
+            color: var(--primary-color);
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-decoration: none;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-nav a::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .sidebar-nav a:hover::before {
+            left: 100%;
+        }
+        
+        .sidebar-nav a:hover {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-color);
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        function initTabNavigation() {
-            const navLinks = document.querySelectorAll('.sidebar-nav a');
-            const sections = document.querySelectorAll('.section.tab-content');
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', e => {
-                    e.preventDefault();
-                    const targetId = link.getAttribute('href');
-                    
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    
-                    sections.forEach(sec => sec.style.display = `#${sec.id}` === targetId ? 'block' : 'none');
-                    
-                    // Trigger reflow to restart animation
-                    const targetSection = document.querySelector(targetId);
-                    if(targetSection) {
-                        targetSection.classList.remove('visible');
-                        void targetSection.offsetWidth; // Reflow
-                        targetSection.classList.add('visible');
-                    }
-                    window.history.pushState(null, '', targetId);
-                });
-            });
-
-            // Initial setup to show only the active tab's content
-            const activeLink = document.querySelector('.sidebar-nav a.active');
-            sections.forEach(sec => sec.style.display = `#${sec.id}` === activeLink.getAttribute('href') ? 'block' : 'none');
-            document.querySelector(activeLink.getAttribute('href')).classList.add('visible');
+        .sidebar-nav a.active {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-color);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        .sidebar-nav i {
+            margin-right: 1rem;
+            width: 24px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            transition: var(--transition);
         }
 
-        function loadProjects() {
-            const container = document.getElementById('projects-container');
-            container.innerHTML = defaultProjects.map(project => {
-                const tagsHtml = `<div class="project-tags">${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join('')}</div>`;
-                return `
-                    <div class="project-card" data-tags="${project.tags.join(',')}">
-                        <div class="project-details">
-                            <h3>${project.title}</h3>
-                            <p>${project.description}</p>
-                            ${tagsHtml}
-                            <a href="${project.link}" target="_blank" class="btn" style="padding: 0.6rem 1.2rem; margin-top: 1rem; font-size: 0.9rem;">View Project</a>
-                        </div>
-                    </div>`;
-            }).join('');
+        /* Enhanced Section Styling */
+        .section {
+            padding: var(--section-padding);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            position: relative;
         }
 
-        function loadCertificates() {
-            const container = document.querySelector('.static-certs-container');
-            container.innerHTML = defaultCertificates.map((cert, index) => `
-                <div class="cert">
-                    <h3>${cert.name}</h3>
-                    <p><strong>Issued by:</strong> ${cert.issuer}</p>
-                    <p>
-                        <a href="#" onclick="viewCertificate(${index + 1}); return false;">View</a> | 
-                        <a href="#" onclick="downloadCertificate(${index + 1}); return false;">Download</a>
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Enhanced Hero Section */
+        .hero {
+            text-align: center;
+            padding: 6rem 0;
+            position: relative;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(10, 15, 31, 0.9), rgba(30, 41, 59, 0.9));
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(52, 152, 219, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(10, 15, 31, 0.8), rgba(30, 41, 59, 0.95));
+            z-index: -1;
+        }
+        
+        .profile-img-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem auto;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid transparent;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)) padding-box,
+                        linear-gradient(45deg, var(--primary-color), var(--secondary-color)) border-box;
+            box-shadow: 
+                0 0 40px rgba(139, 92, 246, 0.5),
+                0 20px 40px rgba(0, 0, 0, 0.3);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-img::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .upload-overlay {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .upload-overlay:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-weight: 900;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, var(--text-light), var(--text-muted));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .typing-container {
+            min-height: 50px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tagline {
+            font-size: 1.1rem !important;
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            opacity: 0.9;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .social-links a {
+            color: var(--text-muted);
+            font-size: 2rem;
+            transition: var(--transition);
+            padding: 1rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+        }
+        
+        .social-links a:hover {
+            color: var(--primary-color);
+            transform: translateY(-5px) scale(1.1);
+            background: rgba(139, 92, 246, 0.2);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-color) !important;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            text-decoration: none;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        
+        /* Enhanced About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        
+        .about-text {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .about-text h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .skill-card {
+            background: var(--card-bg);
+            padding: 2rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .skill-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .skill-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .skill-card:hover i {
+            transform: scale(1.2);
+            color: var(--secondary-color);
+        }
+        
+        .skill-card h3 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Enhanced Certificates */
+        .cert {
+            background: var(--card-bg);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid var(--primary-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cert::before {
+            content: '';
+            position: absolute;
+            top: 0; right: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            transition: right 0.5s;
+        }
+
+        .cert:hover::before {
+            right: 100%;
+        }
+
+        .cert:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .cert h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .cert p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .cert a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 1rem;
+            transition: var(--transition);
+        }
+        .cert a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        /* Enhanced Projects Section */
+        .project-filters {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .filter-btn {
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            color: var(--text-muted);
+            padding: 1rem 2rem;
+            margin: 0 0.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transition: all 0.3s;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .filter-btn:hover::before,
+        .filter-btn.active::before {
+            width: 100%; height: 100%;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            color: var(--light-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .project-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card .project-details {
+            padding: 2rem;
+        }
+
+        .project-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .project-card .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .project-card .project-tag {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        /* Enhanced Testimonials Section */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+        .testimonial-card {
+            background: var(--card-bg);
+            padding: 3rem 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition);
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 6rem;
+            color: var(--primary-color);
+            opacity: 0.3;
+            font-family: serif;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .testimonial-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem auto;
+            border: 4px solid var(--primary-color);
+            object-fit: cover;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+        .testimonial-author span {
+            display: block;
+            font-weight: 400;
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-top: 0.5rem;
+        }
+
+        /* Enhanced Future Projects */
+        .future-projects-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+        .category-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-header i { 
+            font-size: 2.5rem; 
+            color: var(--primary-color);
+            background: rgba(139, 92, 246, 0.1);
+            padding: 1rem;
+            border-radius: 50%;
+        }
+        .category-header h3 { 
+            font-size: 1.8rem;
+            color: var(--text-primary);
+        }
+        
+        .project-item { 
+            margin-bottom: 2rem; 
+            padding-left: 2rem; 
+            border-left: 3px solid var(--secondary-color);
+            background: rgba(52, 152, 219, 0.05);
+            padding: 1.5rem 1.5rem 1.5rem 2rem;
+            border-radius: 8px;
+        }
+        .project-item h4 { 
+            font-size: 1.4rem; 
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .project-item p { 
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .project-item ul { 
+            list-style: none; 
+            padding-left: 0; 
+        }
+        .project-item li { 
+            position: relative; 
+            padding-left: 35px; 
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+        .project-item li::before { 
+            content: '\f058'; 
+            font-family: 'Font Awesome 6 Free'; 
+            font-weight: 900; 
+            color: var(--success-color); 
+            position: absolute; 
+            left: 0;
+            font-size: 1.2rem;
+        }
+        
+        .career-vision {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid var(--primary-color);
+        }
+        .career-vision p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Enhanced Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .contact-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+            background: rgba(255,255,255,0.1);
+        }
+        .form-control.is-invalid {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+        }
+        .form-control.is-valid {
+            border-color: var(--success-color);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+        }
+
+        /* Enhanced Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 0;
+            margin-top: 4rem;
+            background: linear-gradient(135deg, var(--dark-color), var(--card-bg));
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        footer p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* Notification System */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--success-color), #27ae60);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease-in-out;
+            z-index: 2000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: linear-gradient(45deg, var(--accent-color), #c0392b);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1001;
+            }
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding-top: 80px;
+            }
+            .mobile-header {
+                display: flex;
+                background: linear-gradient(135deg, var(--dark-color), var(--card-bg));
+                padding: 1rem;
+                align-items: center;
+                justify-content: space-between;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 999;
+                box-shadow: var(--shadow);
+                backdrop-filter: blur(10px);
+            }
+            .menu-toggle-btn {
+                background: none; 
+                border: none;
+                color: var(--text-light);
+                font-size: 1.8rem; 
+                cursor: pointer;
+                padding: 0.5rem;
+                border-radius: 8px;
+                transition: var(--transition);
+            }
+            .menu-toggle-btn:hover {
+                background: rgba(255,255,255,0.1);
+            }
+            .mobile-logo {
+                font-size: 1.5rem; 
+                font-weight: 800;
+                background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .overlay { 
+                display: none; 
+            }
+            .overlay.active {
+                display: block;
+                position: fixed;
+                top: 0; left: 0; width: 100%; height: 100%;
+                background-color: rgba(0,0,0,0.7);
+                backdrop-filter: blur(5px);
+                z-index: 1000;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 0;
+            }
+            .hero h1 { 
+                font-size: 2.5rem; 
+            }
+            .section-title h2 { 
+                font-size: 2.2rem; 
+            }
+            .about-content, .contact-grid { 
+                grid-template-columns: 1fr; 
+                gap: 2rem;
+            }
+            .skills-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .social-links {
+                gap: 1rem;
+            }
+            .social-links a {
+                font-size: 1.5rem;
+                padding: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 1rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .profile-img-container {
+                width: 150px;
+                height: 150px;
+            }
+            .section {
+                padding: 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body class="theme-ruby">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">M.Vundla <span>|</span> Dev</div>
+        </div>
+        
+        <ul class="sidebar-nav">
+            <li><a href="#about" class="nav-link active"><i class="fas fa-user"></i> About Me</a></li>
+            <li><a href="#projects" class="nav-link"><i class="fas fa-laptop-code"></i> Projects</a></li>
+            <li><a href="#certificates" class="nav-link"><i class="fas fa-certificate"></i> Certificates</a></li>
+            <li><a href="#testimonials" class="nav-link"><i class="fas fa-comments"></i> Testimonials</a></li>
+            <li><a href="#future-projects" class="nav-link"><i class="fas fa-rocket"></i> Future Projects</a></li>
+            <li><a href="#career-vision" class="nav-link"><i class="fas fa-binoculars"></i> Career Vision</a></li>
+            <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main class="main-content">
+        <div class="mobile-header">
+            <button id="menu-toggle" class="menu-toggle-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="mobile-logo">M.Vundla | Dev</div>
+        </div>
+
+        <section id="hero" class="hero">
+            <div class="profile-img-container">
+                <div class="profile-img" id="profile-image"></div>
+                <div class="upload-overlay" onclick="document.getElementById('profile-upload').click()">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+            </div>
+            <h1>Mandlenkosi Vundla</h1>
+            <div class="typing-container">
+                <p><span id="typing-text"></span></p>
+            </div>
+            <p class="tagline">"Transforming ideas into scalable digital solutions with robust backend architecture and cutting-edge technology."</p>
+            <div class="social-links">
+                <a href="https://github.com/Vundla" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/mandlenkosi-vundla-561666278/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="mailto:vundlamandlenkosi0@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+            <a href="#" onclick="downloadCV()" class="btn">
+                <i class="fas fa-download"></i> Download CV
+            </a>
+        </section>
+
+        <section id="about" class="section tab-content active">
+            <div class="section-title">
+                <h2>About Me</h2>
+                <p>My journey, skills, and passion for software engineering.</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3><i class="fas fa-rocket"></i> My Journey</h3>
+                    <p>I am a passionate Software Engineer specializing in backend development with a strong foundation in computer science principles. Currently, I'm expanding my skills as a Software Development Trainee at UVU AFRICA CAPACITI.</p>
+                    <p>My journey began with a focus on creating efficient, scalable, and secure server-side applications. I believe robust backend systems are the foundation of any successful digital product.</p>
+                    <p>At CAPACITI, I've worked with a diverse technology stack including HTML, CSS, JavaScript, TypeScript, React, Angular, Python, and Node.js. I've also gained experience with containerization using Docker and Podman.</p>
+                </div>
+                <div class="skills">
+                    <h3><i class="fas fa-tools"></i> My Skills</h3>
+                    <div class="skills-grid">
+                        <div class="skill-card"> <i class="fab fa-html5"></i> <h3>HTML5</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-css3-alt"></i> <h3>CSS3</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-js"></i> <h3>JavaScript</h3> </div>
+                        <div class="skill-card"> <i class="fas fa-code"></i> <h3>TypeScript</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-node-js"></i> <h3>Node.js</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-python"></i> <h3>Python</h3> </div>
+                        <div class="skill-card"> <i class="fas fa-database"></i> <h3>Database</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-docker"></i> <h3>Docker</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-react"></i> <h3>React</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-angular"></i> <h3>Angular</h3> </div>
+                        <div class="skill-card"> <i class="fab fa-git-alt"></i> <h3>Git</h3> </div>
+                        <div class="skill-card"> <i class="fas fa-terminal"></i> <h3>Linux</h3> </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section tab-content">
+            <div class="section-title">
+                <h2>My Projects</h2>
+                <p>A showcase of my professional work and technical expertise.</p>
+            </div>
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all"><span>All Projects</span></button>
+                <button class="filter-btn" data-filter="AI"><span>AI & Machine Learning</span></button>
+                <button class="filter-btn" data-filter="Web App"><span>Web Applications</span></button>
+                <button class="filter-btn" data-filter="Productivity"><span>Productivity Tools</span></button>
+            </div>
+            <div class="projects-grid" id="projects-container"></div>
+        </section>
+
+        <section id="certificates" class="section tab-content">
+            <div class="section-title">
+                <h2>Professional Certifications</h2>
+                <p>Continuous learning and professional development achievements.</p>
+            </div>
+            <div class="static-certs-container"></div>
+        </section>
+
+        <section id="testimonials" class="section tab-content">
+            <div class="section-title">
+                <h2>Professional Testimonials</h2>
+                <p>What my mentors and colleagues say about my work and potential.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAH0AfQDASIAAhEBAxEB/8QAHQAAAQUBAQEBAAAAAAAAAAAAAwECBAUGBwAICf/EAE4QAAEDAwIEAwQGBgcFBgMBAAEAAgMEBRESITExQVETImFxgZGhBzKxwdHwFEJSYuHxFSMzcoKSshZDU4LS..." alt="Oarabile Mogase" class="testimonial-img">
+                    <p class="testimonial-text">"Mandlenkosi demonstrates exceptional technical acumen and professional maturity that sets him apart as a future leader in software engineering. His dedication to mastering complex backend systems and his strategic thinking about Africa's technological future make him an invaluable asset to any development team. His ability to integrate multiple technologies while maintaining clean, scalable code architecture is truly impressive."</p>
+                    <p class="testimonial-author">Oarabile Mogase
+                        <span>Professional Development Mentor | CAPACITI</span>
                     </p>
-                </div>`).join('');
-        }
+                </div>
+                <div class="testimonial-card">
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAH0AfQDASIAAhEBAxEB/8QAHQAAAQUBAQEBAAAAAAAAAAAAAwECBAUGBwAICf/EAE4QAAEDAwIEAwQGBgcFBgMBAAEAAgMEBRESITExQVETImFxgZGhBzKxwdHwFUJSYuHxFSMzcoKSshZDU4LS..." alt="Nonhlanhla Mndebele" class="testimonial-img">
+                    <p class="testimonial-text">"As Mandlenkosi's Tech Mentor at CAPACITI, I've witnessed his remarkable growth from a promising student to a confident developer. His passion for backend development, combined with his curiosity about AI and cybersecurity, positions him perfectly for the evolving tech landscape. Mandlenkosi consistently delivers high-quality code and demonstrates excellent problem-solving skills. His vision for leveraging technology to advance Africa's digital transformation is both inspiring and achievable."</p>
+                    <p class="testimonial-author">Nonhlanhla Mndebele
+                        <span>Tech Mentor | UVU AFRICA CAPACITI</span>
+                    </p>
+                </div>
+            </div>
+        </section>
         
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const form = e.target;
-            let isValid = true;
-            const inputs = form.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
-                input.classList.remove('is-invalid', 'is-valid');
-                if (!input.checkValidity()) {
-                    isValid = false;
-                    input.classList.add('is-invalid');
-                } else {
-                    input.classList.add('is-valid');
-                }
-            });
-            if (isValid) {
-                showNotification('Message sent successfully!');
-                form.reset();
-                inputs.forEach(input => input.classList.remove('is-valid'));
-            } else {
-                showNotification('Please fill out all fields correctly.', true);
-            }
-        }
-
-        function showNotification(message, isError = false) {
-            const notification = document.getElementById('notification');
-            if(notification) {
-                notification.textContent = message;
-                notification.className = 'notification';
-                if (isError) notification.classList.add('error');
-                notification.classList.add('show');
-                setTimeout(() => notification.classList.remove('show'), 3000);
-            }
-        }
-
-        function initMobileMenu() {
-            const menuToggle = document.getElementById('menu-toggle');
-            const sidebar = document.querySelector('.sidebar');
-            const overlay = document.getElementById('overlay');
-            const closeMenu = () => {
-                sidebar.classList.remove('mobile-open');
-                overlay.classList.remove('active');
-            };
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('mobile-open');
-                overlay.classList.toggle('active');
-            });
-            overlay.addEventListener('click', closeMenu);
-            document.querySelectorAll('.sidebar-nav a').forEach(link => link.addEventListener('click', closeMenu));
-        }
-
-        function viewCertificate(id) {
-            showNotification(`Viewing certificate #${id}. (Feature requires Base64 data).`, true);
-        }
-        function downloadCertificate(id) {
-             showNotification(`Downloading certificate #${id}. (Feature requires Base64 data).`, true);
-        }
-
-    </script>
-</body>
-</html>
+        <section id="future-projects" class="section tab-content">
+            <div class="section-title">
+                <h2>Future Projects: AI, Cyber & FinTech for Africa</h2>
+                <p>Revolutionary projects reimagining technology for African realities: low-bandwidth, community-first, and socially accountable.</p>
+            </div>
+            <div class="future-projects-container">
+                <div class="category-card">
+                    <div class="category-header">
+                        <i class="fas fa-shield-halved"></i>
+                        <h3>National Security & Civil Response</h3>
+                    </div>
+                    <div class="project-item">
+                        <h4>🌍 Pan-African Resilient C2+AI (Community-aware Command, Control & Civil Response)</h4>
+                        <p>A public-good service for African states, regional blocs, and NGOs to manage crises like floods, riots, and public health emergencies with trusted, real-time situational awareness.</p>
+                        <ul>
+                            <li><strong>Low-Bandwidth UX:</strong> Uses SMS/USSD for reports from rural areas without smartphones</li>
+                            <li><strong>Data Sovereignty:</strong> Federated learning keeps sensitive data within national borders</li>
+                            <li><strong>Community-Sourced Data:</strong> Integrates reports from farmers, IoT sensors, and community radio</li>
+                            <li><strong>Explainable AI:</strong> Provides human-readable reasons for every alert to build trust</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-header">
+                        <i class="fas fa-briefcase"></i>
+                        <h3>Economic & Workforce Development</h3>
+                    </div>
+                    <div class="project-item">
+                        <h4>🛡️ African Cyber Range + Skills Marketplace</h4>
+                        <p>A distributed cyber-training platform that transforms theater-style drills into an affordable, continuous workforce program tailored to African infrastructure and threats.</p>
+                        <ul>
+                            <li><strong>Mobile Micro-Labs:</strong> Gamified training modules accessible on Android devices</li>
+                            <li><strong>Regional Threat Library:</strong> Simulates real-world African cyber threats like SIM-swap fraud</li>
+                            <li><strong>Skills Certification:</strong> Blockchain-verified credentials for cybersecurity professionals</li>
+                            <li><strong>Community Defense:</strong> Training local defenders for small businesses and organizations</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-header">
+                        <i class="fas fa-microchip"></i>
+                        <h3>Technology Infrastructure</h3>
+                    </div>
+                    <div class="project-item">
+                        <h4>💎 African Semiconductor Initiative</h4>
+                        <p>Leveraging Africa's mineral wealth to build a complete semiconductor supply chain, from raw materials to finished chips.</p>
+                        <ul>
+                            <li><strong>Mineral Processing:</strong> Local refinement of cobalt, lithium, and rare earth elements</li>
+                            <li><strong>Skills Transfer:</strong> Partnership programs with Taiwan and South Korea</li>
+                            <li><strong>Regional Hubs:</strong> Manufacturing centers in mineral-rich regions</li>
+                            <li><strong>Innovation Labs:</strong> R&D facilities for African-specific chip designs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="career-vision" class="section tab-content">
+            <div class="section-title">
+                <h2>Career Vision Statement</h2>
+                <p>My mission for Africa's technological future and global digital leadership.</p>
+            </div>
+            <div class="career-vision">
+                <p><strong>🚀 Building Africa's Digital Future:</strong> I am building my career around the belief that Africa can and must lead in the digital era. My mission is to develop AI applications that enhance Africa's growth, strengthen the cyber defense capabilities of the African Union, and train defense systems in advanced strategic applications.</p>
+                
+                <p><strong>💻 Technical Excellence:</strong> As a growing software engineer with specialization in backend development, databases, and containerized applications, I have already sharpened my ability to integrate multiple backend systems within one application. My training at UVU Africa's CAPACITI program has shaped me into a professional developer who not only understands technology but also recognizes its role in solving critical challenges facing our continent.</p>
+                
+                <p><strong>🔐 Cybersecurity Focus:</strong> I have explored cybersecurity extensively, gaining deep appreciation for how essential it is that developers ensure all systems remain secure against evolving threats. My hands-on learning includes using Python hooks to make AI systems more robust and scalable, preparing me to defend Africa's digital infrastructure.</p>
+                
+                <p><strong>💰 FinTech Innovation:</strong> Beyond cyber defense, I plan to contribute to Africa's fintech revolution, introducing technologies that expand financial access and inclusion across the continent. I envision a digital public sector where governance is transparent, efficient, and future-ready.</p>
+                
+                <p><strong>🏭 Industrial Transformation:</strong> Long-term, I want to help position South Africa—and Africa as a whole—as a global powerhouse in technology. This includes championing the development of a semiconductor industry, sending African students to Taiwan to master semiconductor manufacturing, and bringing those skills back home to industrialize our nations.</p>
+                
+                <p><strong>⚡ Resource Advantage:</strong> Africa already holds many critical minerals needed for semiconductors and electric vehicles—cobalt from DRC, lithium from Zimbabwe, manganese from South Africa, and rare earth elements from Tanzania and Burundi. By investing in local processing and innovation, Africa can move from raw materials exporter to global supplier of high-value technology components.</p>
+                
+                <p><strong>🌍 Ultimate Vision:</strong> My ultimate vision is for a powerful Africa—free from international debt, industrialized, digitally empowered, and recognized as a global contributor to the digital world. Through strategic technology development and international partnerships, we can transform Africa into the world's next great technological superpower.</p>
+            </div>
+        </section>
+        
+        <section id="contact" class="section tab-content">
+            <div class="section-title">
+                <h2>Let's Connect</h2>
+                <p>Ready to collaborate on Africa's digital transformation? Let's build the future together.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3><i class="fas fa-handshake"></i> Get In Touch</h3>
+                    <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious vision for Africa's technological future. Whether you're interested in backend development, AI applications, cybersecurity solutions, or continental-scale digital transformation, let's connect.</p>
+                    <div class="social-links" style="j…
