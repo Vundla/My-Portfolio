@@ -1,0 +1,41 @@
+# Fly.io Configuration for Enterprise Portfolio
+# fly.backend.toml
+
+app = "codex-sanctium-api"
+primary_region = "jnb"  # Johannesburg
+
+[build]
+  dockerfile = "./backend/Dockerfile"
+
+[env]
+  ASPNETCORE_ENVIRONMENT = "Production"
+  ASPNETCORE_URLS = "http://0.0.0.0:8080"
+  
+  # GitHub URLs (no custom domain needed)
+  GITHUB_PROFILE_URL = "https://github.com/Vundla"
+  FRONTEND_URL = "https://codex-sanctium.fly.dev"
+  
+  # Enterprise settings
+  ENTERPRISE_MODE = "true"
+  GITHUB_ORG = "your_existing_org_name"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[http_service.checks]]
+  method = "get"
+  path = "/health"
+  protocol = "http"
+  timeout = "10s"
+  interval = "30s"
+  grace_period = "10s"
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1

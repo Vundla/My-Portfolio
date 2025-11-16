@@ -1,0 +1,50 @@
+name: 🔍 Health Monitoring
+
+on:
+  schedule:
+    # Run every 30 minutes
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    name: 🔍 Health Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔍 Check Backend Health
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://api-codex-sanctium.fly.dev/health || echo "000")
+          if [ "$response" = "200" ]; then
+            echo "✅ Backend is healthy"
+          else
+            echo "❌ Backend is unhealthy (HTTP: $response)"
+            exit 1
+          fi
+          
+      - name: 🔍 Check Frontend Health  
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://codex-sanctium.fly.dev || echo "000")
+          if [ "$response" = "200" ]; then
+            echo "✅ Frontend is healthy"
+          else
+            echo "❌ Frontend is unhealthy (HTTP: $response)"
+            exit 1
+          fi
+          
+      - name: 📊 Report Status
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const status = '${{ job.status }}' === 'success' ? 'success' : 'failure';
+            const description = status === 'success' ? 'All services healthy' : 'Service health check failed';
+            
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo, 
+              sha: '${{ github.sha }}',
+              state: status,
+              target_url: 'https://codex-sanctium.fly.dev',
+              description: description,
+              context: 'health/monitoring'
+            });

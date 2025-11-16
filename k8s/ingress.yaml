@@ -1,0 +1,53 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: codex-sanctium-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/websocket-services: "codex-backend-service"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+spec:
+  rules:
+  - host: codex-sanctium.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: codex-frontend-service
+            port:
+              number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: codex-backend-service
+            port:
+              number: 5000
+  - host: api.codex-sanctium.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: codex-backend-service
+            port:
+              number: 5000
+---
+# TLS Certificate (for production)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: codex-sanctium-tls
+  namespace: default
+type: kubernetes.io/tls
+data:
+  # Add your TLS certificate and key here (base64 encoded)
+  tls.crt: ""
+  tls.key: ""

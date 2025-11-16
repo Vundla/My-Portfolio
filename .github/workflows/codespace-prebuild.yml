@@ -1,0 +1,36 @@
+name: 🚀 Codespace Prebuild - Enterprise
+
+on:
+  push:
+    branches: [ main, codex_sanctium ]
+  workflow_dispatch:
+
+jobs:
+  prebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📋 Checkout
+        uses: actions/checkout@v4
+        
+      - name: 🔷 Setup .NET 8
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+          
+      - name: 🟢 Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: 📦 Restore .NET packages
+        run: |
+          cd backend
+          dotnet restore
+          
+      - name: 📦 Install Node packages  
+        run: |
+          cd frontend
+          npm ci
+          
+      - name: ✅ Prebuild complete
+        run: echo "Enterprise prebuild finished!"

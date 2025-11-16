@@ -1,0 +1,90 @@
+{
+  "name": "Codex Sanctium Enterprise (Existing Org)",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-focal",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "version": "8.0",
+      "installUsingApt": true
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20",
+      "nodeGypDependencies": true
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "dockerDashComposeVersion": "v2"
+    },
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "version": "latest",
+      "helm": "latest"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    }
+  },
+  
+  "forwardPorts": [5000, 5173, 4000, 3000],
+  "portsAttributes": {
+    "5000": {
+      "label": ".NET Backend API",
+      "onAutoForward": "notify"
+    },
+    "5173": {
+      "label": "Svelte Frontend", 
+      "onAutoForward": "openBrowser"
+    },
+    "4000": {
+      "label": "Phoenix LiveView",
+      "onAutoForward": "notify"
+    }
+  },
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "svelte.svelte-vscode",
+        "bradlc.vscode-tailwindcss", 
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "ms-vscode.vscode-typescript-next",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-vscode-remote.remote-containers"
+      ],
+      "settings": {
+        "dotnet.server.useOmnisharp": false,
+        "files.watcherExclude": {
+          "**/node_modules/**": true,
+          "**/bin/**": true,
+          "**/obj/**": true,
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true,
+          "**/dist/**": true
+        },
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/bower_components": true,
+          "**/dist": true,
+          "**/bin": true,
+          "**/obj": true
+        },
+        "typescript.preferences.includePackageJsonAutoImports": "auto",
+        "editor.codeActionsOnSave": {
+          "source.fixAll": true
+        }
+      }
+    }
+  },
+  
+  "onCreateCommand": "bash -c 'echo \"🚀 Setting up Codex Sanctium Enterprise Environment\" && sudo apt-get update && sudo apt-get install -y build-essential curl wget git'",
+  
+  "postCreateCommand": "bash -c 'echo \"📦 Installing dependencies for existing enterprise org...\" && chmod +x *.sh && cd backend && dotnet restore && cd ../frontend && npm install && echo \"✅ Enterprise environment ready in existing organization!\"'",
+  
+  "postStartCommand": "bash -c 'echo \"🎯 Codex Sanctium Enterprise Development Ready!\" && dotnet --version && node --version && docker --version'",
+  
+  "remoteUser": "codespace"
+}

@@ -1,0 +1,106 @@
+# GitHub Codespaces Configuration for Enterprise Development
+name: Codex Sanctium Enterprise
+
+# Use the universal image with enterprise tools
+image: mcr.microsoft.com/devcontainers/universal:2
+
+# Configure for enterprise development
+features:
+  # .NET 8 SDK (more stable than .NET 9 in Codespaces)
+  "ghcr.io/devcontainers/features/dotnet:2":
+    version: "8.0"
+    installUsingApt: true
+  
+  # Node.js 20 for Svelte
+  "ghcr.io/devcontainers/features/node:1":
+    version: "20"
+    nodeGypDependencies: true
+  
+  # Docker for containerization
+  "ghcr.io/devcontainers/features/docker-in-docker:2":
+    version: "latest"
+    dockerDashComposeVersion: "v2"
+  
+  # Kubernetes tools
+  "ghcr.io/devcontainers/features/kubectl-helm-minikube:1":
+    version: "latest"
+    helm: "latest"
+    minikube: "latest"
+
+# Enterprise ports for development
+forwardPorts:
+  - 5000   # .NET Backend
+  - 5173   # Svelte Frontend  
+  - 4000   # Phoenix LiveView
+  - 3000   # Alternative frontend port
+
+# Enterprise Codespace settings
+customizations:
+  vscode:
+    extensions:
+      # .NET development
+      - "ms-dotnettools.csharp"
+      - "ms-dotnettools.vscode-dotnet-runtime"
+      
+      # Svelte development  
+      - "svelte.svelte-vscode"
+      - "bradlc.vscode-tailwindcss"
+      
+      # Enterprise tools
+      - "ms-vscode.vscode-typescript-next"
+      - "ms-kubernetes-tools.vscode-kubernetes-tools"
+      - "ms-vscode-remote.remote-containers"
+      - "GitHub.copilot"
+      - "GitHub.copilot-chat"
+    
+    settings:
+      # Enterprise development settings
+      "dotnet.server.useOmnisharp": false
+      "files.watcherExclude": {
+        "**/node_modules/**": true,
+        "**/bin/**": true,
+        "**/obj/**": true
+      }
+
+# Enterprise resource allocation
+resourceClass: "largePremium"  # 8-core, 32GB RAM
+
+# Lifecycle commands for enterprise setup
+onCreateCommand: |
+  # Install enterprise dependencies
+  sudo apt-get update
+  sudo apt-get install -y build-essential curl wget
+  
+  # Setup .NET workloads
+  dotnet workload update
+  
+  # Install global npm packages
+  npm install -g @sveltejs/kit vite
+
+postCreateCommand: |
+  # Enterprise project setup
+  echo "🚀 Setting up Codex Sanctium Enterprise Environment"
+  
+  # Make scripts executable
+  chmod +x *.sh
+  
+  # Install project dependencies
+  cd backend && dotnet restore
+  cd ../frontend && npm install
+  
+  echo "✅ Enterprise environment ready!"
+
+postStartCommand: |
+  # Start enterprise development services
+  echo "🎯 Starting enterprise development mode..."
+  
+  # Quick health check
+  dotnet --version
+  node --version
+  docker --version
+  kubectl version --client
+
+# Enterprise prebuild configuration
+prebuild:
+  - cd backend && dotnet restore
+  - cd frontend && npm ci

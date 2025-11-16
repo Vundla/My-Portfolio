@@ -1,0 +1,107 @@
+version: "3.9"
+
+services:
+  # .NET 9 Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: codex-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
+    volumes:
+      - ./backend:/src
+    command: ["dotnet", "watch", "run", "--urls", "http://0.0.0.0:5000"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - codex-network
+
+  # Svelte Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: codex-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://backend:5000
+      - VITE_SIGNALR_URL=http://backend:5000/api/hub
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - codex-network
+
+  # Phoenix LiveView Orchestrator
+  live_sidecar:
+    build:
+      context: ./live_sidecar
+      dockerfile: Dockerfile
+    container_name: codex-liveview
+    ports:
+      - "4000:4000"
+    environment:
+      - MIX_ENV=dev
+      - SECRET_KEY_BASE=your_secret_key_base_here
+    volumes:
+      - ./live_sidecar:/app
+    command: ["mix", "phx.server"]
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - codex-network
+
+  # PostgreSQL for LiveView
+  postgres:
+    image: postgres:16-alpine
+    container_name: codex-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=live_sidecar_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - codex-network
+
+  # Redis for caching and real-time features
+  redis:
+    image: redis:7-alpine
+    container_name: codex-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - codex-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  codex-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
